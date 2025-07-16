@@ -1,1 +1,47 @@
 @import "tailwindcss";
+
+/* Color Scheme 1 */
+/* :root {
+    --primary: #fafaf7;
+    --secondary: #eadbc8;
+    --accent: #f5b7b1;
+    --background: #3c6e47;
+    --text: #2f2f2f;
+  } */
+
+  /* Color Scheme 2 */
+  /* :root {
+    --primary: #FFFBF8;
+    --secondary: #F4EDE4;
+    --accent: #D96C7C;
+    --background: #6D4C41;
+    --text: #3B3B3B;
+  } */
+
+  /* Color Scheme 3 */
+  :root {
+    --primary: #fff;
+    --secondary: #C8E6C9;
+    --accent: #FFCDD2;
+    --background: #4CAF50;
+    --text: #212121;
+  }
+
+  /* Color Scheme 4 */
+  /* :root {
+    --primary: #F5F5F5;
+    --secondary: #A5D6A7;
+    --accent: #F8BBD0;
+    --background: #2E7D32;
+    --text: #1A1A1A;
+  } */
+
+  /* Color Scheme Mix */
+  /* :root {
+    --primary: #F5F5F5;
+    --secondary: #A5D6A7;
+    --accent: #F8BBD0;
+    --background: #4CAF50;
+    --text: #1A1A1A;
+  } */
+
