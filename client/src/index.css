@@ -70,3 +70,6 @@
   p {
     font-family: 'DM Sans', sans-serif;
   } */
+   input, textarea {
+    border: 2px solid var(--primary);
+   }

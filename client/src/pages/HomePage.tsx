@@ -8,7 +8,7 @@ import Testimonial from "../components/home/Testimonial";
 
 const HomePage = () => {
     return(
-        <main className="text-[var(--primary)] flex flex-col text-center gap-16">
+        <main className="text-[var(--primary)] text-center space-y-16">
             {/* Landing Section */}
             <section className="flex flex-col justify-around gap-8 w-2xl mx-auto text-center">
                 <h2 className="text-5xl font-bold">Bringing Life To Your <span>Homes</span> And <span>Office Spaces</span></h2>
