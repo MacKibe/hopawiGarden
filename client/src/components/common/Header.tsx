@@ -2,9 +2,9 @@ import { Link } from "react-router";
 
 const Header = () => {
     return(
-        <div className="flex justify-evenly gap-64 p-4 bg-[var(--primary)] text-[var(--background)]">
+        <div className="flex justify-evenly gap-64 p-6 bg-[var(--background)] text-[var(--primary)]">
             <div>
-                <h1 className="text2xl">HG</h1>
+                <p className="text2xl">HG</p>
             </div>
             <ul className="flex gap-16">
                 <li><Link to="/">Home</Link></li>

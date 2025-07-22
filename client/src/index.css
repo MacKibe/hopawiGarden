@@ -45,31 +45,37 @@
     --text: #1A1A1A;
   } */
 
-  h2 span {
-    color: var(--secondary);
-  }
-  /* h2 {
-    font-family: 'Playfair Display', serif; The italics is better and also the boldness is fine
-  } */
-  /* p {
-    font-family: 'Inter', sans-serif; 
-  } */
-  h2 {
+  h1 {
+    color: var(--primary);
     font-family: 'Raleway', sans-serif;
   }
 
-  /* h2 {
-    font-family: 'Marcellus', serif;
+  h1 span {
+    color: var(--accent);
   }
-  p {
-    font-family: 'Poppins', sans-serif;
-  } */
-  /* h2 {
-    font-family: 'DM Serif Display', serif;
+
+  h2 {
+    font-size: 1.875rem;
+    font-family: 'Raleway', sans-serif;
   }
+
+  h3{
+    font-size: 1.125rem;
+  }
+
   p {
-    font-family: 'DM Sans', sans-serif;
-  } */
+    font-family: 'Inter', sans-serif; 
+  }
+  
+  section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    padding-inline: 5%;
+    margin-block: 5%;
+  }
+  
    input, textarea {
     border: 2px solid var(--primary);
    }

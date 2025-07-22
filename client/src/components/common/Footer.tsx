@@ -4,7 +4,7 @@ import { Link } from "react-router";
 
 const Footer = () => {
     return(
-        <div className="w-[90%] mx-auto bg-[var(--primary)] text-[var(--background)] p-4">
+        <div className="px-[5%] bg-[var(--background)] text-[var(--primary)] p-4">
             <div className="flex justify-between py-8">
                 <div className="flex flex-col justify-around w-[30%]">
                     <h2>HG - HOPAWI GARDENS.</h2>
