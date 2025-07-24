@@ -2,7 +2,7 @@ import { Link } from "react-router";
 
 const Header = () => {
     return(
-        <div className="flex justify-evenly gap-64 p-6 bg-[var(--background)] text-[var(--primary)]">
+        <div className="sticky flex justify-evenly gap-64 p-6 bg-[var(--background)] text-[var(--primary)] ">
             <div>
                 <p className="text2xl">HG</p>
             </div>

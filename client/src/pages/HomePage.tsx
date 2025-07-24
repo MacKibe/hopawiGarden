@@ -5,7 +5,7 @@ import FeaturedProduct from "../components/home/FeaturedProduct";
 
 const HomePage = () => {
     return(
-        <main className="text-[var(--text)] text-center space-y-16">
+        <main className="text-[var(--text)] text-center">
             {/* Landing Section */}
             <HeroSection/>
             {/* Features */}
@@ -14,8 +14,8 @@ const HomePage = () => {
             <FeaturedProduct />
             {/* Testimonials */}
             <section>
-                <h2>What Our Customers Say</h2>
-                <h3>Join thousands of happy plant parents</h3>
+                <h3>What Our Customers Say</h3>
+                <h4>Join thousands of happy plant parents</h4>
                 <Testimonial/>
             </section>
         </main>

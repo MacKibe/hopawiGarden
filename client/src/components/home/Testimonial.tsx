@@ -2,7 +2,7 @@ import { testimonials } from "../../data/testimonials"
 import { RiStarSFill } from "react-icons/ri";
 const Testimonial = () => {
     return(
-        <div className="grid grid-cols-3 gap-8 ">
+        <section className="grid grid-cols-3 gap-8 ">
             {testimonials.map((testimonial, index)=>(
                 <div className="flex flex-col gap-2 bg-[var(--secondary)] text-[var(--background)] p-8 rounded-2xl" key={index}>
                     <div>
@@ -25,7 +25,7 @@ const Testimonial = () => {
                     </div>
                 </div>
             ))}
-        </div>
+        </section>
     )
 }
 
