@@ -55,12 +55,7 @@
   }
 
   h2 {
-    font-size: 3.3rem;
     font-family: 'Raleway', sans-serif;
-  }
-
-  h3 {
-    font-size: 2rem;
   }
 
   p {
@@ -69,7 +64,6 @@
   
   section {
     text-align: center;
-    gap: 1rem;
     padding: 5%;
   }
   

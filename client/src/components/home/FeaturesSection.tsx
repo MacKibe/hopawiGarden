@@ -21,11 +21,11 @@ const FeatureSection = () =>{
             featureDeatails: "Garden Favorites",
         }
     ]
-    return(
+    return (
         <section id="collection" className="flex flex-col items-center">
             <h3>Featured Collections</h3>
             <h4>Explore our carefully curated categories to find the perfect plants for your space</h4>
-            <div className="w-full flex flex-row justify-center items-center gap-16">
+            <div className="w-full flex flex-row justify-center items-center gap-16 py-8">
                 {featuresDetails.map((detail, index) => (
                     <div key={index} className="flex flex-col items-center rounded-xl text-[var(--primary)] bg-[var(--background)] shadow-md max-w-xs w-full">
                         <div className="w-full aspect-[5/3] bg-cover bg-center rounded-t-xl" style={{ backgroundImage: `url(${detail.backgroundImg})`}}></div>

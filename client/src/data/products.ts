@@ -16,68 +16,27 @@ export interface Product {
   reviews: number;
 }
 
-export const products: Product[] = [
-  {
-    id: 1,
-    name: "Fiddle Leaf Fig",
-    description: "Large Indoor Statement Plant",
-    price: 2300,
-    image: img,
-    rating: 4,
-    reviews: 120,
-  },
-  {
-    id: 2,
-    name: "Snake Plant",
-    description: "Low Maintenance Air Purifier",
-    price: 1500,
-    image: img1,
-    rating: 5,
-    reviews: 80,
-  },
-  {
-    id: 3,
-    name: "Peace Lily",
-    description: "Elegant Flowering Plant",
-    price: 1800,
-    image: img2,
-    rating: 4,
-    reviews: 60,
-  },
-  {
-    id: 4,
-    name: "Spider Plant",
-    description: "Easy Care Hanging Plant",
-    price: 1200,
-    image: img3,
-    rating: 5,
-    reviews: 45,
-  },
-  {
-    id: 5,
-    name: "Aloe Vera",
-    description: "Healing Succulent",
-    price: 900,
-    image: img4,
-    rating: 4,
-    reviews: 30,
-  },
-  {
-    id: 6,
-    name: "Montera",
-    description: "Healing Succulent",
-    price: 900,
-    image: img5,
-    rating: 4,
-    reviews: 30,
-  },
-  {
-    id: 7,
-    name: "Palm Tree",
-    description: "Healing Succulent",
-    price: 900,
-    image: img6,
-    rating: 4,
-    reviews: 30,
-  },
-]; 
+const images = [img, img1, img2, img3, img4, img5, img6];
+
+const plantNames = [
+  "Fiddle Leaf Fig", "Snake Plant", "Peace Lily", "Spider Plant", "Aloe Vera",
+  "Monstera Deliciosa", "Areca Palm", "Rubber Plant", "ZZ Plant", "Jade Plant",
+  "Dracaena", "Pothos", "Calathea", "Bird of Paradise", "Boston Fern",
+  "Chinese Evergreen", "Croton", "Dieffenbachia", "Majesty Palm", "Philodendron",
+  "Bamboo Palm", "Dumb Cane", "Anthurium", "Peperomia", "Aglaonema",
+  "Parlor Palm", "Kalanchoe", "Schefflera", "Moth Orchid", "Kentia Palm",
+  "Hoya", "Alocasia", "Oxalis", "Cast Iron Plant", "Yucca", "Prayer Plant",
+  "String of Pearls", "English Ivy", "Cactus Mix", "Money Tree",
+  "Succulent Set", "Lavender", "Rosemary", "Mint", "Basil", "Thyme",
+  "Lemon Balm", "Gardenia", "Chrysanthemum", "Geranium"
+];
+
+export const products: Product[] = plantNames.map((name, index) => ({
+  id: index + 1,
+  name,
+  description: `${name} for your home or office.`,
+  price: Math.floor(800 + Math.random() * 2500), // Random price between 800 - 3300
+  image: images[index % images.length],
+  rating: Math.floor(3 + Math.random() * 2), // Rating 3 to 5
+  reviews: Math.floor(10 + Math.random() * 150), // Reviews 10 to 160
+}));
