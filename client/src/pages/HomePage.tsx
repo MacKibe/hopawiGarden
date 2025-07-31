@@ -13,7 +13,7 @@ const HomePage = () => {
             {/* Featured Products */}
             <FeaturedProduct />
             {/* Testimonials */}
-            <section>
+            <section className="bg-[var(--secondary)]">
                 <h3>What Our Customers Say</h3>
                 <h4>Join thousands of happy plant parents</h4>
                 <Testimonial/>

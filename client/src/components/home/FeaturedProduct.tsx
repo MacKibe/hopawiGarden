@@ -1,29 +1,33 @@
+import { FaCartPlus } from "react-icons/fa"
 import { Link } from "react-router"
-import { products } from "../../data/products";
-import { FaCartPlus } from "react-icons/fa";
+import { products } from "../../data/products"
 
 const FeaturedProduct = () => {
     return(
         <section className="bg-[var(--background)] text-[var(--primary)]">
-            <h3 className="text-center text-[var(--primary)]">Featured Products</h3>
-            <h4 className="text-lg text-center">Handpicked favorites from our collection, loved by plant enthusiasts</h4>
-            <div className="w-full grid grid-cols-3 gap-8 mt-8">
-                {products.slice(0, 11).map((product, index) => (
-                    <div key={index} className="flex flex-col rounded-xl text-[var(--background)] bg-[var(--primary)] w-full">
-                        <div className="min-h-10 text-left py-4 px-8">
-                            <h5 className="text-xl">{product.name}</h5>
-                            <p className="">{product.description}</p>
+            <div className="container">
+                <h3>Featured Products</h3>
+                <h4 className="text-lg max-w-2xl mx-auto my-4">Handpicked favorites from our collection, loved by plant enthusiasts</h4>
+                <div className="grid-responsive mt-8">
+                    {products.slice(0, 5).map((product) => (
+                        <div key={product.id} className="card">
+                            <div className="p-4 text-left">
+                                <h5 className="text-xl">{product.name}</h5>
+                                <p className="text-sm text-[var(--text)]">{product.description}</p>
+                            </div>
+                            <div className="card-img" style={{ backgroundImage: `url(${product.image})`}}></div>
+                            <div className="flex justify-between items-center p-4">
+                                <p className="text-[var(--background)] font-bold">Kshs {product.price.toLocaleString()}</p>
+                                <Link to={`/shop/${product.id}`} className="text-[var(--background)] hover:text-[var(--accent)] transition">
+                                    <FaCartPlus size={24}/>
+                                </Link>
+                            </div>
                         </div>
-                        <div className="w-full h-50 aspect-[3/3] bg-cover bg-center" style={{ backgroundImage: `url(${product.image})`}}></div>
-                        <div className="flex justify-between items-center py-4 px-8">
-                            <p className="text-[var(--background)] font-bold text-">Kshs {product.price}</p>
-                            <Link to="/shop" className="text-[var(--background)]"><FaCartPlus size={30}/></Link>
-                        </div>
-                    </div>
-                ))}
-            </div>
-            <div className="flex justify-center">
-                <Link to="/shop" className="bg-[var(--primary)] text-[var(--background)] mt-4 py-2 px-6 rounded-xl">View All Products</Link>
+                    ))}
+                </div>
+                <div className="mt-8">
+                    <Link to="/shop" className="btn btn-primary">View All Products</Link>
+                </div>
             </div>
         </section>
     )

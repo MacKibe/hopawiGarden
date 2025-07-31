@@ -1,26 +1,27 @@
+import { CiShoppingCart, CiStar } from "react-icons/ci";
 import { products } from "../../data/products";
-import { CiStar } from "react-icons/ci";
-import { CiShoppingCart } from "react-icons/ci";
 
 const ProductList = () => {
   return (
-    <div className="grid grid-cols-3 gap-4 p-4">
+    <div className="grid grid-cols-5">
       {products.map((product) => (
-        <div key={product.id} className="shadow-md rounded-xl overflow-hidden border">
-          <div className="w-full h-50 bg-cover bg-center" style={{ backgroundImage: `url(${product.image})` }}></div>
+        <div key={product.id} className="card">
+          <div className="card-img" style={{ backgroundImage: `url(${product.image})`}}></div>
           <div className="p-4">
-            <h4 className="text-lg font-bold">{product.name}</h4>
-            <h5 className="">{product.description}</h5>
-            <h5 className="flex justify-start items-center gap-1 p-1">
-                <CiStar size={20} fill="gold"/> {product.rating} Stars <p className="text-xs">({product.reviews} reviews)</p>
-            </h5>
-            <div className="flex justify-between items-center">
-                <h6 className="text-md text-[var(--background)] font-bold">
-                    Kshs {product.price.toLocaleString()}
-                </h6>
-                <button className="flex items-center gap-2 bg-[var(--background)] text-[var(--primary)] py-2 px-4 rounded-xl">
-                    <CiShoppingCart size={30}/> Add To Cart
-                </button>
+            <h4 className="font-bold">{product.name}</h4>
+            <p className="text-sm text-[var(--text)]">{product.description}</p>
+            <div className="flex items-center gap-1 my-2">
+              <CiStar size={20} fill="gold"/> 
+              <span>{product.rating} Stars</span>
+              <span className="text-xs">({product.reviews} reviews)</span>
+            </div>
+            <div className="flex justify-between items-center mt-4">
+              <h6 className="font-bold text-[var(--background)]">
+                Kshs {product.price.toLocaleString()}
+              </h6>
+              <button className="btn btn-primary flex items-center gap-2">
+                <CiShoppingCart size={20}/> Add To Cart
+              </button>
             </div>
           </div>
         </div>
@@ -29,4 +30,4 @@ const ProductList = () => {
   );
 };
 
-export default ProductList;
+export default ProductList

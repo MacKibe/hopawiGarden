@@ -1,60 +1,82 @@
-import { FaFacebook, FaLinkedin, FaYoutube } from "react-icons/fa";
-import { MdEmail } from "react-icons/md";
-import { Link } from "react-router";
-
-const Footer = () => {
-    return(
-        <div className="px-[5%] bg-[var(--background)] text-[var(--primary)] p-4">
-            <div className="flex justify-between py-8">
-                <div className="flex flex-col justify-around w-[30%]">
-                    <h4>HG - HOPAWI GARDENS.</h4>
-                    <span>Bringing life to your offices and homes. Your trusted partner in creating natural sanctuaries.</span>
-                    <span className="flex gap-2">
-                        <FaFacebook size={30}/>
-                        <FaLinkedin size={30}/>
-                        <FaYoutube size={30}/>
-                        <MdEmail size={30}/>
-                    </span>
+import { FaFacebook, FaLinkedin, FaYoutube, FaInstagramSquare, FaTiktok } from "react-icons/fa";
+  import { Link } from "react-router";
+  
+  const Footer = () => {
+      return (
+          <footer className="bg-[var(--background)] text-[var(--primary)]">
+              <div className="container py-10 border-b border-[var(--primary)]">
+                  <div className="grid grid-cols-1 md:grid-cols-5 gap-8 py-12">
+                        {/* Brand Info */}
+                        <div className="space-y-4">
+                            <h3 className="text-xl font-bold">HOPAWI GARDENS</h3>
+                            <p>Bringing life to your Homes and Offices space.</p>
+                        </div>
+                      {/* Quick Links */}
+                      <div>
+                            <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
+                            <ul className="space-y-2">
+                                <li><Link to="/" className="hover:text-[var(--accent)] transition">Home</Link></li>
+                                <li><Link to='/about' className="hover:text-[var(--accent)] transition">About Us</Link></li>
+                                <li><Link to='/shop' className="hover:text-[var(--accent)] transition">Shop</Link></li>
+                                <li><Link to='/contact' className="hover:text-[var(--accent)] transition">Contact</Link></li>
+                            </ul>
+                      </div>
+                      {/* Services */}
+                      <div>
+                            <h3 className="text-lg font-semibold mb-4">Services</h3>
+                            <ul className="space-y-2">
+                                <li><Link to='/shop?category=indoor' className="hover:text-[var(--accent)] transition">Indoor Plants</Link></li>
+                                <li><Link to='/shop?category=outdoor' className="hover:text-[var(--accent)] transition">Outdoor Plants</Link></li>
+                                <li><Link to='/services/landscaping' className="hover:text-[var(--accent)] transition">Landscaping</Link></li>
+                                <li><Link to='/services/consultation' className="hover:text-[var(--accent)] transition">Consultation</Link></li>
+                                <li><Link to='/shop/accessories' className="hover:text-[var(--accent)] transition">Soil & Accessories</Link></li>
+                            </ul>
+                      </div>
+                      {/* Support */}
+                      <div>
+                          <h3 className="text-lg font-semibold mb-4">Support</h3>
+                          <ul className="space-y-2">
+                              <li><Link to='/shipping-info' className="hover:text-[var(--accent)] transition">Shipping Info</Link></li>
+                              <li><Link to='/returns' className="hover:text-[var(--accent)] transition">Returns</Link></li>
+                              <li><Link to='/plant-care' className="hover:text-[var(--accent)] transition">Plant Care</Link></li>
+                              <li><Link to='/faq' className="hover:text-[var(--accent)] transition">FAQs</Link></li>
+                          </ul>
+                      </div>
+                      {/* Socials */}
+                        <div>
+                            <h3>Catch on Our Socials.</h3>
+                            <div className="flex flex-wrap gap-4">
+                                <a href="#" aria-label="Facebook" className="hover:text-[var(--accent)] transition">
+                                    <FaFacebook size={30}/>
+                                </a>
+                                <a href="#" aria-label="LinkedIn" className="hover:text-[var(--accent)] transition">
+                                    <FaLinkedin size={30}/>
+                                </a>
+                                <a href="#" aria-label="YouTube" className="hover:text-[var(--accent)] transition">
+                                    <FaYoutube size={30}/>
+                                </a>
+                                <a href="#" aria-label="Instagram" className="hover:text-[var(--accent)] transition">
+                                    <FaInstagramSquare size={30}/>
+                                </a>
+                                <a href="#" aria-label="TikTok" className="hover:text-[var(--accent)] transition">
+                                    <FaTiktok size={30}/>
+                                </a>
+                            </div>
+                        </div>
+                  </div>
+              </div>
+              {/* Copyright */}
+              <div className="container">
+                <div className="flex flex-col md:flex-row justify-between items-center py-8">
+                  <p>© {new Date().getFullYear()} HOPAWI GARDENS. All rights reserved.</p>
+                  <div className="flex gap-6 mt-4 md:mt-0">
+                      <Link to="/privacy-policy" className="hover:text-[var(--accent)] transition">Privacy Policy</Link>
+                      <Link to="/terms" className="hover:text-[var(--accent)] transition">Terms of Service</Link>
+                  </div>
                 </div>
-                <div>
-                    <h4>Quick Links</h4>
-                    <ul>
-                        <li><Link to="/">Home</Link></li>
-                        <li><Link to='/about'>About Us</Link></li>
-                        <li><Link to='/shop' >Shop</Link></li>
-                        <li><Link to='/contact'>FAQ</Link></li>
-                    </ul>
-                </div>
-                <div>
-                    <h4>Categories</h4>
-                    <ul>
-                        <li><Link to='/indoor_plants'>Indoor Plants</Link></li>
-                        <li><Link to='/outdoor_plants'>Outdoor Plants</Link></li>
-                        <li><Link to='/flowers'>Flowers</Link></li>
-                        <li><Link to='/accessories'>Accessories</Link></li>
-                    </ul>
-                </div>
-                <div>
-                    <h4>Support</h4>
-                    <ul>
-                        <li><Link to='/shipping_info'>Shipping Info</Link></li>
-                        <li><Link to='/returns'>Returns</Link></li>
-                        <li><Link to='/plant_care'>Plant Care</Link></li>
-                        <li><Link to='/contact_us' >Contact Us</Link></li>
-                    </ul>
-                </div>
-            </div>
-            <section className="flex justify-between border-t-2">
-                <div>
-                    <p>© 2024 Hopawi Gardens. All rights reserved.</p>
-                </div>
-                <div className="flex justify-between gap-16">
-                    <a href="#">Privacy Policy</a>
-                    <a href="#">Terms of Service</a>
-                </div>
-            </section>
-        </div>
-    )
-}
-
-export default Footer;
+              </div>
+          </footer>
+      )
+  }
+  
+  export default Footer

@@ -1,98 +1,116 @@
-import { PiAcornBold } from "react-icons/pi";
-import { LuMessageCircleDashed } from "react-icons/lu";
+import { PiAcorn } from "react-icons/pi"
+import { LuMessageCircle } from "react-icons/lu"
+import { faqData } from "../data/faq"
 
 const ContactPage = () => {
     return(
         <div>
-            <section className="min-h-[45dvh] bg-[var(--background)] text-[var(--primary)] ">
-                <h2>Get in Touch</h2>
-                <h4 className="max-w-3xl mx-auto">Have questions about our plants or need help with plant care? We're here to help you grow your green thumb!</h4>
-            </section>
+            {/* Hero */}
+            <section className="bg-[var(--background)] text-[var(--primary)]">
+                <div className="container">
+                    <h2>Get in Touch</h2>
+                    <h4 className="max-w-3xl mx-auto mt-4">
+                        Have questions about our plants or need help with plant care? 
+                        We're here to help you grow your green thumb!
+                    </h4>
+                </div>
+            </section> 
+            {/* Contact Form */}
             <section>
-                <div className="grid grid-cols-3">
+                <div className="container grid grid-cols-1 lg:grid-cols-3 gap-8">
                     {/* FORM - 2/3 Width */}
-                    <form className="col-span-2 border-1 border-[var(--background)] text-left p-8">
-                        <h3 className="flex items-center gap-4 py-4 text-2xl text-[var(--background)]"><LuMessageCircleDashed size={50} /> Send us a message</h3>
-                        <div className="grid grid-cols-2 gap-6">
-                            <div>
-                                <label>Name *</label>
-                                <input type="text" placeholder="Your Full Name" name="name" id="name" className="w-full p-3 rounded-lg"/>
+                    <form className="lg:col-span-2 bg-[var(--primary)] p-8 rounded-xl shadow-md-[var(--secondary)] text-left">
+                        <h3 className="flex items-center gap-4 text-2xl text-[var(--background)] mb-6">
+                            <LuMessageCircle size={40} /> 
+                            Send us a message
+                        </h3>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div className="form-group">
+                                <label className="block mb-2">Name *</label>
+                                <input type="text" placeholder="Your Full Name" className="w-full" required/>
                             </div>
-                            <div>
-                                <label>Email *</label>
-                                <input type="email" placeholder="your@email.com" name="email" id="email" className="w-full p-3 border rounded-lg"/>
+                            <div className="form-group">
+                                <label className="block mb-2">Email *</label>
+                                <input type="email" placeholder="your@email.com" className="w-full" required/>
                             </div>
                         </div>
-                        <div>
-                            <label>Subject *</label>
-                            <input type="text" placeholder="Subject" name="subject" id="subject" className="w-full p-3 border rounded-lg"
-                            />
+                        <div className="form-group mt-6">
+                            <label className="block mb-2">Subject *</label>
+                            <input type="text" placeholder="Subject" className="w-full" required/>
                         </div>
-                        <div>
-                            <label>Message *</label>
-                            <textarea placeholder="Tell us more about your question and concern..." name="message" id="message" rows={6} className="w-full p-3 border rounded-lg"/>
+                        <div className="form-group mt-6">
+                            <label className="block mb-2">Message *</label>
+                            <textarea placeholder="Tell us more about your question and concern..." rows={6} className="w-full" required/>
                         </div>
-                        <button type="submit" className="bg-[var(--background)] text-[var(--primary)] px-6 py-3 rounded">Send Message</button>
+                        <button type="submit" className="btn btn-primary mt-6">
+                            Send Message
+                        </button>
                     </form>
 
                     {/* CONTACT INFO - 1/3 Width */}
-                    <div className="col-span-1 flex flex-col justify-evenly px-8 text-left">
-                    <div>
-                        <div className="flex items-center gap-3 text-xl mb-2">
-                        <PiAcornBold />
-                        <h4 className="font-semibold">Visit Our Nursery</h4>
+                    <div className="space-y-8">
+                        <div className="bg-[var(--primary)] p-6 rounded-xl shadow-md">
+                            <div className="flex items-center gap-3 text-xl mb-4">
+                                <PiAcorn size={24} className="text-[var(--background)]"/>
+                                <h4 className="font-semibold">Visit Our Garden</h4>
+                            </div>
+                            <address className="not-italic space-y-2">
+                                <p>Park Lane</p>
+                                <p>Kiambu</p>
+                                <a href="https://maps.app.goo.gl/PCcW1REZJ1Bj4a2x8" className="inline-block mt-2 text-blue-600 hover:underline" target="_blank" rel="noopener noreferrer">Get Directions</a>
+                            </address>
                         </div>
-                        <p>Park Lane</p>
-                        <p>Kiambu</p>
-                        <button className="mt-2 text-blue-600 underline">Get Directions</button>
-                    </div>
 
-                    <div>
-                        <div className="flex items-center gap-3 text-xl mb-2">
-                        <PiAcornBold />
-                        <h4 className="font-semibold">Call Us Today</h4>
+                        <div className="bg-[var(--primary)] p-6 rounded-xl shadow-md">
+                            <div className="flex items-center gap-3 text-xl mb-4">
+                                <PiAcorn size={24} className="text-[var(--background)]"/>
+                                <h4 className="font-semibold">Call Us Today</h4>
+                            </div>
+                            <div className="space-y-2">
+                                <p>(+254) 720 804523</p>
+                                <p>Mon - Fri, 9am - 5pm</p>
+                                <a href="tel:+254720804523" className="inline-block mt-2 text-blue-600 hover:underline">
+                                    Call Now
+                                </a>
+                            </div>
                         </div>
-                        <p>(+254) 70 001001</p>
-                        <p>Mon - Fri, 9am - 5pm</p>
-                        <button className="mt-2 text-blue-600 underline">Call Now</button>
-                    </div>
 
-                    <div>
-                        <div className="flex items-center gap-3 text-xl mb-2">
-                        <PiAcornBold />
-                        <h4 className="font-semibold">Email Us</h4>
+                        <div className="bg-[var(--primary)] p-6 rounded-xl shadow-md">
+                            <div className="flex items-center gap-3 text-xl mb-4">
+                                <PiAcorn size={24} className="text-[var(--background)]"/>
+                                <h4 className="font-semibold">Email Us</h4>
+                            </div>
+                            <div className="space-y-2">
+                                <p>greenery@hopawigardens.com</p>
+                                <p>We usually respond within 24 hrs</p>
+                                <a href="mailto:greenery@hopawigardens.com" className="inline-block mt-2 text-blue-600 hover:underline">
+                                    Send Email
+                                </a>
+                            </div>
                         </div>
-                        <p>lucy@hopawigardens.com</p>
-                        <p>We usually respond within 24 hrs</p>
-                        <button className="mt-2 text-blue-600 underline">Send Email</button>
-                    </div>
                     </div>
                 </div>
             </section>
-            <section className=" bg-[var(--secondary)]">
-                <h3>Frequently Asked Questions</h3>
-                <h4>Quick answers to common questions about our plants and services</h4>
-                <div className="grid grid-cols-2 gap-4 py-4 text-left">
-                    <details open className="border-1 border-[var(--background)] p-8">
-                        <summary>How do you ensure plants arrive healthy?</summary>
-                        <p className="text-[var(--background)] p-4">We use specialized packaging and work with trusted shipping partners to ensure your plants arrive in perfect condition. All plants are carefully inspected before shipping.</p>
-                    </details>
-                    <details open className="border-1 border-[var(--background)] p-8">
-                        <summary className="">What if my plant arrives damaged?</summary>
-                        <p className="text-[var(--background)] p-4">We offer a 30-day guarantee on all plants. If your plant arrives damaged or doesn't thrive within 30 days, we'll replace it or provide a full refund.</p>
-                    </details>
-                    <details open className="border-1 border-[var(--background)] p-8">
-                        <summary>Do you offer plant care support?</summary>
-                        <p className="text-[var(--background)] p-4">Absolutely! Our team of plant experts is available to help with care questions. You can reach us via email, phone, or our live chat feature.</p>
-                    </details>
-                    <details open className="border-1 border-[var(--background)] p-8">
-                        <summary>What areas do you deliver to?</summary>
-                        <p className="text-[var(--background)] p-4">We currently deliver to all 50 US states. Shipping times vary by location, typically 3-7 business days for most areas.</p>
-                    </details>
+            
+            {/* FAQ */}
+            <section className="bg-[var(--secondary)]">
+                <div className="container">
+                    <h3>Frequently Asked Questions</h3>
+                    <h4 className="mt-2">Quick answers to common questions about our plants and services</h4>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-8">
+                        {faqData.map((item, index) => (
+                            <details key={index} open className="bg-[var(--primary)] rounded-xl overflow-hidden mb-4 text-left">
+                                <summary className="p-6 cursor-pointer font-semibold text-[var(--background)] text-center">
+                                    {item.question}
+                                </summary>
+                                <p className="px-6 pb-6 text-[var(--background)]">{item.answer}</p>
+                            </details>
+                        ))}
+                    </div>
                 </div>
             </section>
         </div>
     )
 }
 
-export default ContactPage;
+export default ContactPage

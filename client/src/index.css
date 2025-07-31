@@ -1,82 +1,154 @@
 @import "tailwindcss";
+
 @import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,700;1,700&family=Raleway:ital,wght@0,100..900;1,100..900&display=swap');
-/* Color Scheme 1 */
-/* :root {
-    --primary: #fafaf7;
-    --secondary: #eadbc8;
-    --accent: #f5b7b1;
-    --background: #3c6e47;
-    --text: #2f2f2f;
-  } */
 
-  /* Color Scheme 2 */
-  /* :root {
-    --primary: #FFFBF8;
-    --secondary: #F4EDE4;
-    --accent: #D96C7C;
-    --background: #6D4C41;
-    --text: #3B3B3B;
-  } */
+:root {
+  --primary: #fff;
+  --secondary: #C8E6C9;
+  --accent: #FFCDD2;
+  --background: #4CAF50;
+  --text: #212121;
+}
 
-  /* Color Scheme 3 */
-  :root {
-    --primary: #fff;
-    --secondary: #C8E6C9;
-    --accent: #FFCDD2;
-    --background: #4CAF50;
-    --text: #212121;
-  }
+/* Typography */
+body {
+  font-family: 'Raleway', sans-serif;
+  color: var(--text);
+  line-height: 1.6;
+}
 
-  /* Color Scheme 4 */
-  /* :root {
-    --primary: #F5F5F5;
-    --secondary: #A5D6A7;
-    --accent: #F8BBD0;
-    --background: #2E7D32;
-    --text: #1A1A1A;
-  } */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Raleway', sans-serif;
+  font-weight: 700;
+  line-height: 1.2;
+}
 
-  /* Color Scheme Mix */
-  /* :root {
-    --primary: #F5F5F5;
-    --secondary: #A5D6A7;
-    --accent: #F8BBD0;
-    --background: #4CAF50;
-    --text: #1A1A1A;
-  } */
+h1 {
+  font-size: 3rem;
+  color: var(--primary);
+}
 
+h1 span {
+  color: var(--accent);
+}
+
+h2 {
+  font-size: 2.5rem;
+}
+
+h3 {
+  font-size: 1.5rem;
+}
+
+h4 {
+  font-size: 1rem;
+}
+
+p {
+  font-family: 'Raleway', sans-serif;
+  font-weight: 400;
+}
+
+/* Layout */
+section {
+  text-align: center;
+  padding-block: 5%;
+  padding-inline: 10%;
+  margin-block: ;
+}
+
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+/* Buttons & Links */
+.btn {
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.btn-primary {
+  background-color: var(--background);
+  color: var(--primary);
+}
+
+.btn-primary:hover {
+  background-color: color-mix(in srgb, var(--background) 90%, black);
+}
+
+.btn-accent {
+  background-color: var(--accent);
+  color: var(--text);
+}
+
+.btn-accent:hover {
+  background-color: color-mix(in srgb, var(--accent) 90%, black);
+}
+
+/* Forms */
+input, textarea, select {
+  width: 100%;
+  padding: 0.75rem;
+  border: 2px solid var(--background);
+  border-radius: 0.5rem;
+  transition: border-color 0.3s ease;
+}
+
+input:focus, textarea:focus, select:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+/* Cards */
+.card {
+  background: var(--secondary);
+  border-radius: 0.5rem;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+}
+
+.card-img {
+  height: 30dvh;
+  /* aspect-ratio: 4/3; */
+  /* object-fit: cover; */
+  background-position: top;
+}
+
+/* Grids */
+.grid-responsive {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
   h1 {
-    color: var(--primary);
-    font-family: 'Raleway', sans-serif;
+    font-size: 2.25rem;
   }
-
-  h1 span {
-    color: var(--accent);
-  }
-
+  
   h2 {
-    font-family: 'Raleway', sans-serif;
-  }
-
-  p {
-    font-family: 'Inter', sans-serif; 
+    font-size: 1.75rem;
   }
   
   section {
-    text-align: center;
-    padding: 5%;
+    padding: 2rem 1rem;
   }
-  
-   input, textarea {
-    min-width: 100%;
-    border: 2px solid var(--background);
-   }
-
-   form div{
-    padding-block: 1%;
-   }
-
-   form input,
-   form textarea {
-    padding: 2%;
-   }
+}
