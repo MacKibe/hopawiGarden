@@ -64,16 +64,6 @@ section {
   padding: 0 1rem;
 }
 
-/* Buttons & Links */
-.btn {
-  display: inline-block;
-  padding: 0.75rem 1.5rem;
-  border-radius: 0.5rem;
-  font-weight: 600;
-  text-align: center;
-  transition: all 0.3s ease;
-}
-
 .btn-primary {
   background-color: var(--background);
   color: var(--primary);
@@ -126,9 +116,6 @@ input:focus, textarea:focus, select:focus {
 
 .card-img {
   height: 30dvh;
-  /* aspect-ratio: 4/3; */
-  /* object-fit: cover; */
-  background-position: top;
 }
 
 /* Grids */
@@ -138,6 +125,11 @@ input:focus, textarea:focus, select:focus {
   gap: 1.5rem;
 }
 
+.truncate {
+  white-space: nowrap;      /* Prevent text from wrapping to the next line */
+  overflow: hidden;         /* Hide overflowed content */
+  text-overflow: ellipsis;  /* Show ellipsis when text overflows */
+}
 /* Responsive adjustments */
 @media (max-width: 768px) {
   h1 {

@@ -38,7 +38,7 @@ const ProductFilter = () => {
     }
 
     return (
-        <aside className="sticky top-24 h-fit p-6 rounded-lg bg-[var(--primary)] shadow-sm scroll-auto">
+        <aside className="sticky top-24 p-6 rounded-lg bg-[var(--primary)] shadow-sm">
             <h3 className="text-xl font-bold mb-6">Filters</h3>
             
             {/* Category Filter */}

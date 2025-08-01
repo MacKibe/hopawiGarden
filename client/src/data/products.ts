@@ -19,16 +19,9 @@ export interface Product {
 const images = [img, img1, img2, img3, img4, img5, img6];
 
 const plantNames = [
-  "Fiddle Leaf Fig", "Snake Plant", "Peace Lily", "Spider Plant", "Aloe Vera",
-  "Monstera Deliciosa", "Areca Palm", "Rubber Plant", "ZZ Plant", "Jade Plant",
-  "Dracaena", "Pothos", "Calathea", "Bird of Paradise", "Boston Fern",
-  "Chinese Evergreen", "Croton", "Dieffenbachia", "Majesty Palm", "Philodendron",
-  "Bamboo Palm", "Dumb Cane", "Anthurium", "Peperomia", "Aglaonema",
-  "Parlor Palm", "Kalanchoe", "Schefflera", "Moth Orchid", "Kentia Palm",
-  "Hoya", "Alocasia", "Oxalis", "Cast Iron Plant", "Yucca", "Prayer Plant",
-  "String of Pearls", "English Ivy", "Cactus Mix", "Money Tree",
-  "Succulent Set", "Lavender", "Rosemary", "Mint", "Basil", "Thyme",
-  "Lemon Balm", "Gardenia", "Chrysanthemum", "Geranium"
+  "Pilea peperomioides",  "Rubber plant",  "Leopard lily",  "Croton",  "Ghost plant",  "Echeveria",  "Blue pearl",  "Radiator plant",
+  "Haworthia Zebrina",  "Money tree",  "Jade plant",  "Caladium bicolor",  "Peace lily",  "Penthas plant",  "Artemisia",  "English Ivy",
+  "White widow",  "Calathea",  "Pheasant Tail",  "Begonia",  "Bloodleaf",  "Aluminium plant",  "Pink panther plant"
 ];
 
 export const products: Product[] = plantNames.map((name, index) => ({
