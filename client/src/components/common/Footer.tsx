@@ -25,8 +25,8 @@ import { FaFacebook, FaLinkedin, FaYoutube, FaInstagramSquare, FaTiktok } from "
                       <div>
                             <h3 className="text-lg font-semibold mb-4">Services</h3>
                             <ul className="space-y-2">
-                                <li><Link to='/shop?category=indoor' className="hover:text-[var(--accent)] transition">Indoor Plants</Link></li>
-                                <li><Link to='/shop?category=outdoor' className="hover:text-[var(--accent)] transition">Outdoor Plants</Link></li>
+                                <li><Link to='/shop?category=indoor' className="hover:text-[var(--accent)] transition">Indoor Potted Plants</Link></li>
+                                <li><Link to='/shop?category=outdoor' className="hover:text-[var(--accent)] transition">Outdoor Potted Plants</Link></li>
                                 <li><Link to='/services/landscaping' className="hover:text-[var(--accent)] transition">Landscaping</Link></li>
                                 <li><Link to='/services/consultation' className="hover:text-[var(--accent)] transition">Consultation</Link></li>
                                 <li><Link to='/shop/accessories' className="hover:text-[var(--accent)] transition">Soil & Accessories</Link></li>

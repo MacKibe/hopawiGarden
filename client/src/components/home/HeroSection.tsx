@@ -1,31 +1,130 @@
-import { Link } from "react-router"
-import backgroundImage from "../../assets/img_back.jpg"
+import { motion } from "framer-motion";
+import { Link } from "react-router";
+import backgroundImage from "../../assets/img_back.jpg";
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.2,
+      when: "beforeChildren"
+    }
+  }
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.8,
+      ease: "easeOut"
+    }
+  }
+};
+
+const spanVariants = {
+  hidden: { opacity: 0, scale: 0.8 },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    transition: {
+      type: "spring",
+      stiffness: 150,
+      damping: 8
+    }
+  }
+};
 
 const HeroSection = () => {
-    return(
-        <section className="relative min-h-[80dvh] w-full flex items-center justify-center overflow-hidden">
-            {/* Background image with lazy loading */}
-            <div className="absolute inset-0 w-full h-full bg-center bg-cover" style={{ backgroundImage: `url(${backgroundImage})` }} role="img" aria-label="Lush green plants background"></div>
-            
-            {/* Overlay */}
-            <div className="absolute inset-0 w-full h-full bg-[var(--background)] opacity-30 z-0"></div>
-            
-            {/* Content */}
-            <div className="container flex flex-col items-center justify-center gap-8 text-center z-10 px-4">
-                <h1 className="max-w-2xl mx-auto">
-                    Bringing Life To Your <span>Homes</span> And <span>Offices Space</span>
-                </h1>
-                <h3 className="max-w-2xl mx-auto text-[var(--primary)]">
-                    Discover our curated collection of beautiful plants, flowers, and accessories. 
-                    Transform your home into a natural sanctuary with nature delivered to your doorstep.
-                </h3>
-                <div className="flex flex-wrap justify-center gap-4 py-4">
-                    <Link to="/shop" className="btn btn-primary">Shop Now</Link>
-                    <a href="#collection" className="btn btn-accent">Browse Collection</a>
-                </div>
-            </div>
-        </section>
-    )
+  return (
+    <motion.section 
+      className="relative min-h-[80dvh] w-full flex items-center justify-center overflow-hidden"
+      initial="hidden"
+      animate="visible"
+      variants={containerVariants}
+    >
+      {/* Background image */}
+      <motion.div
+        className="absolute inset-0 w-full h-full bg-center bg-cover"
+        style={{ backgroundImage: `url(${backgroundImage})` }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1.2, ease: "easeInOut" }}
+      />
+      
+      {/* Overlay */}
+      <motion.div 
+        className="absolute inset-0 w-full h-full bg-[var(--background)] opacity-30 z-0"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 0.3 }}
+        transition={{ duration: 1.5, ease: "easeInOut" }}
+      />
+      
+      {/* Content */}
+      <motion.div 
+        className="flex flex-col justify-around gap-8 max-w-3xl mx-auto text-center z-10 px-4"
+        variants={containerVariants}
+      >
+        <motion.h1 variants={itemVariants}>
+          Bringing Life To Your 
+          <motion.span 
+            className="inline-block mx-1"
+            variants={spanVariants}
+            transition={{ delay: 0.3 }}
+          >Homes</motion.span> 
+          And 
+          <motion.span
+            className="inline-block ml-1"
+            variants={spanVariants}
+            transition={{ delay: 0.5 }}
+          >Offices Space</motion.span>
+        </motion.h1>
+        
+        <motion.p 
+          className="max-w-2xl mx-auto text-[var(--primary)] text-xl"
+          variants={itemVariants}
+          transition={{ delay: 0.2 }}
+        >
+          Discover our curated collection of beautiful plants, flowers, and accessories. 
+          Transform your home into a natural sanctuary with nature delivered to your doorstep.
+        </motion.p>
+        
+        <motion.div 
+          className="flex gap-4 justify-center py-4"
+          variants={itemVariants}
+          transition={{ delay: 0.4 }}
+        >
+          <motion.div
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            transition={{ type: "spring", stiffness: 300 }}
+          >
+            <Link 
+              to="/shop" 
+              className="bg-[var(--background)] text-[var(--text)] py-3 px-6 rounded-2xl block"
+            >
+              Shop Now
+            </Link>
+          </motion.div>
+          <motion.div
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            transition={{ type: "spring", stiffness: 300 }}
+          >
+            <a 
+              href="#collection" 
+              className="bg-[var(--accent)] text-[var(--background)] py-3 px-6 rounded-2xl block"
+            >
+              Browse Collection
+            </a>
+          </motion.div>
+        </motion.div>
+      </motion.div>
+    </motion.section>
+  )
 }
 
-export default HeroSection
+export default HeroSection;
