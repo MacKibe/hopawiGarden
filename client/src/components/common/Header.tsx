@@ -2,8 +2,12 @@ import { useState } from 'react';
 import { Link } from "react-router";
 import { FaShoppingCart, FaTimes } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
+import useAuthStore from '../../store/useAuthStore';
 
 const Header = () => {
+
+    const {user, login, logout, isAuthenticated} = useAuthStore();
+
     const [cartOpen, setCartOpen] = useState(false);
     const [cartItems, setCartItems] = useState([
         // Sample cart items - in a real app these would come from state management
@@ -44,17 +48,28 @@ const Header = () => {
                     </ul>
                 </nav>
                 {/* Cart Section */}
-                <div className="relative">
-                    <motion.button className="p-2 rounded-full hover:bg-[var(--secondary)] hover:text-[var(--background)] transition relative"
-                        onClick={toggleCart} whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
-                        <span className="sr-only">Cart</span>
-                        <FaShoppingCart size={20}/>
-                        {totalItems > 0 && (
-                            <motion.span className="absolute -top-1 -right-1 bg-[var(--accent)] text-[var(--text)] rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold" initial={{ scale: 0 }} animate={{ scale: 1 }} key={totalItems}>
-                                {totalItems}
-                            </motion.span>
-                        )}
-                    </motion.button>
+                <div className="relative flex gap-2 align-middle items-center">
+                    {
+                        isAuthenticated ? 
+                        <>
+                            <h4 className='h-10 w-10 flex items-center justify-center bg-[var(--primary)] text-[var(--background)] rounded-full'>{user.charAt(0)}</h4>
+                            <motion.button className="p-2 rounded-full hover:bg-[var(--secondary)] hover:text-[var(--background)] transition relative"
+                                onClick={toggleCart} whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+                                <span className="sr-only">Cart</span>
+                                <FaShoppingCart size={20}/>
+                                {totalItems > 0 && (
+                                    <motion.span className="absolute -top-1 -right-1 bg-[var(--accent)] text-[var(--text)] rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold" initial={{ scale: 0 }} animate={{ scale: 1 }} key={totalItems}>
+                                        {totalItems}
+                                    </motion.span>
+                                )}
+                            </motion.button>
+                        </> : 
+                        <>
+                            <button onClick={login} className='btn'>Log In</button>
+                            {/* <Link to="/login">LogIn</Link> */}
+                            <Link to="/register" className='btn btn-accent'>Register</Link>
+                        </>
+                    }
                 </div>
             </header>
 

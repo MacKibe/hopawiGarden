@@ -76,8 +76,8 @@ section {
 }
 
 .btn-accent {
-  background-color: var(--accent);
-  color: var(--text);
+  background-color: var(--primary);
+  color: var(--background);
 }
 
 .btn-accent:hover {
