@@ -9,40 +9,40 @@ import { FaFacebook, FaLinkedin, FaYoutube, FaInstagramSquare, FaTiktok } from "
                         {/* Brand Info */}
                         <div className="space-y-4">
                             <h3 className="text-xl font-bold">HOPAWI GARDENS</h3>
-                            <p>Bringing life to your Homes and Offices space.</p>
+                            <p>Bringing life into your Homes and Offices.</p>
                         </div>
-                      {/* Quick Links */}
-                      <div>
-                            <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
-                            <ul className="space-y-2">
-                                <li><Link to="/" className="hover:text-[var(--accent)] transition">Home</Link></li>
-                                <li><Link to='/about' className="hover:text-[var(--accent)] transition">About Us</Link></li>
-                                <li><Link to='/shop' className="hover:text-[var(--accent)] transition">Shop</Link></li>
-                                <li><Link to='/contact' className="hover:text-[var(--accent)] transition">Contact</Link></li>
-                            </ul>
-                      </div>
-                      {/* Services */}
-                      <div>
+                        {/* Quick Links */}
+                        <div>
+                                <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
+                                <ul className="space-y-2">
+                                    <li><Link to="/" className="hover:text-[var(--accent)] transition">Home</Link></li>
+                                    <li><Link to='/about' className="hover:text-[var(--accent)] transition">About Us</Link></li>
+                                    <li><Link to='/shop' className="hover:text-[var(--accent)] transition">Shop</Link></li>
+                                    <li><Link to='/contact' className="hover:text-[var(--accent)] transition">Contact</Link></li>
+                                </ul>
+                        </div>
+                        {/* Services */}
+                        <div>
                             <h3 className="text-lg font-semibold mb-4">Services</h3>
                             <ul className="space-y-2">
                                 <li><Link to='/shop?category=indoor' className="hover:text-[var(--accent)] transition">Indoor Potted Plants</Link></li>
                                 <li><Link to='/shop?category=outdoor' className="hover:text-[var(--accent)] transition">Outdoor Potted Plants</Link></li>
                                 <li><Link to='/services/landscaping' className="hover:text-[var(--accent)] transition">Landscaping</Link></li>
                                 <li><Link to='/services/consultation' className="hover:text-[var(--accent)] transition">Consultation</Link></li>
-                                <li><Link to='/shop/accessories' className="hover:text-[var(--accent)] transition">Soil & Accessories</Link></li>
+                                <li><Link to='/shop/accessories' className="hover:text-[var(--accent)] transition">Soil Mixture</Link></li>
                             </ul>
-                      </div>
-                      {/* Support */}
-                      <div>
-                          <h3 className="text-lg font-semibold mb-4">Support</h3>
-                          <ul className="space-y-2">
-                              <li><Link to='/shipping-info' className="hover:text-[var(--accent)] transition">Shipping Info</Link></li>
-                              <li><Link to='/returns' className="hover:text-[var(--accent)] transition">Returns</Link></li>
-                              <li><Link to='/plant-care' className="hover:text-[var(--accent)] transition">Plant Care</Link></li>
-                              <li><Link to='/faq' className="hover:text-[var(--accent)] transition">FAQs</Link></li>
-                          </ul>
-                      </div>
-                      {/* Socials */}
+                        </div>
+                        {/* Support */}
+                        <div>
+                            <h3 className="text-lg font-semibold mb-4">Support</h3>
+                            <ul className="space-y-2">
+                                <li><Link to='/shipping-info' className="hover:text-[var(--accent)] transition">Shipping Info</Link></li>
+                                <li><Link to='/returns' className="hover:text-[var(--accent)] transition">Returns</Link></li>
+                                <li><Link to='/plant-care' className="hover:text-[var(--accent)] transition">Plant Care</Link></li>
+                                <li><Link to='/faq' className="hover:text-[var(--accent)] transition">FAQs</Link></li>
+                            </ul>
+                        </div>
+                        {/* Socials */}
                         <div>
                             <h3>Catch on Our Socials.</h3>
                             <div className="flex flex-wrap gap-4">

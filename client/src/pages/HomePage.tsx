@@ -3,6 +3,7 @@ import Testimonial from "../components/home/Testimonial";
 import HeroSection from "../components/home/HeroSection";
 import FeatureSection from "../components/home/FeaturesSection";
 import FeaturedProduct from "../components/home/FeaturedProduct";
+import ServiceSection from "../components/home/ServiceSection";
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -29,14 +30,15 @@ const sectionVariants = {
 
 const HomePage = () => {
   return (
-    <motion.main 
-      className="text-[var(--text)] text-center"
-      initial="hidden"
-      animate="visible"
-      variants={containerVariants}>
+    <motion.main className="text-[var(--text)] text-center" initial="hidden" animate="visible" variants={containerVariants}>
       {/* Landing Section */}
       <HeroSection />
       
+      {/* Features */}
+      <motion.section variants={sectionVariants}>
+        <ServiceSection />
+      </motion.section>
+
       {/* Features */}
       <motion.section>
         <FeatureSection />

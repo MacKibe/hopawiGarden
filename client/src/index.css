@@ -62,6 +62,9 @@ section {
   margin: 0 auto;
   padding: 0 1rem;
 }
+.btn {
+  padding: 0.5rem 1rem;
+}
 
 .btn-primary {
   background-color: var(--background);

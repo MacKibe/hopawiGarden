@@ -6,6 +6,8 @@ import HomePage from './pages/HomePage'
 import AboutUsPage from './pages/AboutUsPage'
 import ContactPage from './pages/ContactPage'
 import ShopPage from './pages/ShopPage'
+import LoginPage from './pages/auth/LoginPage'
+import RegisterPage from './pages/auth/RegisterPage'
 import Layout from './layouts/Layout';
 
 createRoot(document.getElementById('root')!).render(
@@ -17,6 +19,8 @@ createRoot(document.getElementById('root')!).render(
           <Route path='/about' element={<AboutUsPage />}></Route>
           <Route path='/contact' element={<ContactPage />}></Route>
           <Route path='/shop' element={<ShopPage />}></Route>
+          <Route path='/login' element={<LoginPage />}></Route>
+          <Route path='/register' element={<RegisterPage />}></Route>
         </Routes>
       </Layout>
     </BrowserRouter>

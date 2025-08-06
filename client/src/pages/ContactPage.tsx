@@ -1,116 +1,164 @@
-import { PiAcorn } from "react-icons/pi"
-import { LuMessageCircle } from "react-icons/lu"
-import { faqData } from "../data/faq"
+import { motion } from "framer-motion";
+import { LuMessageCircle } from "react-icons/lu";
+import { faqData } from "../data/faq";
+import { contactInfo } from "../data/contactInfo";
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.2,
+      when: "beforeChildren"
+    }
+  }
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.6,
+      ease: "easeOut"
+    }
+  }
+};
+
+const cardVariants = {
+  hidden: { opacity: 0, y: 40 },
+  visible: (i: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: {
+      delay: i * 0.1,
+      duration: 0.6,
+      ease: "easeOut"
+    }
+  })
+};
 
 const ContactPage = () => {
-    return(
-        <div>
-            {/* Hero */}
-            <section className="bg-[var(--background)] text-[var(--primary)]">
-                <div className="container">
-                    <h2>Get in Touch</h2>
-                    <h4 className="max-w-3xl mx-auto mt-4">
-                        Have questions about our plants or need help with plant care? 
-                        We're here to help you grow your green thumb!
-                    </h4>
-                </div>
-            </section> 
-            {/* Contact Form */}
-            <section>
-                <div className="container grid grid-cols-1 lg:grid-cols-3 gap-8">
-                    {/* FORM - 2/3 Width */}
-                    <form className="lg:col-span-2 bg-[var(--primary)] p-8 rounded-xl shadow-md-[var(--secondary)] text-left">
-                        <h3 className="flex items-center gap-4 text-2xl text-[var(--background)] mb-6">
-                            <LuMessageCircle size={40} /> 
-                            Send us a message
-                        </h3>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div className="form-group">
-                                <label className="block mb-2">Name *</label>
-                                <input type="text" placeholder="Your Full Name" className="w-full" required/>
-                            </div>
-                            <div className="form-group">
-                                <label className="block mb-2">Email *</label>
-                                <input type="email" placeholder="your@email.com" className="w-full" required/>
-                            </div>
-                        </div>
-                        <div className="form-group mt-6">
-                            <label className="block mb-2">Subject *</label>
-                            <input type="text" placeholder="Subject" className="w-full" required/>
-                        </div>
-                        <div className="form-group mt-6">
-                            <label className="block mb-2">Message *</label>
-                            <textarea placeholder="Tell us more about your question and concern..." rows={6} className="w-full" required/>
-                        </div>
-                        <button type="submit" className="btn btn-primary mt-6">
-                            Send Message
-                        </button>
-                    </form>
-
-                    {/* CONTACT INFO - 1/3 Width */}
-                    <div className="space-y-8">
-                        <div className="bg-[var(--primary)] p-6 rounded-xl shadow-md">
-                            <div className="flex items-center gap-3 text-xl mb-4">
-                                <PiAcorn size={24} className="text-[var(--background)]"/>
-                                <h4 className="font-semibold">Visit Our Garden</h4>
-                            </div>
-                            <address className="not-italic space-y-2">
-                                <p>Park Lane</p>
-                                <p>Kiambu</p>
-                                <a href="https://maps.app.goo.gl/PCcW1REZJ1Bj4a2x8" className="inline-block mt-2 text-blue-600 hover:underline" target="_blank" rel="noopener noreferrer">Get Directions</a>
-                            </address>
-                        </div>
-
-                        <div className="bg-[var(--primary)] p-6 rounded-xl shadow-md">
-                            <div className="flex items-center gap-3 text-xl mb-4">
-                                <PiAcorn size={24} className="text-[var(--background)]"/>
-                                <h4 className="font-semibold">Call Us Today</h4>
-                            </div>
-                            <div className="space-y-2">
-                                <p>(+254) 720 804523</p>
-                                <p>Mon - Fri, 9am - 5pm</p>
-                                <a href="tel:+254720804523" className="inline-block mt-2 text-blue-600 hover:underline">
-                                    Call Now
-                                </a>
-                            </div>
-                        </div>
-
-                        <div className="bg-[var(--primary)] p-6 rounded-xl shadow-md">
-                            <div className="flex items-center gap-3 text-xl mb-4">
-                                <PiAcorn size={24} className="text-[var(--background)]"/>
-                                <h4 className="font-semibold">Email Us</h4>
-                            </div>
-                            <div className="space-y-2">
-                                <p>greenery@hopawigardens.com</p>
-                                <p>We usually respond within 24 hrs</p>
-                                <a href="mailto:greenery@hopawigardens.com" className="inline-block mt-2 text-blue-600 hover:underline">
-                                    Send Email
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            
-            {/* FAQ */}
-            <section className="bg-[var(--secondary)]">
-                <div className="container">
-                    <h3>Frequently Asked Questions</h3>
-                    <h4 className="mt-2">Quick answers to common questions about our plants and services</h4>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-8">
-                        {faqData.map((item, index) => (
-                            <details key={index} open className="bg-[var(--primary)] rounded-xl overflow-hidden mb-4 text-left">
-                                <summary className="p-6 cursor-pointer font-semibold text-[var(--background)] text-center">
-                                    {item.question}
-                                </summary>
-                                <p className="px-6 pb-6 text-[var(--background)]">{item.answer}</p>
-                            </details>
-                        ))}
-                    </div>
-                </div>
-            </section>
+  return (
+    <div>
+      {/* Hero */}
+      <motion.section className="bg-[var(--background)] text-[var(--primary)] py-16" initial="hidden" animate="visible"
+        variants={containerVariants}>
+        <div className="container">
+          <motion.h2 variants={itemVariants}>Get in Touch</motion.h2>
+          <motion.h4 className="max-w-3xl mx-auto mt-4" variants={itemVariants} transition={{ delay: 0.2 }}>
+            Have questions about our plants or need help with plant care? 
+            We're here to help you grow your green thumb!
+          </motion.h4>
         </div>
-    )
+      </motion.section> 
+
+      {/* Contact Form */}
+      <motion.section className="py-16">
+        <div className="container grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* FORM - 2/3 Width */}
+          <motion.form className="lg:col-span-2 bg-[var(--primary)] p-8 rounded-xl shadow-md-[var(--secondary)] text-left"
+            initial={{ opacity: 0, x: -50 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true, margin: "-50px" }}
+            transition={{ duration: 0.8 }} whileHover={{ boxShadow: "0 10px 25px rgba(0,0,0,0.1)" }}>
+            <motion.h3 className="flex items-center gap-4 text-2xl text-[var(--background)] mb-6" whileHover={{ x: 5 }}>
+              <motion.span whileHover={{ rotate: 15 }} transition={{ type: "spring", stiffness: 300 }}>
+                <LuMessageCircle size={40} />
+              </motion.span>
+              Send us a message
+            </motion.h3>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {[
+                { label: "Name *", type: "text", placeholder: "Your Full Name" },
+                { label: "Email *", type: "email", placeholder: "your@email.com" }
+              ].map((field, index) => (
+                <motion.div key={index} className="form-group" variants={itemVariants} custom={index}>
+                  <label className="block mb-2">{field.label}</label>
+                  <motion.input type={field.type} placeholder={field.placeholder} className="w-full" required whileFocus={{ scale: 1.02, boxShadow: "0 0 0 2px var(--accent)" }}/>
+                </motion.div>
+              ))}
+            </div>
+            
+            <motion.div className="form-group mt-6" variants={itemVariants}
+            >
+              <label className="block mb-2">Subject *</label>
+              <motion.input type="text" placeholder="Subject" className="w-full" required whileFocus={{ scale: 1.02, boxShadow: "0 0 0 2px var(--accent)" }}/>
+            </motion.div>
+            
+            <motion.div className="form-group mt-6" variants={itemVariants}>
+              <label className="block mb-2">Message *</label>
+              <motion.textarea placeholder="Tell us more about your question and concern..." rows={6} className="w-full" 
+                required whileFocus={{ scale: 1.02, boxShadow: "0 0 0 2px var(--accent)" }}/>
+            </motion.div>
+            
+            <motion.button type="submit" className="btn btn-primary mt-6" whileHover={{ scale: 1.05, boxShadow: "0 5px 15px rgba(0,0,0,0.2)" }}
+              whileTap={{ scale: 0.95 }}>Send Message</motion.button>
+          </motion.form>
+
+          {/* CONTACT INFO */}
+          <motion.div className="space-y-8" initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-50px" }}
+            variants={containerVariants}>
+              {contactInfo.map((info, index) => (
+                <motion.div key={index} className="bg-[var(--primary)] p-6 rounded-xl shadow-md" variants={cardVariants} custom={index} whileHover={{ y: -5, boxShadow: "0 10px 20px rgba(0,0,0,0.1)" }}>
+                  <div className="flex items-center gap-3 text-xl mb-4">
+                    <motion.span whileHover={{ rotate: 10 }} transition={{ type: "spring", stiffness: 300 }}>
+                      {info.icon}
+                    </motion.span>
+                    <h4 className="font-semibold text-[var(--background)]">{info.title}</h4>
+                  </div>
+                  <div className="space-y-2 text-[var(--background)]">
+                    <h5 className="font-medium">{info.content.heading}</h5>
+                    <p className="text-sm opacity-90">{info.content.subHeading}</p>
+                    <a href={info.content.link} target="_blank" rel="noopener noreferrer" className="inline-block mt-2 text-sm font-medium underline hover:text-[var(--accent)] transition-colors">
+                      {info.content.linkText}
+                    </a>
+                  </div>
+                </motion.div>
+              ))}
+          </motion.div>
+        </div>
+      </motion.section>
+      
+      {/* FAQ */}
+      <motion.section className="bg-[var(--secondary)] py-16">
+        <div className="container">
+          <motion.h3 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}>
+            Frequently Asked Questions
+          </motion.h3>
+          <motion.h4 className="mt-2" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.2 }}>
+            Quick answers to common questions about our plants and services
+          </motion.h4>
+          <motion.div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-8" initial="hidden" whileInView="visible" 
+            viewport={{ once: true, margin: "-50px" }} 
+            variants={{
+              visible: {
+                transition: {
+                  staggerChildren: 0.1
+                }
+              }
+            }}
+          >
+            {faqData.map((item, index) => (
+              <motion.details key={index} className="bg-[var(--primary)] rounded-xl overflow-hidden mb-4 text-left" variants={cardVariants}
+                custom={index} whileHover={{ y: -3 }}>
+                <summary className="p-6 cursor-pointer font-semibold text-[var(--background)] text-center">
+                  <motion.span whileHover={{ x: 5 }}>
+                    {item.question}
+                  </motion.span>
+                </summary>
+                <motion.p className="px-6 pb-6 text-[var(--background)]" initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+                  transition={{ duration: 0.3 }}>
+                  {item.answer}
+                </motion.p>
+              </motion.details>
+            ))}
+          </motion.div>
+        </div>
+      </motion.section>
+    </div>
+  )
 }
 
-export default ContactPage
+export default ContactPage;
