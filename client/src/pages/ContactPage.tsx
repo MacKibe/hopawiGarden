@@ -58,7 +58,7 @@ const ContactPage = () => {
       <motion.section className="py-16">
         <div className="container grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* FORM - 2/3 Width */}
-          <motion.form className="lg:col-span-2 bg-[var(--primary)] p-8 rounded-xl shadow-md-[var(--secondary)] text-left"
+          <motion.form id="contactForm" className="lg:col-span-2 bg-[var(--primary)] p-8 rounded-xl shadow-md-[var(--secondary)] text-left"
             initial={{ opacity: 0, x: -50 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true, margin: "-50px" }}
             transition={{ duration: 0.8 }} whileHover={{ boxShadow: "0 10px 25px rgba(0,0,0,0.1)" }}>
             <motion.h3 className="flex items-center gap-4 text-2xl text-[var(--background)] mb-6" whileHover={{ x: 5 }}>
