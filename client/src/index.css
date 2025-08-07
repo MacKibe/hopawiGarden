@@ -102,6 +102,16 @@ input:focus, textarea:focus, select:focus {
   margin-bottom: 1rem;
 }
 
+.input-wrapper {
+  display: flex;
+  gap: 0.5rem;               /* gap-2 = 0.5rem */
+  align-items: center;
+  border: 1px solid var(--background);  /* Tailwind's border-1 (usually a 1px border, color can be adjusted) */
+  border-radius: 0.375rem;   /* rounded-md = 6px = 0.375rem */
+  padding: 0.5rem;           /* p-2 = 0.5rem */
+  margin-top: 0.5rem;        /* mt-2 = 0.5rem */
+}
+
 /* Cards */
 .card {
   background: var(--secondary);
