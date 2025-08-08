@@ -1,11 +1,16 @@
 import { FaRegEnvelope } from "react-icons/fa6";
 import { FiLock } from "react-icons/fi";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { loginUserSchema, type LoginUser } from "../../schema/auth.schema";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import useAuthStore from "../../store/useAuthStore";
+import { mockUserData } from "../../data/mockUserData";
 
 const LoginPage = () => {
+  const navigate = useNavigate();
+  const login = useAuthStore((state) => state.login);
+
   const {
     register,
     handleSubmit,
@@ -14,7 +19,24 @@ const LoginPage = () => {
     resolver: zodResolver(loginUserSchema),
   });
 
-  const onSubmit: SubmitHandler<LoginUser> = (data) => console.log(data);
+  const onSubmit: SubmitHandler<LoginUser> = (data) => {
+    const foundUser = mockUserData.find(
+      (user) => user.email === data.email && user.password === data.password
+    );
+
+    if (foundUser) {
+      // Save to localStorage
+      localStorage.setItem("user", JSON.stringify(foundUser));
+
+      // Update global auth state
+      login(foundUser);
+
+      // Redirect to homepage or dashboard
+      navigate("/");
+    } else {
+      alert("Invalid credentials!");
+    }
+  };
 
   return (
     <div className="py-8 px-4 max-w-md w-full mx-auto text-center">
@@ -32,6 +54,7 @@ const LoginPage = () => {
           </p>
         </header>
 
+        {/* Email Field */}
         <div>
           <label htmlFor="email" className="block font-medium">
             Email address
@@ -49,6 +72,7 @@ const LoginPage = () => {
           </span>
         </div>
 
+        {/* Password Field */}
         <div>
           <label htmlFor="password" className="block font-medium">
             Password
@@ -68,6 +92,7 @@ const LoginPage = () => {
           </span>
         </div>
 
+        {/* Remember Me + Forgot Password */}
         <div className="flex items-center justify-between text-sm">
           <label className="flex items-center gap-2">
             <input type="checkbox" id="rememberMe" />
@@ -78,13 +103,18 @@ const LoginPage = () => {
           </a>
         </div>
 
+        {/* Submit Button */}
         <button type="submit" className="btn-primary py-2 rounded-md w-full">
           Sign In
         </button>
 
+        {/* Link to Register */}
         <p className="text-center text-sm">
           Don’t have an account?{" "}
-          <Link to="/register" className="text-[var(--background)] hover:underline">
+          <Link
+            to="/register"
+            className="text-[var(--background)] hover:underline"
+          >
             Sign Up
           </Link>
         </p>
