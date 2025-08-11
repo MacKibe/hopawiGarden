@@ -1,7 +1,12 @@
-import img from "../assets/src.png";
-import img1 from "../assets/src1.png";
-import img2 from "../assets/src2.png";
-import img3 from "../assets/src3.png";
+import calathea_plant from "../assets/CALATHEA PLANT.jpeg";
+import calla_lily from "../assets/Calla Lily.jpeg";
+import corn_plant from "../assets/Corn Plant.jpeg";
+import cotton_lavender from "../assets/Cotton Lavender.jpeg";
+import cyclamen_persicum from "../assets/Cyclamen persicum.jpeg";
+import elephant_ear from "../assets/Elephant Ear.jpeg";
+import money_plant from "../assets/Money plant.jpeg";
+import snake_plant from "../assets/sakeplat.jpeg";
+import zz_plant from "../assets/zzplat.jpeg";
 
 export interface Product {
   id: number;
@@ -13,13 +18,10 @@ export interface Product {
   reviews: number;
 }
 
-const images = [img, img1, img2, img3];
+const images = [calathea_plant, calla_lily, corn_plant, cotton_lavender, cyclamen_persicum, elephant_ear, money_plant, snake_plant, zz_plant ];
 
 const plantNames = [
-  "Pilea peperomioides",  "Rubber plant",  "Leopard lily",  "Croton",  "Ghost plant",  "Echeveria",  "Blue pearl",  "Radiator plant",
-  "Haworthia Zebrina",  "Money tree",  "Jade plant",  "Caladium bicolor",  "Peace lily",  "Penthas plant",  "Artemisia",  "English Ivy",
-  "White widow",  "Calathea",  "Pheasant Tail",  "Begonia",  "Bloodleaf",  "Aluminium plant",  "Pink panther plant"
-];
+  "Calathea plant",  "Calla Lily",  "Corn Plant",  "Cotton Lavender",  "Cyclamen persicum",  "Elephant Ear",  "Money plant",  "Snake Plant", "zz_plant"];
 
 export const products: Product[] = plantNames.map((name, index) => ({
   id: index + 1,

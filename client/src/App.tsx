@@ -9,6 +9,7 @@ import ShopPage from './pages/ShopPage'
 import LoginPage from './pages/auth/LoginPage'
 import RegisterPage from './pages/auth/RegisterPage'
 import Layout from './layouts/Layout';
+import ProductDetails from './components/shop/ProductDetails';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -21,6 +22,7 @@ createRoot(document.getElementById('root')!).render(
           <Route path='/shop' element={<ShopPage />}></Route>
           <Route path='/login' element={<LoginPage />}></Route>
           <Route path='/register' element={<RegisterPage />}></Route>
+          <Route path='/product/:id' element={<ProductDetails />}></Route>
         </Routes>
       </Layout>
     </BrowserRouter>

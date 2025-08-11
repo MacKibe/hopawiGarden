@@ -1,4 +1,4 @@
-import { FaFacebook, FaLinkedin, FaYoutube, FaInstagramSquare, FaTiktok } from "react-icons/fa";
+import { FaFacebook, FaLinkedin, FaYoutube, FaInstagram, FaTiktok } from "react-icons/fa";
   import { Link } from "react-router";
   
   const Footer = () => {
@@ -7,9 +7,30 @@ import { FaFacebook, FaLinkedin, FaYoutube, FaInstagramSquare, FaTiktok } from "
               <div className="container py-10 border-b border-[var(--primary)]">
                   <div className="grid grid-cols-1 md:grid-cols-5 gap-8 py-12">
                         {/* Brand Info */}
-                        <div className="space-y-4">
+                        <div className="space-y-4 col-span-2">
                             <h3 className="text-xl font-bold">HOPAWI GARDENS</h3>
                             <p>Bringing life into your Homes and Offices.</p>
+                        {/* Socials */}
+                        <div>
+                            <p>Catch us on our socials.</p>
+                            <div className="flex flex-wrap gap-4 py-4">
+                                <a href="https://www.facebook.com/profile.php?id=61578230820890" target="_blank" aria-label="Facebook" className="hover:text-[var(--accent)] transition">
+                                    <FaFacebook size={30}/>
+                                </a>
+                                <a href="https://www.linkedin.com/in/hopawi-gardens-229972371/" target="_blank" aria-label="LinkedIn" className="hover:text-[var(--accent)] transition">
+                                    <FaLinkedin size={30}/>
+                                </a>
+                                <a href="https://www.youtube.com/@HOPAWIGardens" target="_blank" aria-label="YouTube" className="hover:text-[var(--accent)] transition">
+                                    <FaYoutube size={30}/>
+                                </a>
+                                <a href="https://www.instagram.com/hopawi_gardens/" target="_blank" aria-label="Instagram" className="hover:text-[var(--accent)] transition">
+                                    <FaInstagram size={30}/>
+                                </a>
+                                <a href="https://www.tiktok.com/@www.hopawi_gardens" target="_blank" aria-label="TikTok" className="hover:text-[var(--accent)] transition">
+                                    <FaTiktok size={30}/>
+                                </a>
+                            </div>
+                        </div>
                         </div>
                         {/* Quick Links */}
                         <div>
@@ -41,27 +62,6 @@ import { FaFacebook, FaLinkedin, FaYoutube, FaInstagramSquare, FaTiktok } from "
                                 <li><Link to='/plant-care' className="hover:text-[var(--accent)] transition">Plant Care</Link></li>
                                 <li><Link to='/faq' className="hover:text-[var(--accent)] transition">FAQs</Link></li>
                             </ul>
-                        </div>
-                        {/* Socials */}
-                        <div>
-                            <h3>Catch on Our Socials.</h3>
-                            <div className="flex flex-wrap gap-4">
-                                <a href="#" aria-label="Facebook" className="hover:text-[var(--accent)] transition">
-                                    <FaFacebook size={30}/>
-                                </a>
-                                <a href="#" aria-label="LinkedIn" className="hover:text-[var(--accent)] transition">
-                                    <FaLinkedin size={30}/>
-                                </a>
-                                <a href="#" aria-label="YouTube" className="hover:text-[var(--accent)] transition">
-                                    <FaYoutube size={30}/>
-                                </a>
-                                <a href="#" aria-label="Instagram" className="hover:text-[var(--accent)] transition">
-                                    <FaInstagramSquare size={30}/>
-                                </a>
-                                <a href="#" aria-label="TikTok" className="hover:text-[var(--accent)] transition">
-                                    <FaTiktok size={30}/>
-                                </a>
-                            </div>
                         </div>
                   </div>
               </div>

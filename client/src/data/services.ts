@@ -11,33 +11,33 @@ const iconSize: number = 40
 
 export const services:ServicesTypes[] = [
     {
-        title: "Indoor Potted Plants",
+        title: "Indoor potted plants",
         description: "Beautiful, low-maintenance plants perfect for your home or office interior.",
         icon: React.createElement(PiPlantDuotone, {size: iconSize, className: "text-[var(--accent)]"})
     },
     {
-        title: "Outdoor Potted Plants",
-        description: "Hardy plants that thrive in outdoor conditions and enhance your exterior spaces.",
+        title: "Outdoor potted plants",
+        description: "Plants that thrive in outdoor conditions and enhance your exterior spaces.",
         icon: React.createElement(PiPlantDuotone, {size: iconSize, className: "text-[var(--accent)]"})
     },
     {
-        title: " HOPAWI Soil Mix",
+        title: " HOPAWI soil mix",
         description: "Specialized soil blends tailored to different plant needs for optimal growth.",
         icon: React.createElement(PiPlantDuotone, {size: iconSize, className: "text-[var(--accent)]"})
     },
     {
-        title: "Plant Consultation",
-        description: "Expert advice on plant selection, care, and troubleshooting.",
+        title: "Plant consultation",
+        description: "Expert advice on plant selection, care, and also plan workshops for training and information sharing to our client and customers..",
         icon: React.createElement(PiPlantDuotone, {size: iconSize, className: "text-[var(--accent)]"})
     },
     {
-        title: "Landscaping Services",
+        title: "Landscaping services",
         description: "Complete garden design and installation for residential and commercial spaces.",
         icon: React.createElement(PiPlantDuotone, {size: iconSize, className: "text-[var(--accent)]"})
     },
     {
-        title: "Plant Care & Maintenance",
-        description: "Regular care services including watering pruning, fertilizing, and pest control.",
+        title: "Plant maintenance",
+        description: "Planned regular routine mainatianance service including watering pruning, leaf care, fertilizing, and pest control.",
         icon: React.createElement(PiPlantDuotone, {size: iconSize, className: "text-[var(--accent)]"})
     }
 ]

@@ -25,7 +25,7 @@ const Header = () => {
 
     return (
         <>
-            <header className="sticky top-0 z-50 flex items-center justify-around p-4 bg-[var(--background)] text-[var(--primary)] shadow-md">
+            <header className="sticky top-0 z-50 flex items-center justify-center gap-70 p-4 bg-[var(--background)] text-[var(--primary)] shadow-md">
                 {/* Logo Section */}
                 <div>
                     <Link to="/" className="text-2xl font-bold hover:text-[var(--accent)] transition">HOPAWI GARDENS</Link>
@@ -65,8 +65,7 @@ const Header = () => {
                             </motion.button>
                         </> : 
                         <>
-                            <button onClick={login} className='btn'>Log In</button>
-                            {/* <Link to="/login">LogIn</Link> */}
+                            <Link to="" className='btn'>Log In</Link>
                             <Link to="/register" className='btn btn-accent'>Register</Link>
                         </>
                     }

@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { PiFlowerTulip, PiSun } from "react-icons/pi";
-import Img from "../../assets/img.jpg";
-import Flower from "../../assets/flower.jpg";
+import Img from "../../assets/Calla Lily1.jpeg";
+import Flower from "../../assets/IMG_2330.jpg";
 import { Link } from "react-router";
 
 const cardVariants = {

@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router";
-import backgroundImage from "../../assets/img_back.jpg";
+import backgroundImage from "../../assets/IMG_2335.jpg";
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -47,7 +47,7 @@ const HeroSection = () => {
         initial={{ opacity: 0 }}animate={{ opacity: 1 }} transition={{ duration: 1.2, ease: "easeInOut" }}/>
       
       {/* Overlay */}
-      <motion.div className="absolute inset-0 w-full h-full bg-[var(--background)] opacity-30 z-0" initial={{ opacity: 0 }} animate={{ opacity: 0.3 }}
+      <motion.div className="absolute inset-0 w-full h-full bg-[var(--background)] opacity-50 z-0" initial={{ opacity: 0 }} animate={{ opacity: 0.3 }}
         transition={{ duration: 1.5, ease: "easeInOut" }}/>
       
       {/* Content */}
@@ -65,7 +65,7 @@ const HeroSection = () => {
           </motion.span>
         </motion.h1>
         
-        <motion.p className="max-w-2xl mx-auto text-[var(--primary)] text-xl" variants={itemVariants} transition={{ delay: 0.2 }}>
+        <motion.p className="max-w-2xl mx-auto text-[var(--primary)] text-lg text-bold" variants={itemVariants} transition={{ delay: 0.2 }}>
           Discover our curated collection of beautiful potted plants. Transform your home into a natural sanctuary with nature delivered to your doorstep.
         </motion.p>
         

@@ -7,17 +7,16 @@ export const teamMembers = [
     role: "Digital Marketing Manager",
     bio: "Creative designer bringing floral visions to life",
     img: Glen,
-    linkedin: "https://www.linkedin.com/in/glen-mawira-083b45346/",
-    facebook: "https://www.facebook.com/",
-    instagram: "https://www.instagram.com/?hl=en"
+    Tiktok: "https://www.tiktok.com/@www.hopawi_gardens",
+    Facebook: "https://www.facebook.com/profile.php?id=61578230820890",
+    Instagram: "https://www.instagram.com/hopawi_gardens/"
   },
   {
     name: "James Ndichu",
-    role: "Florist",
+    role: "Plant Manager ",
     bio: "Passionate about merging tech and nature with digital solutions",
     img: Kibe,
-    linkedin: "https://www.linkedin.com/in/ndichu-james/",
-    github: "https://github.com/MacKibe",
-    website: "https://kibe-hub.vercel.app/"
+    Youtube: "https://www.youtube.com/@HOPAWIGardens",
+    LinkedIn: "https://www.linkedin.com/in/hopawi-gardens-229972371/"
   }
 ];

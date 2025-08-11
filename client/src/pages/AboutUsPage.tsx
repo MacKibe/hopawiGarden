@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { teamMembers } from "../data/team";
-import img from "../assets/img_back.jpg";
-import { FaInstagram, FaLinkedin, FaEnvelope, FaFacebook, FaTwitter, FaGithub, FaExternalLinkAlt, FaDove } from "react-icons/fa";
+import img from "../assets/IMG_2331.jpg";
+import { FaInstagram, FaLinkedin, FaYoutube, FaFacebook, FaDove, FaTiktok } from "react-icons/fa";
 import { PiPlantDuotone, PiHeartFill } from "react-icons/pi";
 
 const containerVariants = {
@@ -60,17 +60,12 @@ const AboutUsPage = () => {
         <div className="container grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
           <motion.div initial={{ opacity: 0, x: -50 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true, margin: "-100px" }} transition={{ duration: 0.8 }}>
             <h3 className="text-4xl mb-6">Our Story</h3>
-            <p className="text-[var(--text)] space-y-4">
-              HOPAWI Gardens started with a simple belief: everyone deserves to have beautiful, 
-              healthy plants in their life. What began as a weekend farmer's market stall has 
-              grown into a thriving online community of plant enthusiasts.
-              <br/><br/>
-              We carefully select each plant from trusted growers, ensuring they arrive at your 
-              door healthy and ready to thrive. Our team of plant experts is always here to 
-              help you succeed in your plant parent journey.
-              <br/><br/>
-              Today, we're proud to serve thousands of customers across the country, helping 
-              them create green spaces that bring joy, clean air, and natural beauty to their homes.
+            <p className="text-[var(--text)] text-left space-y-4">
+              HOPAWI Gardens is more than a business—it’s a divine calling to bring nature’s beauty into the spaces where people live and work. We bridge the gap between quality plants and the home or office owners who desire them, delivering greenery that transforms spaces and enriches lives.<br/><br/>
+              
+              Our vision is to bring life into every home and garden, and our mission—Greenery Living—drives us to provide sustainable, beautiful landscaping and plant solutions. Every plant, design, and service we offer is a step toward healthier, more vibrant spaces that inspire joy and well-being.<br/><br/>
+              
+              We partner with homeowners, businesses, developers, and event planners who value excellence and beauty. Every project reflects our commitment to urban greening, local growth, and spaces that truly come alive. With HOPAWI Gardens, you don’t just get plants—you get a lasting connection to nature.
             </p>
           </motion.div>
           <motion.div className="rounded-2xl overflow-hidden shadow-lg" initial={{ opacity: 0, x: 50 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true, margin: "-100px" }} transition={{ duration: 0.8, delay: 0.2 }}>
@@ -85,11 +80,11 @@ const AboutUsPage = () => {
           <motion.div className="space-y-4" variants={containerVariants}>
             <motion.div className="border-2 border-[var(--primary)] rounded-lg p-6 text-left hover:shadow-lg transition-shadow" variants={itemVariants} whileHover={{ y: -5 }}>
               <h3 className="text-2xl font-bold mb-2">Mission</h3>
-              <p>To make sustainable greenery a lifestyle.</p>
+              <p>Greenery Living - Providing sustainable, beautiful landscaping and plant solutions</p>
             </motion.div>
             <motion.div className="border-2 border-[var(--primary)] rounded-lg p-6 text-left hover:shadow-lg transition-shadow" variants={itemVariants} transition={{ delay: 0.2 }} whileHover={{ y: -5 }}>
               <h3 className="text-2xl font-bold mb-2">Vision</h3>
-              <p>Bringing life into your homes and offices.</p>
+              <p>Bringing life into homes and offices</p>
             </motion.div>
           </motion.div>
           <motion.div className="border-2 border-[var(--primary)] rounded-lg p-6 flex flex-col justify-center hover:shadow-lg transition-shadow" variants={itemVariants} transition={{ delay: 0.4 }} whileHover={{ y: -5 }}>
@@ -128,6 +123,8 @@ const AboutUsPage = () => {
                 }
               }
             }}>
+
+
             {teamMembers.map((member, index) => (
               <motion.div key={member.id} className="card" variants={cardVariants} custom={index} 
                 whileHover={{ 
@@ -143,13 +140,11 @@ const AboutUsPage = () => {
                   <p className="text-sm">{member.bio}</p>
                   <div className="flex justify-end gap-4 text-xl mt-4">
                     {[
-                      { icon: <FaLinkedin/>, link: member.linkedin, color: "hover:text-blue-400", title: "LinkedIn" },
-                      { icon: <FaEnvelope/>, link: member.gmail, color: "hover:text-red-500", title: "Gmail" },
-                      { icon: <FaFacebook/>, link: member.facebook, color: "hover:text-blue-600", title: "Facebook" },
-                      { icon: <FaInstagram/>, link: member.instagram, color: "hover:text-pink-500", title: "Instagram" },
-                      { icon: <FaTwitter/>, link: member.twitter, color: "hover:text-blue-400", title: "Twitter" },
-                      { icon: <FaGithub/>, link: member.github, color: "hover:text-gray-800", title: "GitHub" },
-                      { icon: <FaExternalLinkAlt/>, link: member.website, color: "hover:text-green-600", title: "Website" }
+                      { icon: <FaTiktok/>, link: member.Tiktok, color: "hover:text-blue-400", title: "Tiktok" },
+                      { icon: <FaLinkedin/>, link: member.LinkedIn, color: "hover:text-blue-400", title: "LinkedIn" },
+                      { icon: <FaFacebook/>, link: member.Facebook, color: "hover:text-blue-600", title: "Facebook" },
+                      { icon: <FaInstagram/>, link: member.Instagram, color: "hover:text-pink-500", title: "Instagram" },
+                      { icon: <FaYoutube/>, link: member.Youtube, color: "hover:text-pink-500", title: "Youtubr" },
                     ].map((social, i) => (
                       social.link && (
                         <motion.a key={i} href={social.link} target="_blank" rel="noreferrer" className={`${social.color} transition`} title={social.title} whileHover={{ scale: 1.2 }} whileTap={{ scale: 0.9 }}>
