@@ -36,7 +36,7 @@ const Testimonial = () => {
     <div className="grid-responsive mt-8">
       {testimonials.map((testimonial, index) => (
         <motion.div
-          key={testimonial.id}
+          key={index}
           className="flex flex-col gap-4 bg-[var(--primary)] text-[var(--background)] p-6 rounded-xl"
           variants={testimonialVariants}
           initial="hidden"

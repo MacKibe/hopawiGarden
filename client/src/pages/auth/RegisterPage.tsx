@@ -3,10 +3,15 @@ import { useForm, type SubmitHandler } from "react-hook-form";
 import { FaRegEnvelope } from "react-icons/fa6";
 import { FiLock } from "react-icons/fi";
 import { RxPerson } from "react-icons/rx";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { registerUserSchema, type RegisteredUser } from "../../schema/auth.schema";
+import useAuthStore from "../../store/useAuthStore";
 
 const RegisterPage = () => {
+
+  const navigate = useNavigate();
+  const { login } = useAuthStore();
+
   const {
     register,
     handleSubmit,
@@ -15,7 +20,25 @@ const RegisterPage = () => {
     resolver: zodResolver(registerUserSchema),
   });
 
-  const onSubmit: SubmitHandler<RegisteredUser> = (data) => console.log(data);
+  // Complete submit handler with actual registration logic
+  const onSubmit: SubmitHandler<RegisteredUser> = (data) => {
+    const newUser = {
+      id: Date.now().toString(), // Simple ID generation
+      email: data.email,
+      firstName: data.firstName,
+      lastName: data.lastName,
+      password: data.password // Just for demo - hash passwords in production
+    };
+
+    // Save to localStorage
+    localStorage.setItem("user", JSON.stringify(newUser));
+    
+    // Update global state
+    login(newUser);
+    
+    // Redirect to home
+    navigate("/");
+  };
 
   return (
     <div className="py-8 px-4 max-w-xl w-full mx-auto text-center">

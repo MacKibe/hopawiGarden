@@ -5,8 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import useAuthStore from '../../store/useAuthStore';
 
 const Header = () => {
-
-    const {user, login, logout, isAuthenticated} = useAuthStore();
+    const { user, logout, isAuthenticated } = useAuthStore(); 
 
     const [cartOpen, setCartOpen] = useState(false);
     const [cartItems, setCartItems] = useState([
@@ -49,11 +48,21 @@ const Header = () => {
                 </nav>
                 {/* Cart Section */}
                 <div className="relative flex gap-2 align-middle items-center">
-                    {
-                        isAuthenticated ? 
+                    {isAuthenticated ? (
                         <>
-                            <h4 className='h-10 w-10 flex items-center justify-center bg-[var(--primary)] text-[var(--background)] rounded-full'>{user.charAt(0)}</h4>
-                            <motion.button className="p-2 rounded-full hover:bg-[var(--secondary)] hover:text-[var(--background)] transition relative"
+                        {/* Safe user avatar with fallback */}
+                        <Link to="/profile" className="h-10 w-10 flex items-center justify-center bg-[var(--primary)] text-[var(--background)] rounded-full">
+                            {user?.firstName?.charAt(0)?.toUpperCase() || "U"}
+                        </Link>
+                        
+                        {/* Logout button */}
+                        <button 
+                            onClick={logout}
+                            className="text-sm hover:text-[var(--accent)] transition"
+                        >
+                            Logout
+                        </button>
+                        <motion.button className="p-2 rounded-full hover:bg-[var(--secondary)] hover:text-[var(--background)] transition relative"
                                 onClick={toggleCart} whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
                                 <span className="sr-only">Cart</span>
                                 <FaShoppingCart size={20}/>
@@ -63,12 +72,13 @@ const Header = () => {
                                     </motion.span>
                                 )}
                             </motion.button>
-                        </> : 
-                        <>
-                            <Link to="" className='btn'>Log In</Link>
-                            <Link to="/register" className='btn btn-accent'>Register</Link>
                         </>
-                    }
+                    ) : (
+                        <>
+                        <Link to="/login" className='btn'>Log In</Link>
+                        <Link to="/register" className='btn btn-accent'>Register</Link>
+                        </>
+                    )}
                 </div>
             </header>
 
