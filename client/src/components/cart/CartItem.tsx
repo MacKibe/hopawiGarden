@@ -1,9 +1,11 @@
-const CartItem = () =>{
-    return (
-        <>
-            <h2>Cart Item</h2>
-        </>
-    )
+// src/components/cart/CartItem.tsx
+import type { CartItem } from '../../types/cart';
+
+interface Props {
+  item: CartItem;
 }
 
-export default CartItem
+const CartItem = ({ item }: Props) => {
+    return console.log(`item : ${item}`);
+    
+};
