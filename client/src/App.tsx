@@ -12,29 +12,32 @@ import Layout from './layouts/Layout';
 import ProductDetails from './components/shop/ProductDetails';
 import ProfilePage from './pages/ProfilePage';
 import PrivateRoute from './components/common/PrivateRoute';
+import { CartProvider } from './context/CartContext';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <BrowserRouter>
-      <Layout>
-        <Routes>
-          <Route path='/' element={<HomePage />} />
-          <Route path='/about' element={<AboutUsPage />} />
-          <Route path='/contact' element={<ContactPage />} />
-          <Route path='/shop' element={<ShopPage />} />
-          <Route path='/login' element={<LoginPage />} />
-          <Route path='/register' element={<RegisterPage />} />
-          <Route 
-            path='/profile' 
-            element={
-              <PrivateRoute>
-                <ProfilePage />
-              </PrivateRoute>
-            } 
-          />
-          <Route path='/product/:id' element={<ProductDetails />} />
-        </Routes>
-      </Layout>
+      <CartProvider>
+        <Layout>
+          <Routes>
+            <Route path='/' element={<HomePage />} />
+            <Route path='/about' element={<AboutUsPage />} />
+            <Route path='/contact' element={<ContactPage />} />
+            <Route path='/shop' element={<ShopPage />} />
+            <Route path='/login' element={<LoginPage />} />
+            <Route path='/register' element={<RegisterPage />} />
+            <Route 
+              path='/profile' 
+              element={
+                <PrivateRoute>
+                  <ProfilePage />
+                </PrivateRoute>
+              } 
+            />
+            <Route path='/product/:id' element={<ProductDetails />} />
+          </Routes>
+        </Layout>
+      </CartProvider>
     </BrowserRouter>
   </StrictMode>
 );
