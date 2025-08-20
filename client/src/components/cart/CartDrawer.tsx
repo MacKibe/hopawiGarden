@@ -19,7 +19,7 @@ const CartDrawer = ({ toggleCart, cartItems, setCartItems }) => {
         >            
             {/* Cart Content */}
             <motion.div 
-                className="absolute right-0 bottom-0 h-[90dvh] w-full max-w-md bg-[var(--background)] shadow-xl"
+                className="absolute right-0 bottom-0 h-[90dvh] w-full max-w-md bg-[var(--secondary)] opacity-80 shadow-xl"
                 initial={{ x: '100%' }} 
                 animate={{ x: 0 }} 
                 exit={{ x: '100%' }} 

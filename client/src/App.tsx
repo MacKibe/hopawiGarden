@@ -13,12 +13,14 @@ import ProductDetails from './components/shop/ProductDetails';
 import ProfilePage from './pages/ProfilePage';
 import PrivateRoute from './components/common/PrivateRoute';
 import { CartProvider } from './context/CartContext';
+import ScrollToTop from './components/common/ScrollToTop';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <BrowserRouter>
       <CartProvider>
         <Layout>
+          <ScrollToTop/>
           <Routes>
             <Route path='/' element={<HomePage />} />
             <Route path='/about' element={<AboutUsPage />} />

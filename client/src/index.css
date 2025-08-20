@@ -1,7 +1,5 @@
 @import "tailwindcss";
 
-@import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,700;1,700&family=Raleway:ital,wght@0,100..900;1,100..900&display=swap');
-
 :root {
   --primary: #fff;
   --secondary: #C8E6C9;

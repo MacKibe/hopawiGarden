@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { PiFlowerTulip, PiSun } from "react-icons/pi";
 import Img from "../../assets/Calla Lily1.jpeg";
-import Flower from "../../assets/IMG_2330.jpg";
+import Flower from "../../assets/potted.jpg";
 import { Link } from "react-router";
 
 const cardVariants = {
@@ -25,14 +25,14 @@ const FeaturesSection = () => {
     {
       backgroundImg: Img,
       icon: <PiFlowerTulip size={32} />,
-      featureName: "Indoor Potted Plants",
+      featureName: "Indoor potted plants",
       featureDetails: "Perfect for your living space",
     },
     {
       backgroundImg: Flower,
       icon: <PiSun size={32} />,
-      featureName: "Outdoor Potted Plants",
-      featureDetails: "Garden Favorites",
+      featureName: "Outdoor potted plants",
+      featureDetails: "Garden favorites",
     }
   ]
   
