@@ -1,0 +1,32 @@
+{
+  "compilerOptions": {
+    /* File Layout */
+    "rootDir": "./src",          // where TypeScript source files live
+    "outDir": "./dist",          // compiled JavaScript output
+
+    /* Environment Settings */
+    "target": "ES2020",          // good balance for Node.js (modern but stable)
+    "module": "CommonJS",        // Node.js default (unless using ESM everywhere)
+    "moduleResolution": "node",  // how imports are resolved
+    "lib": ["ES2020"],           // modern JS features
+    "types": ["node"],           // enable Node.js types
+    "esModuleInterop": true,     // allows default imports from CommonJS modules
+    "resolveJsonModule": true,   // lets you import .json files directly
+
+    /* Debugging / Build Outputs */
+    "sourceMap": true,           // generate .map files for debugging
+    "declaration": true,         // generate .d.ts type definition files
+    "declarationMap": true,      // generate .d.ts.map files
+
+    /* Type Safety */
+    "strict": true,              // enables all strict type checks
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
+
+    /* Performance */
+    "skipLibCheck": true,        // skip checking type definitions in node_modules
+    "forceConsistentCasingInFileNames": true
+  },
+  "include": ["src"],            // only compile files inside src/
+  "exclude": ["node_modules"]    // ignore node_modules
+}
