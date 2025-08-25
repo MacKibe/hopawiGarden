@@ -1,18 +1,21 @@
 import express from "express";
 import dotenv from "dotenv";
-import { createClient } from '@supabase/supabase-js'
+import cors from "cors";
+import productRoutes from "./routes/productRoutes.js";
+import authRoutes from "./routes/authRoutes.js";
 
 const app = express();
 
+app.use(cors());
+app.use(express.json());
+
 dotenv.config();
 
-const supabaseUrl = process.env.PROJECT_URL
-const supabaseKey = process.env.PROJECT_API_KEY
-const supabase = createClient(supabaseUrl, supabaseKey)
-
-console.log(supabase);
-
 const PORT = process.env.PORT;
+
+// Routes
+app.use("/api/products", productRoutes);
+app.use("/api/auth", authRoutes);
 
 app.get("/", (req, res) => {
   res.send("Welcome to my Web App!");
@@ -20,7 +23,7 @@ app.get("/", (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log("Server is running on http://localhost:4000");
+  console.log(`Server is running on ${PORT}`);
 });
 
 export default app;
