@@ -1,5 +1,7 @@
 import supabase from "../supabaseClient.js";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+
 
 export const registerUser = async (req, res) => {
   try {
@@ -36,6 +38,9 @@ export const registerUser = async (req, res) => {
 };
 
 export const loginUser = async (req, res) => {
+
+  const JWT_SECRET = process.env.ACCESS_TOKEN_SECRET;
+  
   try {
     const { email, password } = req.body;
 
@@ -61,11 +66,15 @@ export const loginUser = async (req, res) => {
       return res.status(401).json({ error: "Invalid credentials" });
     }
 
+    // Generate JWT 
+    const token = jwt.sign(
+      { id: user.id, email: user.email}, 
+      JWT_SECRET, 
+      { expiresIn: '1h'}
+    )
+
     // don’t send password back
-    res.json({
-      message: "Login successful (JWT comes Day 5)",
-      user: { id: user.id, email: user.email },
-    });
+    res.json({message: "Login successful", token});
   } catch (err) {
     res.status(500).json({ error: `Server error ${err}` });
   }

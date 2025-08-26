@@ -15,6 +15,7 @@
     "debug": "~2.6.9",
     "dotenv": "^17.2.1",
     "express": "~4.16.1",
+    "jsonwebtoken": "^9.0.2",
     "morgan": "~1.9.1",
     "postgres": "^3.4.7"
   },
