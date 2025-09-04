@@ -1,8 +1,10 @@
+// src/pages/AboutUsPage.tsx
 import { motion } from "framer-motion";
 import { teamMembers } from "../data/team";
 import img from "../assets/IMG_2331.jpg";
 import { FaInstagram, FaLinkedin, FaYoutube, FaFacebook, FaDove, FaTiktok } from "react-icons/fa";
 import { PiPlantDuotone, PiHeartFill } from "react-icons/pi";
+import type { TeamMember } from "../types";
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -10,7 +12,7 @@ const containerVariants = {
     opacity: 1,
     transition: {
       staggerChildren: 0.2,
-      when: "beforeChildren"
+      when: "beforeChildren" as const
     }
   }
 };
@@ -22,7 +24,7 @@ const itemVariants = {
     y: 0,
     transition: {
       duration: 0.6,
-      ease: "easeOut"
+      ease: [0.25, 0.46, 0.45, 0.94] as const
     }
   }
 };
@@ -35,7 +37,7 @@ const cardVariants = {
     transition: {
       delay: i * 0.15,
       duration: 0.6,
-      ease: "easeOut"
+      ease: [0.25, 0.46, 0.45, 0.94] as const
     }
   })
 };
@@ -61,15 +63,15 @@ const AboutUsPage = () => {
           <motion.div initial={{ opacity: 0, x: -50 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true, margin: "-100px" }} transition={{ duration: 0.8 }}>
             <h3 className="text-4xl mb-6">Our Story</h3>
             <p className="text-[var(--text)] text-left space-y-4">
-              HOPAWI Gardens is more than a business—it’s a divine calling to bring nature’s beauty into the spaces where people live and work. We bridge the gap between quality plants and the home or office owners who desire them, delivering greenery that transforms spaces and enriches lives.<br/><br/>
+              HOPAWI Gardens is more than a business—it's a divine calling to bring nature's beauty into the spaces where people live and work. We bridge the gap between quality plants and the home or office owners who desire them, delivering greenery that transforms spaces and enriches lives.<br/><br/>
               
               Our vision is to bring life into every home and garden, and our mission—Greenery Living—drives us to provide sustainable, beautiful landscaping and plant solutions. Every plant, design, and service we offer is a step toward healthier, more vibrant spaces that inspire joy and well-being.<br/><br/>
               
-              We partner with homeowners, businesses, developers, and event planners who value excellence and beauty. Every project reflects our commitment to urban greening, local growth, and spaces that truly come alive. With HOPAWI Gardens, you don’t just get plants—you get a lasting connection to nature.
+              We partner with homeowners, businesses, developers, and event planners who value excellence and beauty. Every project reflects our commitment to urban greening, local growth, and spaces that truly come alive. With HOPAWI Gardens, you don't just get plants—you get a lasting connection to nature.
             </p>
           </motion.div>
           <motion.div className="rounded-2xl overflow-hidden shadow-lg" initial={{ opacity: 0, x: 50 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true, margin: "-100px" }} transition={{ duration: 0.8, delay: 0.2 }}>
-            <img src={img} alt="HOPAWI Gardens nursery" className="w-full h-auto object-cover"loading="lazy"/>
+            <img src={img} alt="HOPAWI Gardens nursery" className="w-full h-auto object-cover" loading="lazy"/>
           </motion.div>
         </div>
       </motion.section>
@@ -124,8 +126,7 @@ const AboutUsPage = () => {
               }
             }}>
 
-
-            {teamMembers.map((member, index) => (
+            {teamMembers.map((member: TeamMember, index: number) => (
               <motion.div key={member.id} className="card" variants={cardVariants} custom={index} 
                 whileHover={{ 
                   y: -10, 
@@ -144,7 +145,7 @@ const AboutUsPage = () => {
                       { icon: <FaLinkedin/>, link: member.LinkedIn, color: "hover:text-blue-400", title: "LinkedIn" },
                       { icon: <FaFacebook/>, link: member.Facebook, color: "hover:text-blue-600", title: "Facebook" },
                       { icon: <FaInstagram/>, link: member.Instagram, color: "hover:text-pink-500", title: "Instagram" },
-                      { icon: <FaYoutube/>, link: member.Youtube, color: "hover:text-pink-500", title: "Youtubr" },
+                      { icon: <FaYoutube/>, link: member.Youtube, color: "hover:text-pink-500", title: "Youtube" },
                     ].map((social, i) => (
                       social.link && (
                         <motion.a key={i} href={social.link} target="_blank" rel="noreferrer" className={`${social.color} transition`} title={social.title} whileHover={{ scale: 1.2 }} whileTap={{ scale: 0.9 }}>

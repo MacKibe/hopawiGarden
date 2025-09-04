@@ -39,7 +39,6 @@ export const contactInfo: ContactInfo[] = [
   },
   {
     icon: React.createElement(TbMessageDots, {size : iconSizeNumber}),
-    iconSize:iconSizeNumber,
     title: "Email Us",
     content: {
       heading: "greenery@hopawigardens.com",

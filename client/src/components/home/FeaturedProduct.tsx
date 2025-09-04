@@ -1,7 +1,8 @@
+// src/components/home/FeaturedProduct.tsx
 import { motion } from "framer-motion";
 import { FaCartPlus } from "react-icons/fa";
 import { Link } from "react-router";
-import { products } from "../../data/products";
+import type { Product, FeaturedProductProps } from "../../types";
 
 const itemVariants = {
   hidden: { opacity: 0, y: 20 },
@@ -11,12 +12,14 @@ const itemVariants = {
     transition: {
       delay: i * 0.1,
       duration: 0.6,
-      ease: "easeOut"
+      ease: [0.25, 0.46, 0.45, 0.94] as const
     }
   })
 };
 
-const FeaturedProduct = () => {
+const FeaturedProduct = ({ products = [] }: FeaturedProductProps) => {
+  const featuredProducts = products.length > 0 ? products.slice(0, 5) : [];
+
   return (
     <div>
       <div className="container">
@@ -51,7 +54,7 @@ const FeaturedProduct = () => {
             }
           }}
         >
-          {products.slice(0, 5).map((product, index) => (
+          {featuredProducts.map((product: Product, index: number) => (
             <motion.div
               key={product.id}
               className="card"
@@ -101,7 +104,7 @@ const FeaturedProduct = () => {
           transition={{ delay: 0.4, duration: 0.6 }}
         >
           <Link to="/shop">
-            <motion.span  className="py-2 px-4 rounded-3xl"
+            <motion.span className="py-2 px-4 rounded-3xl"
               whileHover={{ 
                 scale: 1.05, 
                 boxShadow: "0 5px 15px rgba(0,0,0,0.2)" 
