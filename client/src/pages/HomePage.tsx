@@ -4,33 +4,11 @@ import HeroSection from "../components/home/HeroSection";
 import FeatureSection from "../components/home/FeaturesSection";
 import FeaturedProduct from "../components/home/FeaturedProduct";
 import ServiceSection from "../components/home/ServiceSection";
-
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.2,
-      when: "beforeChildren"
-    }
-  }
-};
-
-const sectionVariants = {
-  hidden: { opacity: 0, y: 40 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.8,
-      ease: "easeOut"
-    }
-  }
-};
+import { sectionVariants } from "../utils/variants";
 
 const HomePage = () => {
   return (
-    <motion.main className="text-[var(--text)] text-center" initial="hidden" animate="visible" variants={containerVariants}>
+    <main className="text-[var(--text)] text-center" initial="hidden" animate="visible" >
       {/* Landing Section */}
       <HeroSection />
       
@@ -55,7 +33,7 @@ const HomePage = () => {
         <h4>Join thousands of happy plant clients</h4>
         <Testimonial />
       </motion.section>
-    </motion.main>
+    </main>
   )
 }
 

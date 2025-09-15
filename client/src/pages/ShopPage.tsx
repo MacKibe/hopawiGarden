@@ -2,33 +2,11 @@ import { motion } from "framer-motion";
 import ProductFilter from "../components/shop/ProductFilter";
 import ProductList from "../components/shop/ProductList";
 import { products } from "../data/products";
-
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.1,
-      when: "beforeChildren"
-    }
-  }
-};
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.6,
-      ease: "easeOut"
-    }
-  }
-};
+import { itemVariants, sectionVariants } from "../utils/variants";
 
 const ShopPage = () => {
   return (
-    <motion.div initial="hidden" animate="visible" variants={containerVariants} className="flex flex-col lg:flex-row gap-8 mt-8 px-5">
+    <motion.div initial="hidden" animate="visible" variants={sectionVariants} className="flex flex-col lg:flex-row gap-8 mt-8 px-5">
       {/* Filter Sidebar */}
       <motion.div className="lg:w-[20%]" variants={itemVariants} transition={{ delay: 0.1 }}>
         <motion.div whileHover={{ boxShadow: "0 5px 15px rgba(0,0,0,0.05)" }} className="rounded-xl">

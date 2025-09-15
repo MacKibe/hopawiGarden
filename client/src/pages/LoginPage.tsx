@@ -1,11 +1,11 @@
 import { FaRegEnvelope } from "react-icons/fa6";
 import { FiLock } from "react-icons/fi";
 import { Link, useNavigate } from "react-router";
-import { loginUserSchema, type LoginUser } from "../../schema/auth.schema";
+import { loginUserSchema, type LoginUser } from "../schema/auth.schema";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import useAuthStore from "../../store/useAuthStore";
-import { mockUserData } from "../../data/mockUserData";
+import useAuthStore from '../store/useAuthStore';
+import { mockUserData } from "../data/mockUserData";
 
 const LoginPage = () => {
   const navigate = useNavigate();

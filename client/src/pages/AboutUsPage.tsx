@@ -3,56 +3,21 @@ import { teamMembers } from "../data/team";
 import img from "../assets/IMG_2331.jpg";
 import { FaInstagram, FaLinkedin, FaYoutube, FaFacebook, FaDove, FaTiktok } from "react-icons/fa";
 import { PiPlantDuotone, PiHeartFill } from "react-icons/pi";
-
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.2,
-      when: "beforeChildren"
-    }
-  }
-};
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 30 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.6,
-      ease: "easeOut"
-    }
-  }
-};
-
-const cardVariants = {
-  hidden: { opacity: 0, y: 50 },
-  visible: (i: number) => ({
-    opacity: 1,
-    y: 0,
-    transition: {
-      delay: i * 0.15,
-      duration: 0.6,
-      ease: "easeOut"
-    }
-  })
-};
+import { sectionVariants, itemVariants, cardVariants } from "../utils/variants"
 
 const AboutUsPage = () => {
   return (
     <div className="text-[var(--background)]">
       {/* Bio */}
-      <motion.section className="bg-[var(--background)] text-[var(--primary)] py-16" initial="hidden" animate="visible" variants={containerVariants}>
-        <div className="container">
+      <motion.section className="bg-[var(--background)] text-[var(--primary)] py-16" initial="hidden" animate="visible">
+        <motion.div className="container" variants={itemVariants}>
           <motion.h2 variants={itemVariants}>About HOPAWI GARDENS</motion.h2>
           <motion.h4 className="max-w-3xl mx-auto mt-4" variants={itemVariants} transition={{ delay: 0.2 }}>
             We're passionate about bringing the beauty and benefits of plants into every home. 
             Founded in 2025, we've grown from a small local garden to a trusted online 
             destination for plant lovers everywhere.
           </motion.h4>
-        </div>
+        </motion.div>
       </motion.section>
 
       {/* Story */}
@@ -75,9 +40,9 @@ const AboutUsPage = () => {
       </motion.section>
       
       {/* Values */}
-      <motion.section className="bg-[var(--background)] text-[var(--primary)] py-16" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={containerVariants}>
+      <motion.section className="bg-[var(--background)] text-[var(--primary)] py-16" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={sectionVariants}>
         <div className="container grid grid-cols-1 md:grid-cols-2 gap-8">
-          <motion.div className="space-y-4" variants={containerVariants}>
+          <motion.div className="space-y-4" variants={sectionVariants}>
             <motion.div className="border-2 border-[var(--primary)] rounded-lg p-6 text-left hover:shadow-lg transition-shadow" variants={itemVariants} whileHover={{ y: -5 }}>
               <h3 className="text-2xl font-bold mb-2">Mission</h3>
               <p>Greenery Living - Providing sustainable, beautiful landscaping and plant solutions</p>

@@ -2,56 +2,21 @@ import { motion } from "framer-motion";
 import { LuMessageCircle } from "react-icons/lu";
 import { faqData } from "../data/faq";
 import { contactInfo } from "../data/contactInfo";
-
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.2,
-      when: "beforeChildren"
-    }
-  }
-};
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 30 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.6,
-      ease: "easeOut"
-    }
-  }
-};
-
-const cardVariants = {
-  hidden: { opacity: 0, y: 40 },
-  visible: (i: number) => ({
-    opacity: 1,
-    y: 0,
-    transition: {
-      delay: i * 0.1,
-      duration: 0.6,
-      ease: "easeOut"
-    }
-  })
-};
+import { cardVariants, itemVariants, sectionVariants } from "../utils/variants";
 
 const ContactPage = () => {
   return (
     <div>
       {/* Hero */}
       <motion.section className="bg-[var(--background)] text-[var(--primary)] py-16" initial="hidden" animate="visible"
-        variants={containerVariants}>
-        <div className="container">
+        >
+        <motion.div className="container" variants={sectionVariants}>
           <motion.h2 variants={itemVariants}>Get in Touch</motion.h2>
           <motion.h4 className="max-w-3xl mx-auto mt-4" variants={itemVariants} transition={{ delay: 0.2 }}>
             Have questions about our plants or need help with plant care? 
             We're here to help you grow your green thumb!
           </motion.h4>
-        </div>
+        </motion.div>
       </motion.section> 
 
       {/* Contact Form */}
@@ -98,7 +63,7 @@ const ContactPage = () => {
 
           {/* CONTACT INFO */}
           <motion.div className="space-y-8" initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-50px" }}
-            variants={containerVariants}>
+            variants={sectionVariants}>
               {contactInfo.map((info, index) => (
                 <motion.div key={index} className="bg-[var(--primary)] p-6 rounded-xl shadow-md" variants={cardVariants} custom={index} whileHover={{ y: -5, boxShadow: "0 10px 20px rgba(0,0,0,0.1)" }}>
                   <div className="flex items-center gap-3 text-xl mb-4">
