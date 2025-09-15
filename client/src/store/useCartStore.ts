@@ -26,7 +26,9 @@ export const useCartStore = create<CartState>()(
             };
           }
           // Add new item
-          return { items: [...state.items, item] };
+          return { 
+            items: [...state.items, { ...item, id: String(item.id) }],
+           };
         });
       },
 

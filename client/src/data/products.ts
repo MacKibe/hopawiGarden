@@ -7,16 +7,8 @@ import elephant_ear from "../assets/Elephant Ear.jpeg";
 import money_plant from "../assets/Money plant.jpeg";
 import snake_plant from "../assets/sakeplat.jpeg";
 import zz_plant from "../assets/zzplat.jpeg";
+import type { Product } from "../types";
 
-export interface Product {
-  id: number;
-  name: string;
-  description: string;
-  price: number;
-  image: string;
-  rating: number;
-  reviews: number;
-}
 
 const images = [calathea_plant, calla_lily, corn_plant, cotton_lavender, cyclamen_persicum, elephant_ear, money_plant, snake_plant, zz_plant ];
 
@@ -24,7 +16,7 @@ const plantNames = [
   "Calathea plant",  "Calla Lily",  "Corn Plant",  "Cotton Lavender",  "Cyclamen persicum",  "Elephant Ear",  "Money plant",  "Snake Plant", "zz_plant"];
 
 export const products: Product[] = plantNames.map((name, index) => ({
-  id: index + 1,
+  id: `${index} + 1`,
   name,
   description: `${name} for your home or office.`,
   price: Math.floor(800 + Math.random() * 2500), // Random price between 800 - 3300

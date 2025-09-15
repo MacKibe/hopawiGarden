@@ -8,7 +8,7 @@ import { sectionVariants } from "../utils/variants";
 
 const HomePage = () => {
   return (
-    <main className="text-[var(--text)] text-center" initial="hidden" animate="visible" >
+    <motion.main className="text-[var(--text)] text-center" initial="hidden" animate="visible" >
       {/* Landing Section */}
       <HeroSection />
       
@@ -33,7 +33,7 @@ const HomePage = () => {
         <h4>Join thousands of happy plant clients</h4>
         <Testimonial />
       </motion.section>
-    </main>
+    </motion.main>
   )
 }
 

@@ -1,13 +1,10 @@
 import React, { createContext, useContext, useState } from "react";
-import type { Product } from "../data/products";
+import type { CartItem, Product } from "../types";
 
-interface CartItem extends Product {
-  quantity: number;
-}
 interface CartContextType {
   cartItems: CartItem[];
   addToCart: (product: Product) => void;
-  removeFromCart: (id: number) => void;
+  removeFromCart: (id: string) => void;
   setCartItems: React.Dispatch<React.SetStateAction<CartItem[]>>;
 }
 
@@ -30,7 +27,7 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
     });
   };
 
-  const removeFromCart = (id: number) => {
+  const removeFromCart = (id: string) => {
     setCartItems((prev) => prev.filter((item) => item.id !== id));
   };
 
