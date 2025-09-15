@@ -3,6 +3,7 @@ import Glen from "../assets/Glen.jpeg";
 
 export const teamMembers = [
   {
+    id:"1",
     name: "Glen Mawira",
     role: "Digital Marketing Manager",
     bio: "Creative designer bringing floral visions to life",
@@ -12,6 +13,7 @@ export const teamMembers = [
     Instagram: "https://www.instagram.com/hopawi_gardens/"
   },
   {
+    id:"2",
     name: "James Ndichu",
     role: "Plant Manager ",
     bio: "Passionate about merging tech and nature with digital solutions",

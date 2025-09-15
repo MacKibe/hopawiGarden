@@ -3,22 +3,7 @@ import { PiFlowerTulip, PiSun } from "react-icons/pi";
 import Img from "../../assets/Calla Lily1.jpeg";
 import Flower from "../../assets/potted.jpg";
 import { Link } from "react-router";
-
-const cardVariants = {
-  offscreen: {
-    y: 50,
-    opacity: 0
-  },
-  onscreen: {
-    y: 0,
-    opacity: 1,
-    transition: {
-      type: "spring",
-      bounce: 0.4,
-      duration: 0.8
-    }
-  }
-};
+import { cardVariants } from "../../utils/variants";
 
 const FeaturesSection = () => {
   const featuresDetails = [

@@ -1,18 +1,11 @@
 import { motion } from "framer-motion";
 import { services } from "../../data/services";
 import { Link } from "react-router";
+import { cardVariants } from "../../utils/variants";
+
+const MotionLink = motion(Link);
+
 const ServiceSection = () => {
-    const cardVariants = {
-        hidden: { opacity: 0, y: 50 },
-        visible: (i: number) => ({
-        opacity: 1,
-        y: 0,
-        transition: {
-            delay: i * 0.15,
-            duration: 0.6,
-            ease: "easeOut"
-        }})
-    };
     return(
         <div>
             {/* Services Section */}
@@ -39,9 +32,9 @@ const ServiceSection = () => {
                         </motion.div>
                         <h4 className="text-xl font-semibold">{service.title}</h4>
                         <p className="text-[var(--background)] opacity-80">{service.description}</p>
-                        <Link to="/services" className="mt-4 text-[var(--background)] underline hover:text-[var(--accent)] transition" whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                        <MotionLink to="/services" className="mt-4 text-[var(--background)] underline hover:text-[var(--accent)] transition" whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                             Learn More
-                        </Link>
+                        </MotionLink>
                     </div>
                     </motion.div>
                 ))}

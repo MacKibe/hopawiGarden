@@ -1,6 +1,6 @@
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
-import type { CartItem, CartState } from "../types/cart";
+import { createJSONStorage, persist } from "zustand/middleware";
+import type { CartItem, CartState } from "../types/index";
 
 export const useCartStore = create<CartState>()(
   persist(
@@ -59,7 +59,7 @@ export const useCartStore = create<CartState>()(
       // Calculate total price
       totalPrice: () =>
         get().items.reduce(
-          (total, item) => total + (item.itemPrice * item.quantity),
+          (total, item) => total + (item.price * item.quantity),
           0
         ),
 
@@ -68,7 +68,7 @@ export const useCartStore = create<CartState>()(
     }),
     {
       name: "cart-storage",
-      getStorage: () => localStorage,
+      storage: createJSONStorage(() => localStorage),
       // Optional: Versioning for future migrations
       version: 1,
       migrate: (persistedState, version) => {

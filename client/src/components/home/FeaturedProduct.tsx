@@ -2,19 +2,7 @@ import { motion } from "framer-motion";
 import { FaCartPlus } from "react-icons/fa";
 import { Link } from "react-router";
 import { products } from "../../data/products";
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: (i: number) => ({
-    opacity: 1,
-    y: 0,
-    transition: {
-      delay: i * 0.1,
-      duration: 0.6,
-      ease: "easeOut"
-    }
-  })
-};
+import { itemVariants } from "../../utils/variants";
 
 const FeaturedProduct = () => {
   return (
