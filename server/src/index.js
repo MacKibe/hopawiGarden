@@ -18,8 +18,7 @@ app.use("/api/products", productRoutes);
 app.use("/api/auth", authRoutes);
 
 app.get("/", (req, res) => {
-  res.send("Welcome to my Web App!");
-  res.sendStatus(200);
+  return res.send("HOPAWI Gardens Backend!"); // Send a welcome message
 });
 
 app.listen(PORT, () => {
