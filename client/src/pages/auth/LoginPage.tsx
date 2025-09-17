@@ -28,11 +28,9 @@ const LoginPage = () => {
         password: data.password,
       });
 
-      const { token, user } = response.data;
-      
-      console.log('Login success:', { token, user }); 
+      console.log('Login success:', { response }); 
 
-      toast.success(`Welcome back, ${user.firstName}!`, { id: toastId });
+      // toast.success(`Welcome back, ${user.lastName}!`, { id: toastId });
 
       navigate('/');
       

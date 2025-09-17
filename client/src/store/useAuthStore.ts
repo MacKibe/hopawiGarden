@@ -5,7 +5,7 @@ const useAuthStore = create<AuthState>((set) => ({
   user: null,
   isAuthenticated: false,
   isLoading: true, // Initial loading state
-
+  
   login: (user) => {
     localStorage.setItem("user", JSON.stringify({
       // Store only necessary user data
