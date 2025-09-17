@@ -4,12 +4,13 @@ import { Link, useNavigate } from "react-router";
 import { loginUserSchema, type LoginUser } from "../../schema/auth.schema";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import useAuthStore from "../../store/useAuthStore";
-import { mockUserData } from "../../data/mockUserData";
+import axios from "axios";
+import toast from 'react-hot-toast';
+import { API_BASE_URL } from '../../config/api';
+import type { AuthResponse } from "../../types";
 
 const LoginPage = () => {
   const navigate = useNavigate();
-  const login = useAuthStore((state) => state.login);
 
   const {
     register,
@@ -19,22 +20,38 @@ const LoginPage = () => {
     resolver: zodResolver(loginUserSchema),
   });
 
-  const onSubmit: SubmitHandler<LoginUser> = (data) => {
-    const foundUser = mockUserData.find(
-      (user) => user.email === data.email && user.password === data.password
-    );
+  const onSubmit: SubmitHandler<LoginUser> = async (data) => {
+    const toastId = toast.loading('Logging in...');
+    try {
+      const response = await axios.post<AuthResponse>(`${API_BASE_URL}/auth/login`, {
+        email: data.email,
+        password: data.password,
+      });
 
-    if (foundUser) {
-      // Save to localStorage
-      localStorage.setItem("user", JSON.stringify(foundUser));
+      const { token, user } = response.data;
+      
+      console.log('Login success:', { token, user }); 
 
-      // Update global auth state
-      login(foundUser);
+      toast.success(`Welcome back, ${user.firstName}!`, { id: toastId });
 
-      // Redirect to homepage or dashboard
-      navigate("/");
-    } else {
-      alert("Invalid credentials!");
+      navigate('/');
+      
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.error('Login error:', error.response?.data || error.message);
+
+        const message = error.response?.status === 401
+          ? 'Invalid email or password'
+          : error.response?.status === 400
+          ? 'Invalid input. Check your details.'
+          : 'Login failed. Try again later.';
+
+        toast.error(message, { id: toastId });
+      } else {
+        console.error('Login error:', error);
+
+        toast.error('Login failed. Try again later.', { id: toastId });
+      }
     }
   };
 

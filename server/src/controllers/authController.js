@@ -2,7 +2,6 @@ import supabase from "../supabaseClient.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
-
 export const registerUser = async (req, res) => {
   try {
     const { name, email, password } = req.body;
@@ -33,7 +32,7 @@ export const registerUser = async (req, res) => {
       user: data,
     });
   } catch (err) {
-    res.status(500).json({ error: "Server error" });
+    res.status(500).json({ error: `Server error ${err}` });
   }
 };
 

@@ -1,21 +1,5 @@
 import { create } from 'zustand';
-
-interface User {
-  id: string;
-  email: string;
-  firstName: string;
-  lastName: string;
-  password: string; // Note: In production, never store plain passwords
-}
-
-interface AuthState {
-  user: User | null;
-  isAuthenticated: boolean;
-  isLoading: boolean; // Track initialization state
-  login: (user: User) => void;
-  logout: () => void;
-  initialize: () => Promise<void>;
-}
+import type { User, AuthState } from '../types';
 
 const useAuthStore = create<AuthState>((set) => ({
   user: null,

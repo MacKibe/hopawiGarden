@@ -40,3 +40,24 @@ export interface ContactInfo {
     linkText: string;
   };
 }
+
+export interface User {
+  id: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  password: string;
+}
+
+export interface AuthState {
+  user: User | null;
+  isAuthenticated: boolean;
+  isLoading: boolean; // Track initialization state
+  login: (user: User) => void;
+  logout: () => void;
+  initialize: () => Promise<void>;
+}
+export interface AuthResponse {
+  token: string;
+  user: User;
+}

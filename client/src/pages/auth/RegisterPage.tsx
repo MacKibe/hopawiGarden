@@ -5,12 +5,14 @@ import { FiLock } from "react-icons/fi";
 import { RxPerson } from "react-icons/rx";
 import { Link, useNavigate } from "react-router";
 import { registerUserSchema, type RegisteredUser } from "../../schema/auth.schema";
-import useAuthStore from "../../store/useAuthStore";
+import axios from "axios";
+import toast from 'react-hot-toast';
+import { API_BASE_URL } from '../../config/api';
+import type { AuthResponse } from "../../types";
 
 const RegisterPage = () => {
 
   const navigate = useNavigate();
-  const { login } = useAuthStore();
 
   const {
     register,
@@ -20,24 +22,38 @@ const RegisterPage = () => {
     resolver: zodResolver(registerUserSchema),
   });
 
-  // Complete submit handler with actual registration logic
-  const onSubmit: SubmitHandler<RegisteredUser> = (data) => {
-    const newUser = {
-      id: Date.now().toString(), // Simple ID generation
-      email: data.email,
-      firstName: data.firstName,
-      lastName: data.lastName,
-      password: data.password // Just for demo - hash passwords in production
-    };
+  const onSubmit: SubmitHandler<RegisteredUser> = async (data) => {
+    const toastId = toast.loading('Creating account...');
+    try {
+      const response = await axios.post<AuthResponse>(`${API_BASE_URL}/auth/register`, {
+        name: `${data.firstName} ${data.lastName}`,
+        email: data.email,
+        password: data.password,
+      });
 
-    // Save to localStorage
-    localStorage.setItem("user", JSON.stringify(newUser));
-    
-    // Update global state
-    login(newUser);
-    
-    // Redirect to home
-    navigate("/");
+      const { token, user } = response.data;
+      
+      console.log('Register success:', { token, user }); 
+      
+      toast.success(`Welcome, ${user.firstName}!`, { id: toastId });
+      
+      navigate('/login'); 
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.error('Register error:', error.response?.data || error.message);
+
+        const message = error.response?.status === 409
+          ? 'Email already registered'
+          : error.response?.status === 400
+          ? 'Invalid input. Check your details.'
+          : 'Registration failed. Try again later.';
+
+        toast.error(message, { id: toastId });
+      } else {
+        console.error('Register error:', error);
+        toast.error('Registration failed. Try again later.', { id: toastId });
+      }
+    }
   };
 
   return (
