@@ -31,11 +31,11 @@ const ProfilePage = () => {
           {/* Avatar and Basic Info */}
           <div className="flex flex-col sm:flex-row items-center gap-8 mb-8">
             <div className="w-24 h-24 rounded-full bg-[var(--background)] flex items-center justify-center text-[var(--primary)] text-4xl font-bold">
-              {user.firstName.charAt(0)}{user.lastName.charAt(0)}
+              {user.name.charAt(0)}
             </div>
             <div className="text-center sm:text-left">
               <h2 className="text-2xl font-semibold text-[var(--text)]">
-                {user.firstName} {user.lastName}
+                {user.name}
               </h2>
               <p className="text-[var(--text)] mt-2 opacity-80">{user.email}</p>
               <p className="text-sm text-[var(--text)] mt-3 opacity-60">
@@ -56,15 +56,7 @@ const ProfilePage = () => {
                     First Name
                   </p>
                   <p className="font-medium text-[var(--text)]">
-                    {user.firstName}
-                  </p>
-                </div>
-                <div>
-                  <p className="text-sm text-[var(--text)] opacity-70">
-                    Last Name
-                  </p>
-                  <p className="font-medium text-[var(--text)]">
-                    {user.lastName}
+                    {user.name}
                   </p>
                 </div>
                 <div className="md:col-span-2">

@@ -48,7 +48,7 @@ const Header = () => {
                 to="/profile"
                 className="h-10 w-10 flex items-center justify-center bg-[var(--primary)] text-[var(--background)] rounded-full"
               >
-                {user?.firstName?.charAt(0)?.toUpperCase() || 'U'}
+                {user?.name?.charAt(0)?.toUpperCase() || 'U'}
               </Link>
               <button
                 onClick={logout}
