@@ -1,23 +1,24 @@
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm, type SubmitHandler } from "react-hook-form";
-import { FaRegEnvelope } from "react-icons/fa6";
-import { FiLock } from "react-icons/fi";
-import { RxPerson } from "react-icons/rx";
-import { Link, useNavigate } from "react-router";
-import { registerUserSchema, type RegisteredUser } from "../../schema/auth.schema";
-import axios from "axios";
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm, type SubmitHandler } from 'react-hook-form';
+import { FaRegEnvelope } from 'react-icons/fa6';
+import { FiLock } from 'react-icons/fi';
+import { RxPerson } from 'react-icons/rx';
+import { Link, useNavigate } from 'react-router';
+import { registerUserSchema, type RegisteredUser } from '../../schema/auth.schema';
 import toast from 'react-hot-toast';
-import { API_BASE_URL } from '../../config/api';
-import type { AuthResponse } from "../../types";
+import api from '../../config/axios';
+import type { AuthResponse } from '../../types';
+import useAuthStore from '../../store/useAuthStore';
+import type { AxiosError } from 'axios';
 
-const RegisterPage = () => {
-
+const RegisterPage: React.FC = () => {
   const navigate = useNavigate();
+  const { setAuth } = useAuthStore();
 
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<RegisteredUser>({
     resolver: zodResolver(registerUserSchema),
   });
@@ -25,34 +26,24 @@ const RegisterPage = () => {
   const onSubmit: SubmitHandler<RegisteredUser> = async (data) => {
     const toastId = toast.loading('Creating account...');
     try {
-      const response = await axios.post<AuthResponse>(`${API_BASE_URL}/auth/register`, {
+      const response = await api.post<AuthResponse>('/auth/register', {
         name: `${data.firstName} ${data.lastName}`,
         email: data.email,
         password: data.password,
       });
-
       const { token, user } = response.data;
-      
-      console.log('Register success:', { token, user }); 
-      
-      toast.success(`Welcome, ${user.firstName}!`, { id: toastId });
-      
-      navigate('/login'); 
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        console.error('Register error:', error.response?.data || error.message);
-
-        const message = error.response?.status === 409
-          ? 'Email already registered'
-          : error.response?.status === 400
-          ? 'Invalid input. Check your details.'
-          : 'Registration failed. Try again later.';
-
-        toast.error(message, { id: toastId });
-      } else {
-        console.error('Register error:', error);
-        toast.error('Registration failed. Try again later.', { id: toastId });
-      }
+      setAuth(token, user);
+      toast.success(`Welcome, ${user.name}!`, { id: toastId });
+      navigate('/');
+    } catch (error: unknown) {
+      const axiosError = error as AxiosError;
+      console.error('Register error:', axiosError.response?.data || axiosError.message);
+      const message = axiosError.response?.status === 409
+        ? 'Email already registered'
+        : axiosError.response?.status === 400
+        ? 'Invalid input. Check your details.'
+        : 'Registration failed. Try again later.';
+      toast.error(message, { id: toastId });
     }
   };
 
@@ -81,7 +72,7 @@ const RegisterPage = () => {
             <span className="input-wrapper">
               <RxPerson size={20} />
               <input
-                {...register("firstName")}
+                {...register('firstName')}
                 placeholder="Michael"
                 className="w-full focus:outline-none"
               />
@@ -96,7 +87,7 @@ const RegisterPage = () => {
             <span className="input-wrapper">
               <RxPerson size={20} />
               <input
-                {...register("lastName")}
+                {...register('lastName')}
                 placeholder="Maina"
                 className="w-full focus:outline-none"
               />
@@ -112,7 +103,7 @@ const RegisterPage = () => {
           <span className="input-wrapper">
             <FaRegEnvelope size={20} />
             <input
-              {...register("email")}
+              {...register('email')}
               placeholder="michael@example.com"
               className="w-full focus:outline-none"
             />
@@ -127,7 +118,7 @@ const RegisterPage = () => {
           <span className="input-wrapper">
             <FiLock size={20} />
             <input
-              {...register("password")}
+              {...register('password')}
               type="password"
               placeholder="Create a password"
               className="w-full focus:outline-none"
@@ -143,7 +134,7 @@ const RegisterPage = () => {
           <span className="input-wrapper">
             <FiLock size={20} />
             <input
-              {...register("confirmPassword")}
+              {...register('confirmPassword')}
               type="password"
               placeholder="Confirm your password"
               className="w-full focus:outline-none"
@@ -151,12 +142,16 @@ const RegisterPage = () => {
           </span>
         </div>
 
-        <button type="submit" className="btn-primary py-2 rounded-md w-full">
-          Create Account
+        <button
+          type="submit"
+          disabled={isSubmitting} // Fixed: Disable button
+          className="btn-primary py-2 rounded-md w-full"
+        >
+          {isSubmitting ? 'Creating Account...' : 'Create Account'}
         </button>
 
         <p className="text-center text-sm">
-          Already have an account?{" "}
+          Already have an account?{' '}
           <Link to="/login" className="text-[var(--background)] hover:underline">
             Sign In
           </Link>

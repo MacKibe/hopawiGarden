@@ -1,21 +1,23 @@
-import { FaRegEnvelope } from "react-icons/fa6";
-import { FiLock } from "react-icons/fi";
-import { Link, useNavigate } from "react-router";
-import { loginUserSchema, type LoginUser } from "../../schema/auth.schema";
-import { useForm, type SubmitHandler } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import axios from "axios";
+import { FaRegEnvelope } from 'react-icons/fa6';
+import { FiLock } from 'react-icons/fi';
+import { Link, useNavigate } from 'react-router';
+import { loginUserSchema, type LoginUser } from '../../schema/auth.schema';
+import { useForm, type SubmitHandler } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import toast from 'react-hot-toast';
-import { API_BASE_URL } from '../../config/api';
-import type { AuthResponse } from "../../types";
+import api from '../../config/axios';
+import type { AuthResponse } from '../../types';
+import useAuthStore from '../../store/useAuthStore';
+import type { AxiosError } from 'axios';
 
-const LoginPage = () => {
+const LoginPage: React.FC = () => {
   const navigate = useNavigate();
+  const { setAuth } = useAuthStore();
 
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<LoginUser>({
     resolver: zodResolver(loginUserSchema),
   });
@@ -23,33 +25,23 @@ const LoginPage = () => {
   const onSubmit: SubmitHandler<LoginUser> = async (data) => {
     const toastId = toast.loading('Logging in...');
     try {
-      const response = await axios.post<AuthResponse>(`${API_BASE_URL}/auth/login`, {
+      const response = await api.post<AuthResponse>('/auth/login', {
         email: data.email,
         password: data.password,
       });
-
-      console.log('Login success:', { response }); 
-
-      // toast.success(`Welcome back, ${user.lastName}!`, { id: toastId });
-
+      const { token, user } = response.data;
+      setAuth(token, user);
+      toast.success(`Welcome back, ${user.name}!`, { id: toastId });
       navigate('/');
-      
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        console.error('Login error:', error.response?.data || error.message);
-
-        const message = error.response?.status === 401
-          ? 'Invalid email or password'
-          : error.response?.status === 400
-          ? 'Invalid input. Check your details.'
-          : 'Login failed. Try again later.';
-
-        toast.error(message, { id: toastId });
-      } else {
-        console.error('Login error:', error);
-
-        toast.error('Login failed. Try again later.', { id: toastId });
-      }
+    } catch (error: unknown) {
+      const axiosError = error as AxiosError;
+      console.error('Login error:', axiosError.response?.data || axiosError.message);
+      const message = axiosError.response?.status === 401
+        ? 'Invalid email or password'
+        : axiosError.response?.status === 400
+        ? 'Invalid input. Check your details.'
+        : 'Login failed. Try again later.';
+      toast.error(message, { id: toastId });
     }
   };
 
@@ -69,36 +61,30 @@ const LoginPage = () => {
           </p>
         </header>
 
-        {/* Email Field */}
         <div>
           <label htmlFor="email" className="block font-medium">
             Email address
           </label>
-          {errors.email && (
-            <p className="text-red-500 text-sm">{errors.email.message}</p>
-          )}
+          <p className="text-red-500 text-sm">{errors.email?.message}</p>
           <span className="input-wrapper">
             <FaRegEnvelope size={20} />
             <input
-              {...register("email")}
+              {...register('email')}
               placeholder="Enter your email"
               className="w-full focus:outline-none"
             />
           </span>
         </div>
 
-        {/* Password Field */}
         <div>
           <label htmlFor="password" className="block font-medium">
             Password
           </label>
-          {errors.password && (
-            <p className="text-red-500 text-sm">{errors.password.message}</p>
-          )}
+          <p className="text-red-500 text-sm">{errors.password?.message}</p>
           <span className="input-wrapper">
             <FiLock size={20} />
             <input
-              {...register("password")}
+              {...register('password')}
               type="password"
               id="password"
               placeholder="Enter your password"
@@ -107,7 +93,6 @@ const LoginPage = () => {
           </span>
         </div>
 
-        {/* Remember Me + Forgot Password */}
         <div className="flex items-center justify-between text-sm">
           <label className="flex items-center gap-2">
             <input type="checkbox" id="rememberMe" />
@@ -118,18 +103,17 @@ const LoginPage = () => {
           </a>
         </div>
 
-        {/* Submit Button */}
-        <button type="submit" className="btn-primary py-2 rounded-md w-full">
-          Sign In
+        <button
+          type="submit"
+          disabled={isSubmitting} // Fixed: Disable button
+          className="btn-primary py-2 rounded-md w-full"
+        >
+          {isSubmitting ? 'Logging In...' : 'Sign In'}
         </button>
 
-        {/* Link to Register */}
         <p className="text-center text-sm">
-          Don’t have an account?{" "}
-          <Link
-            to="/register"
-            className="text-[var(--background)] hover:underline"
-          >
+          Don’t have an account?{' '}
+          <Link to="/register" className="text-[var(--background)] hover:underline">
             Sign Up
           </Link>
         </p>

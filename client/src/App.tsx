@@ -1,6 +1,6 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import { BrowserRouter, Routes, Route } from "react-router"; // Fixed import
+import { BrowserRouter, Routes, Route } from "react-router";
 import './index.css';
 import HomePage from './pages/HomePage';
 import AboutUsPage from './pages/AboutUsPage';
@@ -14,12 +14,14 @@ import ProfilePage from './pages/ProfilePage';
 import PrivateRoute from './components/common/PrivateRoute';
 import { CartProvider } from './context/CartContext';
 import ScrollToTop from './components/common/ScrollToTop';
+import { Toaster } from 'react-hot-toast';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <BrowserRouter>
       <CartProvider>
         <Layout>
+          <Toaster position="top-right" />
           <ScrollToTop/>
           <Routes>
             <Route path='/' element={<HomePage />} />

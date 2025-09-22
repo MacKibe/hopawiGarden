@@ -1,4 +1,3 @@
-
 export interface Product {
   id: string;
   name: string;
@@ -10,23 +9,23 @@ export interface Product {
 }
 
 export interface CartItem extends Product {
-    quantity: number;
+  quantity: number;
 }
 
 export interface CartState {
-    items: CartItem[];
-    addItem: (item: CartItem) => void;
-    removeItem: (id: string) => void;
-    updateQuantity: (id: string, quantity: number) => void; 
-    totalItems: () => number;
-    totalPrice: () => number;
-    getItem: (id: string) => CartItem | undefined;
+  items: CartItem[];
+  addItem: (item: CartItem) => void;
+  removeItem: (id: string) => void;
+  updateQuantity: (id: string, quantity: number) => void;
+  totalItems: () => number;
+  totalPrice: () => number;
+  getItem: (id: string) => CartItem | undefined;
 }
 
 export interface CartDrawerProps {
-    toggleCart: () => void;
-    cartItems: CartItem[];
-    setCartItems: React.Dispatch<React.SetStateAction<CartItem[]>>;
+  toggleCart: () => void;
+  cartItems: CartItem[];
+  setCartItems: React.Dispatch<React.SetStateAction<CartItem[]>>;
 }
 
 export interface ContactInfo {
@@ -44,19 +43,19 @@ export interface ContactInfo {
 export interface User {
   id: string;
   email: string;
-  firstName: string;
-  lastName: string;
-  password: string;
+  name: string;
 }
 
 export interface AuthState {
   user: User | null;
+  token: string | null;
   isAuthenticated: boolean;
-  isLoading: boolean; // Track initialization state
-  login: (user: User) => void;
+  isLoading: boolean;
+  setAuth: (token: string, user: User) => void;
   logout: () => void;
   initialize: () => Promise<void>;
 }
+
 export interface AuthResponse {
   token: string;
   user: User;
