@@ -5,7 +5,7 @@ import useAuthStore from '../store/useAuthStore';
 const api: AxiosInstance = axios.create({
   baseURL: import.meta.env.MODE === 'production'
     ? 'https://hopawigarden-1.onrender.com/api'
-    : 'http://localhost:5000/api',
+    : 'http://localhost:10000/api',
   timeout: 10000,
 });
 

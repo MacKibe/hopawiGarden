@@ -58,7 +58,7 @@ const FeaturedProduct = () => {
               
               <motion.div 
                 className="card-img bg-cover bg-center"
-                style={{ backgroundImage: `url(${product.image})`}}
+                style={{ backgroundImage: `url(${product.path})`}}
                 whileHover={{ scale: 1.03 }}
                 transition={{ duration: 0.3 }}
               />

@@ -1,5 +1,5 @@
-import profileFemale from "../assets/profile.jpg"
-import profileMale from "../assets/profile2.jpg"
+import profileFemale from "/assets/profile.jpg"
+import profileMale from "/assets/profile2.jpg"
 
 export type Testimonial = {
   rating: number;

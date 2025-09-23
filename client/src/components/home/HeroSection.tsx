@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router";
-import backgroundImage from "../../assets/IMG_2335.jpg";
+import backgroundImage from "/assets/IMG_2335.jpg";
 import { itemVariants, spanVariants } from "../../utils/variants";
 
 const HeroSection = () => {

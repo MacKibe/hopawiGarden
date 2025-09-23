@@ -1,13 +1,37 @@
-import { products } from "../../data/products";
 import { motion } from "framer-motion";
 import { FaCartPlus, FaStar } from "react-icons/fa";
 import { useNavigate } from "react-router";
 import { useCart } from "../../context/CartContext";
 import { cardVariants } from "../../utils/variants";
+import type { ProductListProps } from "../../types";
 
-const ProductList = () => {
+const ProductList = ({products, loading, error}: ProductListProps) => {
   const navigate = useNavigate();
   const { addToCart } = useCart();
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center py-12">
+        <div className="text-lg">Loading products...</div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex justify-center items-center py-12">
+        <div className="text-red-500 text-lg">Error: {error}</div>
+      </div>
+    );
+  }
+
+  if (!products || products.length === 0) {
+    return (
+      <div className="flex justify-center items-center py-12">
+        <div className="text-lg">No products available</div>
+      </div>
+    );
+  }
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
@@ -28,7 +52,7 @@ const ProductList = () => {
         >
           <div
             className="card-img bg-cover bg-top relative h-48"
-            style={{ backgroundImage: `url(${product.image})` }}
+            style={{ backgroundImage: `url(${product.path})` }}
           >
             <motion.div
               className="absolute inset-0 flex items-center justify-center"

@@ -3,11 +3,20 @@ export interface Product {
   name: string;
   description: string;
   price: number;
-  image: string;
+  path: string;
   rating: number;
   reviews: number;
 }
 
+// For ProductDetails component props in future
+// export ProductDetails extends Product {
+// }
+
+export interface ProductListProps{
+  products: Product[];
+  loading: boolean;
+  error: string | null;
+}
 export interface CartItem extends Product {
   quantity: number;
 }

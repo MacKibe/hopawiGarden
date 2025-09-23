@@ -1,5 +1,5 @@
-import Kibe from "../assets/Kibe.jpeg";
-import Glen from "../assets/Glen.jpeg";
+import Kibe from "/assets/Kibe.jpeg";
+import Glen from "/assets/Glen.jpeg";
 
 export const teamMembers = [
   {

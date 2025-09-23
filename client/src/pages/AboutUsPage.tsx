@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { teamMembers } from "../data/team";
-import img from "../assets/IMG_2331.jpg";
+import img from "/assets/IMG_2331.jpg";
 import { FaInstagram, FaLinkedin, FaYoutube, FaFacebook, FaDove, FaTiktok } from "react-icons/fa";
 import { PiPlantDuotone, PiHeartFill } from "react-icons/pi";
 import { sectionVariants, itemVariants, cardVariants } from "../utils/variants"

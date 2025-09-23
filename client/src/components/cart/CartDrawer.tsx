@@ -57,7 +57,7 @@ const CartDrawer : React.FC<CartDrawerProps> = ({ toggleCart, cartItems, setCart
                                     >
                                         <div 
                                             className="w-20 h-20 bg-cover bg-center rounded" 
-                                            style={{ backgroundImage: `url(${item.image})` }} 
+                                            style={{ backgroundImage: `url(${item.path})` }} 
                                         />
                                         <div className="flex-1">
                                             <h3 className="font-medium">{item.name}</h3>

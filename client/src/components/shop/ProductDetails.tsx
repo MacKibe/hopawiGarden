@@ -1,12 +1,35 @@
 import { useParams, useNavigate } from "react-router";
-import { products } from "../../data/products";
 import { FaCartPlus, FaStar, FaArrowLeft } from "react-icons/fa";
 import { motion } from "framer-motion";
+import { useProduct } from "../../hooks/useProduct";
+import { useProducts } from "../../hooks/useProducts";
+import { useCart } from "../../context/CartContext";
 
 const ProductDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const product = products.find((p) => p.id.toString() === id);
+  const { addToCart } = useCart();
+  const { product, loading, error } = useProduct(id);
+  const { products } = useProducts();
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center py-12">
+        <div className="text-lg">Loading product details...</div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="p-6">
+        <p className="text-red-500">Error: {error}</p>
+        <button onClick={() => navigate(-1)} className="text-blue-500 underline mt-2">
+          Go Back
+        </button>
+      </div>
+    );
+  }
 
   if (!product) {
     return (
@@ -31,7 +54,7 @@ const ProductDetails = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Image */}
         <motion.img
-          src={product.image}
+          src={product.path}
           alt={product.name}
           className="rounded-lg w-full object-cover"
           initial={{ opacity: 0, scale: 0.95 }}
@@ -64,6 +87,7 @@ const ProductDetails = () => {
             className="bg-[var(--primary)] px-6 py-2 rounded-full flex items-center gap-2"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
+            onClick={() => addToCart(product)}
           >
             <FaCartPlus /> Add to Cart
           </motion.button>
@@ -85,7 +109,7 @@ const ProductDetails = () => {
                 whileHover={{ y: -3 }}
               >
                 <img
-                  src={related.image}
+                  src={related.path}
                   alt={related.name}
                   className="rounded-lg h-32 w-full object-cover"
                 />
