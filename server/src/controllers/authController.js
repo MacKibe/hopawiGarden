@@ -14,8 +14,8 @@ export const registerUser = async (req, res) => {
 
     const { data, error } = await supabase
       .from('users')
-      .insert([{ name, email, password: hashedPassword }])
-      .select('id, email, name')
+      .insert([{ name, email, password: hashedPassword, role: 'user' }])
+      .select('id, email, name, role')
       .single();
 
     if (error) {
@@ -26,7 +26,7 @@ export const registerUser = async (req, res) => {
     }
 
     const token = jwt.sign(
-      { id: data.id, email: data.email },
+      { id: data.id, email: data.email, role: data.role },
       process.env.ACCESS_TOKEN_SECRET,
       { expiresIn: '1h' }
     );
@@ -51,7 +51,7 @@ export const loginUser = async (req, res) => {
 
     const { data: user, error } = await supabase
       .from('users')
-      .select('id, email, name, password')
+      .select('id, email, name, password, role')
       .eq('email', email)
       .single();
 
@@ -65,7 +65,7 @@ export const loginUser = async (req, res) => {
     }
 
     const token = jwt.sign(
-      { id: user.id, email: user.email },
+      { id: user.id, email: user.email, role: user.role },
       process.env.ACCESS_TOKEN_SECRET,
       { expiresIn: '1h' }
     );

@@ -15,6 +15,10 @@ import PrivateRoute from './components/common/PrivateRoute';
 import { CartProvider } from './context/CartContext';
 import ScrollToTop from './components/common/ScrollToTop';
 import { Toaster } from 'react-hot-toast';
+import AdminRoute from './components/common/AdminRoute';
+import AdminLayout from './layouts/AdminLayout';
+import AdminDashboard from './pages/admin/AdminDashboard';
+import AdminProductsPage from './pages/admin/AdminProductsPage';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -39,6 +43,16 @@ createRoot(document.getElementById('root')!).render(
               } 
             />
             <Route path='/product/:id' element={<ProductDetails />} />
+            
+            {/* Admin Routes */}
+            <Route path="/admin" element={
+              <AdminRoute>
+                <AdminLayout />
+              </AdminRoute>
+            }>
+              <Route index element={<AdminDashboard />} />
+              <Route path="products" element={<AdminProductsPage />} />
+            </Route>
           </Routes>
         </Layout>
       </CartProvider>

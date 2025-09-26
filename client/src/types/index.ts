@@ -6,6 +6,9 @@ export interface Product {
   path: string;
   rating: number;
   reviews: number;
+  stock?: number;
+  active?: boolean;
+  category?: string;
 }
 
 // For ProductDetails component props in future
@@ -53,6 +56,7 @@ export interface User {
   id: string;
   email: string;
   name: string;
+  role: 'user' | 'admin';
 }
 
 export interface AuthState {
