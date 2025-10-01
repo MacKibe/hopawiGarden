@@ -6,7 +6,7 @@ export interface Product {
   path: string;
   rating: number;
   reviews: number;
-  stock?: number;
+  stock: number;
   active?: boolean;
   category?: string;
 }

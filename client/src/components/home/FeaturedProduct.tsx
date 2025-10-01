@@ -1,10 +1,75 @@
+// client/src/components/home/FeaturedProduct.tsx
 import { motion } from "framer-motion";
-import { FaCartPlus } from "react-icons/fa";
+import { FaCartPlus, FaExclamationTriangle } from "react-icons/fa";
 import { Link } from "react-router";
-import { products } from "../../data/products";
 import { itemVariants } from "../../utils/variants";
+import { useProducts } from "../../hooks/useProducts";
 
 const FeaturedProduct = () => {
+  const { products, loading, error } = useProducts();
+
+  // Enhanced loading state
+  if (loading) {
+    return (
+      <div className="container py-12">
+        <div className="text-center">
+          <h3>Featured Products</h3>
+          <p className="text-lg max-w-2xl mx-auto my-4">
+            Handpicked favorites from our collection, loved by plant enthusiasts
+          </p>
+          <div className="flex justify-center items-center py-8">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600"></div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Enhanced error state
+  if (error) {
+    console.error('Featured products error:', error);
+    return (
+      <div className="container py-12">
+        <div className="text-center">
+          <h3>Featured Products</h3>
+          <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-6 max-w-2xl mx-auto my-4">
+            <FaExclamationTriangle className="text-yellow-500 text-2xl mx-auto mb-2" />
+            <h4 className="text-yellow-800 font-semibold">Unable to load products</h4>
+            <p className="text-yellow-700 text-sm mt-1">{error}</p>
+            <button 
+              onClick={() => window.location.reload()}
+              className="mt-3 bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600 transition-colors"
+            >
+              Try Again
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Check if products is an array and has items
+  if (!Array.isArray(products) || products.length === 0) {
+    return (
+      <div className="container py-12">
+        <div className="text-center">
+          <h3>Featured Products</h3>
+          <div className="bg-gray-50 rounded-lg p-6 max-w-2xl mx-auto my-4">
+            <p className="text-gray-600">No products available at the moment.</p>
+            <Link 
+              to="/shop" 
+              className="inline-block mt-3 bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition-colors"
+            >
+              Visit Shop
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  const featuredProducts = products.slice(0, 5);
+
   return (
     <div>
       <div className="container">
@@ -39,7 +104,7 @@ const FeaturedProduct = () => {
             }
           }}
         >
-          {products.slice(0, 5).map((product, index) => (
+          {featuredProducts.map((product, index) => (
             <motion.div
               key={product.id}
               className="card"
@@ -52,21 +117,29 @@ const FeaturedProduct = () => {
               }}
             >
               <div className="p-4 text-left">
-                <h5 className="text-xl">{product.name}</h5>
-                <p className="text-sm text-[var(--text)]">{product.description}</p>
+                <h5 className="text-xl font-semibold">{product.name}</h5>
+                <p className="text-sm text-[var(--text)] mt-2 line-clamp-2">
+                  {product.description || 'No description available'}
+                </p>
               </div>
               
               <motion.div 
                 className="card-img bg-cover bg-center"
-                style={{ backgroundImage: `url(${product.path})`}}
+                style={{ 
+                  backgroundImage: `url(${product.path || '/assets/placeholder-plant.jpg'})`,
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center'
+                }}
                 whileHover={{ scale: 1.03 }}
                 transition={{ duration: 0.3 }}
               />
               
               <div className="flex justify-between items-center p-4">
-                <p className="text-[var(--background)] font-bold">Kshs {product.price.toLocaleString()}</p>
+                <p className="text-[var(--background)] font-bold">
+                  Kshs {product.price?.toLocaleString() || '0'}
+                </p>
                 <Link 
-                  to={`/shop/${product.id}`} 
+                  to={`/product/${product.id}`} 
                   className="text-[var(--background)] hover:text-[var(--accent)] transition"
                 >
                   <motion.span
@@ -89,7 +162,8 @@ const FeaturedProduct = () => {
           transition={{ delay: 0.4, duration: 0.6 }}
         >
           <Link to="/shop">
-            <motion.span  className="py-2 px-4 rounded-3xl"
+            <motion.button 
+              className="bg-[var(--background)] text-[var(--primary)] py-3 px-6 rounded-lg font-semibold"
               whileHover={{ 
                 scale: 1.05, 
                 boxShadow: "0 5px 15px rgba(0,0,0,0.2)" 
@@ -97,12 +171,12 @@ const FeaturedProduct = () => {
               whileTap={{ scale: 0.95 }}
             >
               View All Products
-            </motion.span>
+            </motion.button>
           </Link>
         </motion.div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default FeaturedProduct;
