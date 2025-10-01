@@ -32,7 +32,12 @@ const LoginPage: React.FC = () => {
       const { token, user } = response.data;
       setAuth(token, user);
       toast.success(`Welcome back, ${user.name}!`, { id: toastId });
-      navigate('/');
+
+      // Admin to admin dashboard
+      if (user.role === 'admin') {
+        navigate('/admin');
+      }else{ navigate('/');}
+
     } catch (error: unknown) {
       const axiosError = error as AxiosError;
       console.error('Login error:', axiosError.response?.data || axiosError.message);

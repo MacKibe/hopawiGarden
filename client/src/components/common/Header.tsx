@@ -78,11 +78,8 @@ const Header = () => {
             </>
           ) : (
             <>
-              <Link to="/login" className="btn">
+              <Link to="/login" className="btn btn-accent">
                 Log In
-              </Link>
-              <Link to="/register" className="btn btn-accent">
-                Register
               </Link>
             </>
           )}
