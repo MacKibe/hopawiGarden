@@ -42,55 +42,53 @@ const AdminDashboard = () => {
   }
 
   return (
-    <div>
-      <h1 className="text-3xl font-bold text-gray-900 mb-8">Admin Dashboard</h1>
-      
+    <div>      
       {/* Stats Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        <div className="bg-white p-6 rounded-lg shadow">
+        <div className=" p-2 rounded-lg shadow">
           <div className="flex items-center">
-            <div className="p-3 rounded-full bg-blue-100 text-blue-600">
+            <div className="p-4 rounded-full bg-blue-100 text-blue-600">
               <FaBox size={20} />
             </div>
             <div className="ml-4">
-              <h3 className="text-sm font-medium text-gray-500">Total Products</h3>
-              <p className="text-2xl font-bold text-gray-900">{stats.totalProducts}</p>
+              <h4 className="font-medium">Total Products</h4>
+              <p className="text-md font-bold">{stats.totalProducts}</p>
             </div>
           </div>
         </div>
 
-        <div className="bg-white p-6 rounded-lg shadow">
+        <div className=" p-2 rounded-lg shadow">
           <div className="flex items-center">
             <div className="p-3 rounded-full bg-green-100 text-green-600">
               <FaUsers size={20} />
             </div>
             <div className="ml-4">
-              <h3 className="text-sm font-medium text-gray-500">Total Users</h3>
-              <p className="text-2xl font-bold text-gray-900">{stats.totalUsers}</p>
+              <h4 className="font-medium text-gray-500">Total Users</h4>
+              <p className="text-md font-bold text-gray-900">{stats.totalUsers}</p>
             </div>
           </div>
         </div>
 
-        <div className="bg-white p-6 rounded-lg shadow">
+        <div className=" p-2 rounded-lg shadow">
           <div className="flex items-center">
             <div className="p-3 rounded-full bg-purple-100 text-purple-600">
               <FaShoppingCart size={20} />
             </div>
             <div className="ml-4">
-              <h3 className="text-sm font-medium text-gray-500">Total Orders</h3>
-              <p className="text-2xl font-bold text-gray-900">{stats.totalOrders}</p>
+              <h4 className="font-medium text-gray-500">Total Orders</h4>
+              <p className="text-md font-bold text-gray-900">{stats.totalOrders}</p>
             </div>
           </div>
         </div>
 
-        <div className="bg-white p-6 rounded-lg shadow">
+        <div className="p-2 rounded-lg shadow">
           <div className="flex items-center">
             <div className="p-3 rounded-full bg-yellow-100 text-yellow-600">
               <FaChartLine size={20} />
             </div>
             <div className="ml-4">
-              <h3 className="text-sm font-medium text-gray-500">Revenue</h3>
-              <p className="text-2xl font-bold text-gray-900">Kshs {stats.revenue.toLocaleString()}</p>
+              <h4 className="font-medium text-gray-500">Revenue</h4>
+              <p className="text-md font-bold text-gray-900">Kshs {stats.revenue.toLocaleString()}</p>
             </div>
           </div>
         </div>
@@ -99,7 +97,7 @@ const AdminDashboard = () => {
       {/* Recent Products */}
       <div className="bg-white rounded-lg shadow">
         <div className="p-6 border-b">
-          <h2 className="text-xl font-semibold">Recent Products</h2>
+          <h3 className="font-semibold">Recent Products</h3>
         </div>
         <div className="p-6">
           {recentProducts.length > 0 ? (
@@ -113,7 +111,7 @@ const AdminDashboard = () => {
                       className="w-10 h-10 rounded object-cover"
                     />
                     <div>
-                      <h3 className="font-medium">{product.name}</h3>
+                      <h4 className="font-medium">{product.name}</h4>
                       <p className="text-sm text-gray-500">Kshs {product.price.toLocaleString()}</p>
                     </div>
                   </div>

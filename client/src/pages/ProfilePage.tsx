@@ -14,13 +14,11 @@ const ProfilePage = () => {
   }
 
   return (
-    <section className="min-h-screen">
+    <div className="min-h-screen">
       <div>
         {/* Header Section */}
-        <header className="text-center">
-          <h1 className="text-[var(--primary)]">
-            Your <span className="text-[var(--accent)]">Profile</span>
-          </h1>
+        <header className="text-center space-y-1 my-4">
+          <h2>Your Profile</h2>
           <p className="text-[var(--text)]">
             Manage your account information
           </p>
@@ -77,19 +75,19 @@ const ProfilePage = () => {
             >
               Edit Profile
             </button>
-            <button
-              onClick={() => {
-                logout();
-                navigate('/');
-              }}
-              className="btn btn-primary flex-1 py-3 rounded-md bg-[var(--accent)] hover:bg-[color-mix(in_srgb,_var(--accent)_90%,_black)] text-[var(--text)]"
-            >
-              Log Out
-            </button>
+            {user.role === 'admin' ? (
+              <button onClick={() => navigate('/admin')}
+               className="btn btn-primary flex-1 py-3 rounded-md bg-[var(--accent)] hover:bg-[color-mix(in_srgb,_var(--accent)_90%,_black)] text-[var(--text)]"
+                >Admin Panel</button>)
+               :
+              <button onClick={() => {logout();navigate('/');}}
+                className="btn btn-primary flex-1 py-3 rounded-md bg-[var(--accent)] hover:bg-[color-mix(in_srgb,_var(--accent)_90%,_black)] text-[var(--text)]"
+              >Log Out</button>
+            }
           </div>
         </div>
       </div>
-    </section>
+    </div>
   );
 };
 

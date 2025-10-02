@@ -1,21 +1,17 @@
-// src/components/common/Header.tsx
-import { useState } from 'react';
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import { FaShoppingCart } from 'react-icons/fa';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import useAuthStore from '../../store/useAuthStore';
-import CartDrawer from '../cart/CartDrawer';
 import { useCart } from '../../context/CartContext';
 import type { CartItem } from '../../types';
 
 const Header = () => {
   const { user, logout, isAuthenticated } = useAuthStore();
-  const { cartItems, setCartItems } = useCart();
+  const { cartItems } = useCart();
 
-  const [cartOpen, setCartOpen] = useState(false);
-
-  const toggleCart = () => setCartOpen(!cartOpen);
   const totalItems = cartItems.reduce((sum, item: CartItem) => sum + item.quantity, 0);
+
+  const navigate = useNavigate()
 
   return (
     <>
@@ -58,7 +54,7 @@ const Header = () => {
               </button>
               <motion.button
                 className="p-2 rounded-full hover:bg-[var(--secondary)] hover:text-[var(--background)] transition relative"
-                onClick={toggleCart}
+                onClick={() => navigate('/cart')}
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
               >
@@ -85,15 +81,6 @@ const Header = () => {
           )}
         </div>
       </header>
-      <AnimatePresence>
-        {cartOpen && (
-          <CartDrawer
-            toggleCart={toggleCart}
-            cartItems={cartItems}
-            setCartItems={setCartItems}
-          />
-        )}
-      </AnimatePresence>
     </>
   );
 };

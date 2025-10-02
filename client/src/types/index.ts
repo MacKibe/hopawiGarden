@@ -40,6 +40,41 @@ export interface CartDrawerProps {
   setCartItems: React.Dispatch<React.SetStateAction<CartItem[]>>;
 }
 
+export interface Order {
+  id: string;
+  userId: string;
+  userEmail: string;
+  items: CartItem[];
+  customerInfo: {
+    firstName: string;
+    lastName: string;
+    email: string;
+    phone: string;
+    address: string;
+    city: string;
+    postalCode: string;
+    country: string;
+    deliveryInstructions?: string;
+  };
+  total: number;
+  shippingCost: number;
+  status: 'pending' | 'processing' | 'shipped' | 'delivered' | 'cancelled';
+  paid: boolean;
+  createdAt: string;
+  updatedAt?: string;
+}
+
+export interface CheckoutFormData {
+  firstName: string;
+  lastName: string;
+  phone: string;
+  address: string;
+  city: string;
+  postalCode: string;
+  country: string;
+  deliveryInstructions?: string;
+}
+
 export interface ContactInfo {
   icon: React.ReactNode;
   iconSize: number;

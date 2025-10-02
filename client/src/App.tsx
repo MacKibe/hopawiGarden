@@ -19,6 +19,8 @@ import AdminRoute from './components/common/AdminRoute';
 import AdminLayout from './layouts/AdminLayout';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import AdminProductsPage from './pages/admin/AdminProductsPage';
+import CartPage from './pages/CartPage';
+import CheckoutPage from './pages/CheckoutPage';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -32,6 +34,8 @@ createRoot(document.getElementById('root')!).render(
             <Route path='/about' element={<AboutUsPage />} />
             <Route path='/contact' element={<ContactPage />} />
             <Route path='/shop' element={<ShopPage />} />
+            <Route path='/cart' element={<CartPage />} />
+            <Route path='/checkout' element={<CheckoutPage />} />
             <Route path='/login' element={<LoginPage />} />
             <Route path='/register' element={<RegisterPage />} />
             <Route 

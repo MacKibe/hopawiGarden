@@ -114,7 +114,7 @@ const AdminProductsPage = () => {
       {/* Header Section */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-black">Product Management</h1>
+          <h2 className="font-bold">Product Management</h2>
           <p className="text-gray-600 mt-1">
             {products.length} product{products.length !== 1 ? 's' : ''} total
             {searchTerm && ` • ${filteredProducts.length} found`}
