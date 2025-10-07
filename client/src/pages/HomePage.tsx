@@ -5,8 +5,26 @@ import FeatureSection from "../components/home/FeaturesSection";
 import FeaturedProduct from "../components/home/FeaturedProduct";
 import ServiceSection from "../components/home/ServiceSection";
 import { sectionVariants } from "../utils/variants";
+  import { useLocation } from "react-router";
+  import { useEffect } from 'react';
 
 const HomePage = () => {
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.state?.scrollTo) {
+      const sectionId = location.state.scrollTo;
+      const section = document.getElementById(sectionId);
+
+      if (section) {
+        // Allow the DOM to render before scrolling
+        setTimeout(() => {
+          section.scrollIntoView({ behavior: "smooth" });
+        }, 100);
+      }
+    }
+  }, [location.state]);
+  
   return (
     <motion.main className="text-[var(--text)] text-center" initial="hidden" animate="visible" >
       {/* Landing Section */}

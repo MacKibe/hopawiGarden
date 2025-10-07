@@ -51,7 +51,7 @@ const LoginPage: React.FC = () => {
   };
 
   return (
-    <div className="py-8 px-4 max-w-md w-full mx-auto text-center">
+    <div className="pt-8 px-4 max-w-md w-full mx-auto text-center">
       <h3 className="text-2xl font-bold mb-2">Welcome back</h3>
       <p className="text-gray-700 mb-6">Sign in to your account</p>
 

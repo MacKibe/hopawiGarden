@@ -14,7 +14,7 @@ const AdminLayout = () => {
     <div className="min-h-screen bg-gray-50">
       {/* Sidebar */}
       <div className="fixed inset-y-0 left-0 w-64 bg-white shadow-lg">
-        <div className="p-6 border-b border-gray-200">
+        <div className="px-6 border-b border-gray-200">
           <h1 className="text-xl font-bold text-green-600">Admin Panel</h1>
           <p className="text-sm text-gray-600">Welcome, {user?.name}</p>
         </div>
@@ -39,7 +39,7 @@ const AdminLayout = () => {
           </ul>
         </nav>
 
-        <div className="absolute bottom-4 left-4 right-4">
+        <div className="absolute bottom-4 left-4">
           <button
             onClick={() => logout()}
             className="w-full flex items-center gap-3 px-4 py-3 text-red-600 hover:bg-red-50 rounded-lg transition-colors"

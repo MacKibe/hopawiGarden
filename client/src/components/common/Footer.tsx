@@ -1,11 +1,27 @@
-import { FaFacebook, FaLinkedin, FaYoutube, FaInstagram, FaTiktok } from "react-icons/fa";
-  import { Link } from "react-router";
-  
+  import { FaFacebook, FaLinkedin, FaYoutube, FaInstagram, FaTiktok } from "react-icons/fa";
+  import { Link, useNavigate, useLocation } from "react-router";
+    
   const Footer = () => {
+      const navigate = useNavigate();
+      const location = useLocation();
+
+      const handleNav = (sectionId: string) => {
+         if (location.pathname === "/") {
+         // Already on homepage → scroll directly
+         const section = document.getElementById(sectionId);
+         if (section) {
+             section.scrollIntoView({ behavior: "smooth" });
+         }
+         } else {
+         // Navigate to homepage, passing section info in state
+         navigate("/", { state: { scrollTo: sectionId } });
+         }
+      };
+      
       return (
           <footer className="bg-[var(--background)] text-[var(--primary)]">
               <div className="container py-10 border-b border-[var(--primary)]">
-                  <div className="grid grid-cols-1 md:grid-cols-5 gap-8 py-12">
+                  <div className="grid grid-cols-1 md:grid-cols-4 gap-8 py-12">
                         {/* Brand Info */}
                         <div className="space-y-4 col-span-2">
                             <h3 className="text-xl font-bold">HOPAWI GARDENS</h3>
@@ -46,21 +62,11 @@ import { FaFacebook, FaLinkedin, FaYoutube, FaInstagram, FaTiktok } from "react-
                         <div>
                             <h3 className="text-lg font-semibold mb-4">Services</h3>
                             <ul className="space-y-2">
-                                <li><Link to='/shop?category=indoor' className="hover:text-[var(--accent)] transition">Indoor Potted Plants</Link></li>
-                                <li><Link to='/shop?category=outdoor' className="hover:text-[var(--accent)] transition">Outdoor Potted Plants</Link></li>
-                                <li><Link to='/services/landscaping' className="hover:text-[var(--accent)] transition">Landscaping</Link></li>
-                                <li><Link to='/services/consultation' className="hover:text-[var(--accent)] transition">Consultation</Link></li>
-                                <li><Link to='/shop/accessories' className="hover:text-[var(--accent)] transition">Soil Mixture</Link></li>
-                            </ul>
-                        </div>
-                        {/* Support */}
-                        <div>
-                            <h3 className="text-lg font-semibold mb-4">Support</h3>
-                            <ul className="space-y-2">
-                                <li><Link to='/shipping-info' className="hover:text-[var(--accent)] transition">Shipping Info</Link></li>
-                                <li><Link to='/returns' className="hover:text-[var(--accent)] transition">Returns</Link></li>
-                                <li><Link to='/plant-care' className="hover:text-[var(--accent)] transition">Plant Care</Link></li>
-                                <li><Link to='/faq' className="hover:text-[var(--accent)] transition">FAQs</Link></li>
+                                <li><button onClick={() => handleNav("service")} className="hover:text-[var(--accent)] transition">Indoor Potted Plants</button></li>
+                                <li><button onClick={() => handleNav("service")} className="hover:text-[var(--accent)] transition">Outdoor Potted Plants</button></li>
+                                <li><button onClick={() => handleNav("service")} className="hover:text-[var(--accent)] transition">Landscaping</button></li>
+                                <li><button onClick={() => handleNav("service")} className="hover:text-[var(--accent)] transition">Consultation</button></li>
+                                <li><button onClick={() => handleNav("service")} className="hover:text-[var(--accent)] transition">Soil Mixture</button></li>
                             </ul>
                         </div>
                   </div>

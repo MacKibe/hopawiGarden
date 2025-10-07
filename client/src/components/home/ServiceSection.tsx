@@ -7,7 +7,7 @@ const MotionLink = motion(Link);
 
 const ServiceSection = () => {
     return(
-        <div>
+        <div  id="service">
             {/* Services Section */}
             <motion.div className="container">
                 <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}
@@ -32,9 +32,6 @@ const ServiceSection = () => {
                         </motion.div>
                         <h4 className="text-xl font-semibold">{service.title}</h4>
                         <p className="text-[var(--background)] opacity-80">{service.description}</p>
-                        <MotionLink to="/services" className="mt-4 text-[var(--background)] underline hover:text-[var(--accent)] transition" whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                            Learn More
-                        </MotionLink>
                     </div>
                     </motion.div>
                 ))}

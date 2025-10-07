@@ -106,12 +106,11 @@ const CheckoutPage = () => {
   }
 
   return (
-    <div className="container mx-auto p-6">
-      <h2 className="text-3xl font-bold mb-8 text-center">Checkout</h2>
-      
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+    <div className="max-w-[70%] mx-auto my-8">
+      <h2 className="text-3xl font-bold mb-8">Checkout.</h2>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Checkout Form */}
-        <div className="bg-white p-6 rounded-lg shadow-md">
+        <div className="bg-white p-6 col-span-2 rounded-lg shadow-md">
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
             {/* User Information */}
             <section>
@@ -239,7 +238,7 @@ const CheckoutPage = () => {
         </div>
 
         {/* Order Summary */}
-        <div className="bg-[var(--secondary)] p-6 rounded-lg h-fit sticky top-6">
+        <div className="bg-[var(--secondary)] p-6 rounded-lg sticky top-25 h-fit">
           <h3 className="text-xl font-semibold mb-4">Order Summary</h3>
           
           <div className="space-y-4 mb-6">
