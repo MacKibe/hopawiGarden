@@ -80,6 +80,17 @@ const ProductFilter = () => {
         <aside className="sticky top-24 p-6 rounded-lg bg-[var(--primary)] shadow-sm">
             <h3 className="text-xl font-bold mb-6">Filters</h3>
 
+            {/* Price Range */}
+            <div className="mb-8">
+                <h4 className="font-semibold mb-3">Price Range</h4>
+                <input type="range" min="0" max="10000" step="100" value={priceRange[1]} className="w-full accent-[var(--background)] mb-2"
+                    onChange={(e) => setPriceRange([priceRange[0], parseInt(e.target.value)])} />
+                <div className="flex justify-between text-sm">
+                    <span>Kshs {priceRange[0].toLocaleString()}</span>
+                    <span>Kshs {priceRange[1].toLocaleString()}</span>
+                </div>
+            </div>
+            
             {/* Category Filter */}
             <div className="mb-8">
                 <h4 className="font-semibold mb-3">Category</h4>
@@ -227,17 +238,6 @@ const ProductFilter = () => {
                             }`}
                         >{opt.label}</button>
                     ))}
-                </div>
-            </div>
-
-            {/* Price Range */}
-            <div className="mb-8">
-                <h4 className="font-semibold mb-3">Price Range</h4>
-                <input type="range" min="0" max="10000" step="100" value={priceRange[1]} className="w-full accent-[var(--background)] mb-2"
-                    onChange={(e) => setPriceRange([priceRange[0], parseInt(e.target.value)])} />
-                <div className="flex justify-between text-sm">
-                    <span>Kshs {priceRange[0].toLocaleString()}</span>
-                    <span>Kshs {priceRange[1].toLocaleString()}</span>
                 </div>
             </div>
 

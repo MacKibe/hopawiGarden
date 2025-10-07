@@ -97,8 +97,7 @@ export const updateProduct = async (req, res) => {
       category: category || 'indoor',
       path: path?.trim() || '',
       rating: rating ? parseFloat(rating) : 0,
-      reviews: reviews ? parseInt(reviews) : 0,
-      updated_at: new Date().toISOString()
+      reviews: reviews ? parseInt(reviews) : 0
     };
 
     console.log('Updating product:', { id, updateData });
