@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import productRoutes from './routes/productRoutes.js';
 import authRoutes from './routes/authRoutes.js';
+import { contactRoutes } from './controllers/contactRoute.js';
 
 const app = express();
 
@@ -17,6 +18,7 @@ const PORT = process.env.PORT || 10000;
 
 app.use('/api/products', productRoutes);
 app.use('/api/auth', authRoutes);
+app.use('/api', contactRoutes);
 
 app.get('/', (req, res) => {
   return res.send('HOPAWI Gardens Backend!');
