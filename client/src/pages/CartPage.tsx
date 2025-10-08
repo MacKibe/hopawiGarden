@@ -22,19 +22,19 @@ const CartPage = () => {
 
   const totalItems = cartItems.reduce((sum: number, item: CartItem) => sum + item.quantity, 0);
   const subtotal = cartItems.reduce((sum: number, item: CartItem) => sum + (item.price * item.quantity), 0);
-  const shippingCost = 300; // Fixed shipping cost
+  const shippingCost = 300;
   const total = subtotal + shippingCost;
 
   if (cartItems.length === 0) {
     return (
-      <div className="container mx-auto p-6 text-center">
+      <div className="container-responsive py-responsive text-center">
         <div className="max-w-md mx-auto">
           <div className="text-6xl mb-4">🛒</div>
           <h2 className="text-2xl font-bold mb-4">Your cart is empty</h2>
           <p className="text-gray-600 mb-6">Start adding some beautiful plants to your cart!</p>
           <Link 
             to="/shop"
-            className="bg-[var(--background)] text-[var(--primary)] px-6 py-3 rounded-lg font-semibold hover:bg-opacity-90 transition"
+            className="btn-base btn-primary touch-target"
           >
             Continue Shopping
           </Link>
@@ -44,14 +44,14 @@ const CartPage = () => {
   }
 
   return (
-    <div className="max-w-[70%] mx-auto my-8">
+    <div className="container-responsive py-responsive">
       <h2 className="text-3xl font-bold mb-8">Shopping Cart</h2>
       
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div className="sidebar-layout">
         {/* Cart Items - Left Section */}
-        <div className="lg:col-span-2">
-          <div className="bg-white rounded-lg shadow-md">
-            <div className="p-6 border-b">
+        <div className="sidebar-main">
+          <div className="card-base">
+            <div className="p-4 md:p-6 border-b">
               <h3 className="text-xl font-semibold">
                 Your Items ({totalItems} {totalItems === 1 ? 'item' : 'items'})
               </h3>
@@ -61,27 +61,29 @@ const CartPage = () => {
               {cartItems.map((item: CartItem) => (
                 <motion.div 
                   key={item.id}
-                  className="p-6 flex items-center space-x-4"
+                  className="p-4 md:p-6 flex flex-col sm:flex-row items-start sm:items-center gap-4"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -20 }}
                 >
                   {/* Product Image */}
                   <div 
-                    className="w-20 h-20 bg-cover bg-center rounded-lg flex-shrink-0"
+                    className="w-80 h-64 mx-auto sm:w-20 sm:h-20 bg-cover bg-center rounded-lg flex-shrink-0"
                     style={{ backgroundImage: `url(${item.path})` }}
                   />
                   
                   {/* Product Details */}
-                  <div className="flex-grow">
-                    <h4 className="font-semibold text-lg">{item.name}</h4>
-                    <p className="text-gray-600">Kshs {item.price.toLocaleString()}</p>
+                  <div className="flex flex-grow min-w-0">
+                    <div>
+                      <h4 className="font-semibold text-lg truncate">{item.name}</h4>
+                      <p className="text-gray-600">Kshs {item.price.toLocaleString()}</p> 
+                    </div>
                     
                     {/* Quantity Controls */}
                     <div className="flex items-center space-x-3 mt-2">
                       <button
                         onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                        className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center hover:bg-gray-200 transition"
+                        className="touch-target w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center hover:bg-gray-200 transition"
                       >
                         <FaMinus size={12} />
                       </button>
@@ -90,7 +92,7 @@ const CartPage = () => {
                       
                       <button
                         onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                        className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center hover:bg-gray-200 transition"
+                        className="touch-target w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center hover:bg-gray-200 transition"
                       >
                         <FaPlus size={12} />
                       </button>
@@ -98,13 +100,13 @@ const CartPage = () => {
                   </div>
                   
                   {/* Price and Remove */}
-                  <div className="text-right">
+                  <div className="text-right self-stretch sm:self-auto flex sm:block justify-between items-center w-full sm:w-auto">
                     <p className="font-semibold text-lg">
                       Kshs {(item.price * item.quantity).toLocaleString()}
                     </p>
                     <button
                       onClick={() => removeItem(item.id)}
-                      className="text-red-500 hover:text-red-700 mt-2 flex items-center space-x-1 text-sm"
+                      className="text-red-500 hover:text-red-700 mt-2 flex items-center space-x-1 text-sm touch-target"
                     >
                       <FaTrash size={14} />
                       <span>Remove</span>
@@ -119,7 +121,7 @@ const CartPage = () => {
           <div className="mt-6">
             <Link 
               to="/shop"
-              className="text-[var(--background)] hover:underline flex items-center space-x-2"
+              className="text-[var(--background)] hover:underline flex items-center space-x-2 touch-target"
             >
               <span>← Continue Shopping</span>
             </Link>
@@ -127,8 +129,8 @@ const CartPage = () => {
         </div>
 
         {/* Order Summary - Right Section */}
-        <div className="lg:col-span-1">
-          <div className="bg-[var(--secondary)] p-6 rounded-lg sticky">
+        <div className="sidebar-aside">
+          <div className="bg-[var(--secondary)] p-4 md:p-6 rounded-lg sticky top-24">
             <h3 className="text-xl font-semibold mb-4">Order Summary</h3>
             
             {/* Order Details */}
@@ -159,7 +161,7 @@ const CartPage = () => {
             {/* Checkout Button */}
             <button
               onClick={() => navigate('/checkout')}
-              className="w-full bg-[var(--background)] text-[var(--primary)] py-3 rounded-lg font-semibold hover:bg-opacity-90 transition"
+              className="btn-base btn-primary touch-target w-full"
             >
               Proceed to Checkout
             </button>

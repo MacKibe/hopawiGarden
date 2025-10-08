@@ -91,7 +91,7 @@ const AboutUsPage = () => {
 
 
             {teamMembers.map((member, index) => (
-              <motion.div key={member.id} className="card" variants={cardVariants} custom={index} 
+              <motion.div key={member.id} className="" variants={cardVariants} custom={index} 
                 whileHover={{ 
                   y: -10, 
                   boxShadow: "0 15px 30px rgba(0,0,0,0.1)",

@@ -57,7 +57,7 @@ const ContactPage = () => {
                 required whileFocus={{ scale: 1.02, boxShadow: "0 0 0 2px var(--accent)" }}/>
             </motion.div>
             
-            <motion.button type="submit" className="btn btn-primary mt-6" whileHover={{ scale: 1.05, boxShadow: "0 5px 15px rgba(0,0,0,0.2)" }}
+            <motion.button type="submit" className="py-3 px-6 rounded-2xl block btn-primary mt-6" whileHover={{ scale: 1.05, boxShadow: "0 5px 15px rgba(0,0,0,0.2)" }}
               whileTap={{ scale: 0.95 }}>Send Message</motion.button>
           </motion.form>
 

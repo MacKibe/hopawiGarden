@@ -107,7 +107,7 @@ const FeaturedProduct = () => {
           {featuredProducts.map((product, index) => (
             <motion.div
               key={product.id}
-              className="card"
+              className="container bg-white"
               variants={itemVariants}
               custom={index}
               whileHover={{ 
@@ -117,7 +117,7 @@ const FeaturedProduct = () => {
               }}
             >
               <div className="p-4 text-left">
-                <h5 className="text-xl font-semibold">{product.name}</h5>
+                <h5 className="text-xl font-semibold text-[var(--background)]">{product.name}</h5>
                 <p className="text-sm text-[var(--text)] mt-2 line-clamp-2">
                   {product.description || 'No description available'}
                 </p>
@@ -135,9 +135,9 @@ const FeaturedProduct = () => {
               />
               
               <div className="flex justify-between items-center p-4">
-                <p className="text-[var(--background)] font-bold">
+                <h6 className="text-[var(--background)] text-xl font-semibold">
                   Kshs {product.price?.toLocaleString() || '0'}
-                </p>
+                </h6>
                 <Link 
                   to={`/product/${product.id}`} 
                   className="text-[var(--background)] hover:text-[var(--accent)] transition"

@@ -37,13 +37,13 @@ const FeaturesSection = () => {
           {featuresDetails.map((detail, index) => (
             <motion.div key={index} className="card" variants={cardVariants} initial="offscreen" whileInView="onscreen" viewport={{ once: true, margin: "-50px" }} custom={index} whileHover={{ y: -5, boxShadow: "0 10px 25px rgba(0,0,0,0.1)" }}>
               <div className="w-full aspect-[5/3] bg-cover bg-center rounded-t-xl" style={{ backgroundImage: `url(${detail.backgroundImg})`}} role="img" aria-label={detail.featureName}/>
-              <div className="flex flex-col items-center p-6 gap-2 text-center">
+              <div className="flex flex-col items-center bg-[var(--accent)] p-6 gap-2 text-center">
                 <motion.span className="text-[var(--background)]" whileHover={{ scale: 1.2, rotate: 10 }} transition={{ type: "spring", stiffness: 300 }}>
                   {detail.icon}
                 </motion.span>
                 <h4>{detail.featureName}</h4>
                 <p className="text-[var(--text)]">{detail.featureDetails}</p>
-                <Link to='/shop' className="btn btn-primary mt-2">
+                <Link to='/shop' className="py-3 px-6 rounded-2xl block btn-primary mt-2">
                   <motion.span whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                     Explore
                   </motion.span>

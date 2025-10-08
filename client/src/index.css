@@ -22,16 +22,12 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 h1 {
-  font-size: 3rem;
+  font-size: 2.25rem;
   color: var(--primary);
 }
 
-h1 span {
-  color: var(--accent);
-}
-
 h2 {
-  font-size: 2.5rem;
+  font-size: 1.875rem;
 }
 
 h3 {
@@ -39,7 +35,7 @@ h3 {
 }
 
 h4 {
-  font-size: 1rem;
+  font-size: 1.25rem;
 }
 
 p {
@@ -50,8 +46,7 @@ p {
 /* Layout */
 section {
   text-align: center;
-  padding-block: 5%;
-  padding-inline: 10%;
+  padding: 2rem 1rem;
 }
 
 .container {
@@ -60,8 +55,84 @@ section {
   margin: 0 auto;
   padding: 0 1rem;
 }
-.btn {
+
+.container-responsive {
+  width: 100%;
+  max-width: 84rem;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+/* Responsive Utilities */
+.py-responsive {
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+
+.px-responsive {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+/* Small screens (sm) */
+@media (min-width: 640px) {
+  .container-responsive {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+
+/* Large screens (lg) */
+@media (min-width: 1024px) {
+  .container-responsive {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .py-responsive {
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+  }
+  
+  .px-responsive {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  h1 {
+    font-size: 3rem;
+  }
+  
+  h2 {
+    font-size: 2.5rem;
+  }
+  
+  section {
+    padding: 5% 10%;
+  }
+  
+  .px-responsive {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+/* Button System */
+.btn-base {
   padding: 0.5rem 1rem;
+  border-radius: 0.375rem;
+  transition: all 0.3s ease;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
 }
 
 .btn-primary {
@@ -82,7 +153,85 @@ section {
   background-color: color-mix(in srgb, var(--accent) 90%, black);
 }
 
+.touch-target {
+  min-height: 44px;
+  min-width: 44px;
+}
+
+/* Card System */
+.card-base {
+  background: var(--secondary);
+  border-radius: 0.5rem;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card-hover:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+}
+
+.card-img {
+  height: 30dvh;
+}
+
+/* Grid System */
+.grid-responsive {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
+  gap: 1.5rem;
+}
+
+.grid-auto-fill {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(300px, 100%), 1fr));
+  gap: 1rem;
+}
+
+/* Layout Systems */
+.sidebar-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.sidebar-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.sidebar-aside {
+  width: 100%;
+  flex-shrink: 0;
+}
+
+@media (min-width: 1024px) {
+  .sidebar-layout {
+    flex-direction: row;
+    gap: 2rem;
+  }
+  
+  .sidebar-aside {
+    width: 20rem;
+  }
+}
+
 /* Forms */
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.input-wrapper {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  border: 1px solid var(--background);
+  border-radius: 0.375rem;
+  padding: 0.5rem;
+  margin-top: 0.5rem;
+}
+
 #contactForm input, textarea, select {
   width: 100%;
   padding: 0.75rem;
@@ -96,62 +245,23 @@ input:focus, textarea:focus, select:focus {
   border-color: var(--accent);
 }
 
-.form-group {
-  margin-bottom: 1rem;
-}
-
-.input-wrapper {
-  display: flex;
-  gap: 0.5rem;
-  align-items: center;
-  border: 1px solid var(--background);
-  border-radius: 0.375rem;
-  padding: 0.5rem;
-  margin-top: 0.5rem; 
-}
-
-/* Cards */
-.card {
-  background: var(--secondary);
-  border-radius: 0.5rem;
-  overflow: hidden;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
-}
-
-.card-img {
-  height: 30dvh;
-}
-
-/* Grids */
-.grid-responsive {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 1.5rem;
-}
-
+/* Utilities */
 .truncate {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-/* Responsive adjustments */
-@media (max-width: 768px) {
-  h1 {
-    font-size: 2.25rem;
-  }
-  
-  h2 {
-    font-size: 1.75rem;
-  }
-  
-  section {
-    padding: 2rem 1rem;
-  }
+.overflow-touch {
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Table Responsive */
+.table-container {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.table-responsive {
+  min-width: 100%;
 }

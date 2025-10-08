@@ -1,9 +1,6 @@
 import { motion } from "framer-motion";
 import { services } from "../../data/services";
-import { Link } from "react-router";
 import { cardVariants } from "../../utils/variants";
-
-const MotionLink = motion(Link);
 
 const ServiceSection = () => {
     return(

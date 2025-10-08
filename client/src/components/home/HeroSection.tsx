@@ -12,7 +12,7 @@ const HeroSection = () => {
         initial={{ opacity: 0 }}animate={{ opacity: 1 }} transition={{ duration: 1.2, ease: "easeInOut" }}/>
       
       {/* Overlay */}
-      <motion.div className="absolute inset-0 w-full h-full bg-[var(--background)] opacity-50 z-0" initial={{ opacity: 0 }} animate={{ opacity: 0.3 }}
+      <motion.div className="absolute inset-0 w-full h-full bg-[var(--background)] z-0" initial={{ opacity: 0 }} animate={{ opacity: 0.3 }}
         transition={{ duration: 1.5, ease: "easeInOut" }}/>
       
       {/* Content */}
@@ -20,17 +20,9 @@ const HeroSection = () => {
         className="flex flex-col justify-around gap-8 max-w-3xl mx-auto text-center z-10 px-4"
         variants={spanVariants}
       >
-        <motion.h1 variants={itemVariants}>Bringing life into your 
-          <motion.span className="inline-block mx-1" variants={spanVariants} transition={{ delay: 0.3 }}>
-             Homes
-          </motion.span> 
-          and 
-          <motion.span className="inline-block ml-1" variants={spanVariants} transition={{ delay: 0.5 }}>
-            Offices
-          </motion.span>
-        </motion.h1>
+        <motion.h1 variants={itemVariants}>Bringing life into your homes and offices</motion.h1>
         
-        <motion.p className="max-w-2xl mx-auto text-[var(--primary)] text-lg text-bold" variants={itemVariants} transition={{ delay: 0.2 }}>
+        <motion.p className="max-w-2xl mx-auto text-[var(--primary)] text-xl font-extrabold" variants={itemVariants} transition={{ delay: 0.2 }}>
           Discover our curated collection of beautiful potted plants. Transform your home into a natural sanctuary with nature delivered to your doorstep.
         </motion.p>
         
