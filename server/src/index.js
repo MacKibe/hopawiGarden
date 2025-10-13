@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import productRoutes from './routes/productRoutes.js';
 import authRoutes from './routes/authRoutes.js';
-import { contactRoutes } from './controllers/contactRoute.js';
+import contactRoutes from './routes/contactRoute.js';
 
 const app = express();
 

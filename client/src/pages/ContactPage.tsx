@@ -89,27 +89,6 @@ const ContactPage = () => {
               </motion.span>
               Send us a message
             </motion.h3>
-
-            {/* Status Messages */}
-            {submitStatus === 'success' && (
-              <motion.div 
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="mb-4 p-3 bg-green-100 text-green-700 rounded-lg border border-green-300"
-              >
-                ✅ Message sent successfully! We'll get back to you soon.
-              </motion.div>
-            )}
-            
-            {submitStatus === 'error' && (
-              <motion.div 
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="mb-4 p-3 bg-red-100 text-red-700 rounded-lg border border-red-300"
-              >
-                ❌ Failed to send message. Please try again or contact us directly.
-              </motion.div>
-            )}
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {[
@@ -163,12 +142,33 @@ const ContactPage = () => {
             <motion.button 
               type="submit" 
               disabled={isLoading}
-              className="py-3 px-6 rounded-2xl block btn-primary mt-6 disabled:opacity-50 disabled:cursor-not-allowed bg-[var(--accent)] text-white font-semibold" 
+              className="py-3 px-6 rounded-2xl block btn-primary my-6 disabled:opacity-50 disabled:cursor-not-allowed bg-[var(--accent)] text-white font-semibold" 
               whileHover={!isLoading ? { scale: 1.05, boxShadow: "0 5px 15px rgba(0,0,0,0.2)" } : {}}
               whileTap={!isLoading ? { scale: 0.95 } : {}}
             >
               {isLoading ? 'Sending...' : 'Send Message'}
             </motion.button>
+
+            {/* Status Messages */}
+            {submitStatus === 'success' && (
+              <motion.div 
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="mb-4 p-3 bg-green-100 text-green-700 rounded-lg border border-green-300"
+              >
+                ✅ Message sent successfully! We'll get back to you soon.
+              </motion.div>
+            )}
+            
+            {submitStatus === 'error' && (
+              <motion.div 
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="mb-4 p-3 bg-red-100 text-red-700 rounded-lg border border-red-300"
+              >
+                ❌ Failed to send message. Please try again or contact us directly.
+              </motion.div>
+            )}
           </motion.form>
 
           {/* CONTACT INFO - unchanged */}
