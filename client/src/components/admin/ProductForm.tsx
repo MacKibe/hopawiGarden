@@ -25,12 +25,9 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onClose, onProductSa
       name: product?.name || '',
       description: product?.description || '',
       price: product?.price || 0,
-      stock: product?.stock || 0,
       category: product?.category || 'indoor',
       active: product?.active ?? true,
       path: product?.path || '',
-      rating: product?.rating || 0,
-      reviews: product?.reviews || 0,
     }
   });
 
@@ -81,9 +78,6 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onClose, onProductSa
         ...data,
         path: uploadedImageUrl, // Use the (possibly new) image URL
         price: Number(data.price), // Ensure number type
-        stock: Number(data.stock) || 0,
-        rating: Number(data.rating) || 0,
-        reviews: Number(data.reviews) || 0,
       };
 
       console.log('Final payload:', payload);
@@ -255,27 +249,8 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onClose, onProductSa
             )}
           </div>
 
-          {/* Inventory & Category */}
+          {/* Category */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Stock Quantity
-              </label>
-              <input
-                type="number"
-                min="0"
-                {...register('stock', { 
-                  min: { value: 0, message: 'Stock cannot be negative' },
-                  valueAsNumber: true
-                })}
-                className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed"
-                disabled={isSubmitting}
-              />
-              {errors.stock && (
-                <p className="text-red-500 text-sm mt-1">{errors.stock.message}</p>
-              )}
-            </div>
-
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Category *
@@ -297,49 +272,6 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onClose, onProductSa
             </div>
           </div>
 
-          {/* Ratings */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Rating (0-5)
-              </label>
-              <input
-                type="number"
-                step="0.1"
-                min="0"
-                max="5"
-                {...register('rating', {
-                  min: { value: 0, message: 'Rating must be at least 0' },
-                  max: { value: 5, message: 'Rating cannot exceed 5' },
-                  valueAsNumber: true
-                })}
-                className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed"
-                disabled={isSubmitting}
-              />
-              {errors.rating && (
-                <p className="text-red-500 text-sm mt-1">{errors.rating.message}</p>
-              )}
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Reviews Count
-              </label>
-              <input
-                type="number"
-                min="0"
-                {...register('reviews', {
-                  min: { value: 0, message: 'Reviews count cannot be negative' },
-                  valueAsNumber: true
-                })}
-                className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed"
-                disabled={isSubmitting}
-              />
-              {errors.reviews && (
-                <p className="text-red-500 text-sm mt-1">{errors.reviews.message}</p>
-              )}
-            </div>
-          </div>
 
           {/* Active Status */}
           <div className="flex items-center">

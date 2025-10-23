@@ -1,5 +1,5 @@
 import { useParams, useNavigate } from "react-router";
-import { FaCartPlus, FaStar, FaArrowLeft } from "react-icons/fa";
+import { FaCartPlus, FaArrowLeft } from "react-icons/fa";
 import { motion } from "framer-motion";
 import { useProduct } from "../../hooks/useProduct";
 import { useProducts } from "../../hooks/useProducts";
@@ -68,16 +68,8 @@ const ProductDetails = () => {
           <p className="text-gray-700 mb-4">{product.description}</p>
 
           {/* Ratings */}
-          <div className="flex items-center gap-1 mb-4">
-            {[...Array(5)].map((_, i) => (
-              <FaStar
-                key={i}
-                size={16}
-                fill={i < Math.floor(product.rating) ? "gold" : "lightgray"}
-              />
-            ))}
-            <span className="ml-2 text-sm text-gray-500">({product.reviews} reviews)</span>
-          </div>
+          {/* <div className="flex items-center gap-1 mb-4">
+          </div> */}
 
           <h2 className="text-2xl font-bold text-[var(--background)] mb-4">
             Kshs {product.price.toLocaleString()}

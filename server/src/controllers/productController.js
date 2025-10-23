@@ -74,13 +74,10 @@ export const updateProduct = async (req, res) => {
     const { 
       name, 
       description, 
-      price, 
-      stock, 
+      price,
       active, 
       category, 
-      path, 
-      rating, 
-      reviews 
+      path
     } = req.body;
 
     // Validate required fields
@@ -92,12 +89,9 @@ export const updateProduct = async (req, res) => {
       name: name.trim(),
       description: description?.trim() || '',
       price: Math.round(parseFloat(price)),
-      stock: stock ? parseInt(stock) : 0,
       active: active !== undefined ? active : true,
       category: category || 'indoor',
-      path: path?.trim() || '',
-      rating: rating ? parseFloat(rating) : 0,
-      reviews: reviews ? parseInt(reviews) : 0
+      path: path?.trim() || ''
     };
 
     console.log('Updating product:', { id, updateData });
@@ -166,10 +160,7 @@ export const createProduct = async (req, res) => {
       name, 
       description, 
       price, 
-      path, 
-      rating, 
-      reviews, 
-      stock, 
+      path,
       category,
       active 
     } = req.body;
@@ -191,9 +182,6 @@ export const createProduct = async (req, res) => {
       description: description?.trim() || '',
       price: Math.round(parseFloat(price)),
       path: path?.trim() || null, // Use null instead of empty string
-      rating: rating ? Math.min(5, Math.max(0, parseFloat(rating))) : 0,
-      reviews: reviews ? parseInt(reviews) : 0,
-      stock: stock ? parseInt(stock) : 0,
       category: category || 'indoor',
       active: active !== undefined ? active : true,
       created_at: new Date().toISOString()

@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { FaCartPlus, FaStar } from "react-icons/fa";
+import { FaCartPlus} from "react-icons/fa";
 import { useNavigate } from "react-router";
 import { useCart } from "../../context/CartContext";
 import { cardVariants } from "../../utils/variants";
@@ -87,27 +87,6 @@ const ProductList = ({products, loading, error}: ProductListProps) => {
               Kshs {product.price.toLocaleString()}
             </h6>
 
-            <div className="flex items-center gap-1 my-2">
-              {[...Array(5)].map((_, i) => {
-                const ratingValue = i + 1;
-                return (
-                  <motion.div key={i} className="relative" whileHover={{ scale: 1.2 }}>
-                    <FaStar size={10} />
-                    {product.rating >= ratingValue ? (
-                      <FaStar size={10} fill="gold" className="absolute top-0 left-0" />
-                    ) : product.rating >= ratingValue - 0.5 ? (
-                      <div
-                        className="absolute top-0 left-0 overflow-hidden"
-                        style={{ width: "50%" }}
-                      >
-                        <FaStar size={10} fill="gold" />
-                      </div>
-                    ) : null}
-                  </motion.div>
-                );
-              })}
-              <span className="text-xs flex items-center">({product.reviews})</span>
-            </div>
           </div>
         </motion.div>
       ))}

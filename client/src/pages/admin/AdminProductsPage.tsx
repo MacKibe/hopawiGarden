@@ -184,9 +184,6 @@ const AdminProductsPage = () => {
                   Price
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Stock
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Status
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -224,17 +221,6 @@ const AdminProductsPage = () => {
                   </td>
                   <td className="px-6 py-4 text-gray-900 font-semibold">
                     Kshs {product.price.toLocaleString()}
-                  </td>
-                  <td className="px-6 py-4">
-                    <span className={`px-3 py-1 rounded-full text-xs font-medium ${
-                      (product.stock || 0) > 10 
-                        ? 'bg-green-100 text-green-800' 
-                        : (product.stock || 0) > 0 
-                        ? 'bg-yellow-100 text-yellow-800' 
-                        : 'bg-red-100 text-red-800'
-                    }`}>
-                      {product.stock || 0} in stock
-                    </span>
                   </td>
                   <td className="px-6 py-4">
                     <span className={`px-3 py-1 rounded-full text-xs font-medium ${
