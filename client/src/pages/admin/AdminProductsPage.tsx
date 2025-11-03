@@ -44,12 +44,12 @@ const AdminProductsPage = () => {
     setShowForm(true);
   };
 
-  const handleDelete = async (productId: string) => {
+  const handleDelete = async (product_id: string) => {
     if (!confirm('Are you sure you want to delete this product? This action cannot be undone.')) return;
 
     try {
-      await api.delete(`/products/${productId}`);
-      setProducts(products.filter(p => p.id !== productId));
+      await api.delete(`/products/${product_id}`);
+      setProducts(products.filter(p => p.product_id !== product_id));
       toast.success('Product deleted successfully!');
     } catch (err: unknown) {
       let errorMessage = 'Failed to delete product';
@@ -193,7 +193,7 @@ const AdminProductsPage = () => {
             </thead>
             <tbody className="divide-y divide-gray-200">
               {filteredProducts.map((product) => (
-                <tr key={product.id} className="hover:bg-gray-50 transition-colors">
+                <tr key={product.product_id} className="hover:bg-gray-50 transition-colors">
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-3">
                       <img
@@ -241,7 +241,7 @@ const AdminProductsPage = () => {
                         <FaEdit />
                       </button>
                       <button
-                        onClick={() => handleDelete(product.id)}
+                        onClick={() => handleDelete(product.product_id)}
                         className="text-red-600 hover:text-red-900 p-2 rounded-lg hover:bg-red-50 transition-colors"
                         title="Delete product"
                       >

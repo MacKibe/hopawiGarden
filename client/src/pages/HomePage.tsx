@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import Testimonial from "../components/home/Testimonial";
+// import Testimonial from "../components/home/Testimonial";
 import HeroSection from "../components/home/HeroSection";
 import FeatureSection from "../components/home/FeaturesSection";
 import FeaturedProduct from "../components/home/FeaturedProduct";
@@ -45,12 +45,12 @@ const HomePage = () => {
         <FeaturedProduct />
       </motion.section>
       
-      {/* Testimonials */}
+      {/* Testimonials 
       <motion.section>
         <h3>What Our Customers Say</h3>
         <h4>Join thousands of happy plant clients</h4>
         <Testimonial />
-      </motion.section>
+      </motion.section>*/}
     </motion.main>
   )
 }

@@ -103,7 +103,7 @@ const AdminDashboard = () => {
           {recentProducts.length > 0 ? (
             <div className="space-y-4">
               {recentProducts.map((product) => (
-                <div key={product.id} className="flex items-center justify-between py-2">
+                <div key={product.product_id} className="flex items-center justify-between py-2">
                   <div className="flex items-center space-x-4">
                     <img
                       src={product.path}

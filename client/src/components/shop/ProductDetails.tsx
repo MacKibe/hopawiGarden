@@ -91,13 +91,13 @@ const ProductDetails = () => {
         <h3 className="text-xl font-bold mb-4">You may also like</h3>
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
           {products
-            .filter((p) => p.id !== product.id)
+            .filter((p) => p.product_id !== product.product_id)
             .slice(0, 4)
             .map((related) => (
               <motion.div
-                key={related.id}
+                key={related.product_id}
                 className="p-2 border rounded-lg cursor-pointer hover:shadow-md"
-                onClick={() => navigate(`/product/${related.id}`)}
+                onClick={() => navigate(`/product/${related.product_id}`)}
                 whileHover={{ y: -3 }}
               >
                 <img

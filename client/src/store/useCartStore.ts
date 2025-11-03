@@ -10,13 +10,13 @@ export const useCartStore = create<CartState>()(
       // Add or update item in cart
       addItem: (item: CartItem) => {
         set((state) => {
-          const existingItem = state.items.find((i) => i.id === item.id);
+          const existingItem = state.items.find((i) => i.product_id === item.product_id);
           
           if (existingItem) {
             // Update quantity if item exists
             return {
               items: state.items.map((i) =>
-                i.id === item.id
+                i.product_id === item.product_id
                   ? { 
                       ...i, 
                       quantity: i.quantity + item.quantity
@@ -27,7 +27,7 @@ export const useCartStore = create<CartState>()(
           }
           // Add new item
           return { 
-            items: [...state.items, { ...item, id: String(item.id) }],
+            items: [...state.items, { ...item, id: String(item.product_id) }],
            };
         });
       },
@@ -35,7 +35,7 @@ export const useCartStore = create<CartState>()(
       // Remove item by ID
       removeItem: (id: string) => {
         set((state) => ({
-          items: state.items.filter((item) => item.id !== id)
+          items: state.items.filter((item) => item.product_id !== id)
         }));
       },
 
@@ -45,7 +45,7 @@ export const useCartStore = create<CartState>()(
         
         set((state) => ({
           items: state.items.map((item) =>
-            item.id === id 
+            item.product_id === id 
               ? { ...item, quantity }
               : item
           )
@@ -66,7 +66,7 @@ export const useCartStore = create<CartState>()(
         ),
 
       // Optional helper method
-      getItem: (id: string) => get().items.find((item) => item.id === id)
+      getItem: (id: string) => get().items.find((item) => item.product_id === id)
     }),
     {
       name: "cart-storage",

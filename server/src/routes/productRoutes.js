@@ -10,7 +10,7 @@ router.get("/:id", getProductById);
 router.post("/", authMiddleware, createProduct);
 
 // admin routes
-router.put("/:id", authMiddleware, updateProduct);
-router.delete("/:id", authMiddleware, deleteProduct);
+router.put("/:product_id", authMiddleware, updateProduct);
+router.delete("/:product_id", authMiddleware, deleteProduct);
 
 export default router;

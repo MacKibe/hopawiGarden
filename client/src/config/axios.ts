@@ -6,7 +6,7 @@ const api: AxiosInstance = axios.create({
   baseURL: import.meta.env.MODE === 'production'
     ? 'https://hopawigarden-1.onrender.com/api'
     : 'http://localhost:10000/api',
-  timeout: 10000,
+  timeout: 30000,
 });
 
 api.interceptors.request.use(

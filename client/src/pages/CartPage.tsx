@@ -12,12 +12,12 @@ const CartPage = () => {
     if (newQuantity < 1) return;
     
     setCartItems(cartItems.map(item => 
-      item.id === id ? { ...item, quantity: newQuantity } : item
+      item.product_id === id ? { ...item, quantity: newQuantity } : item
     ));
   };
 
   const removeItem = (id: string) => {
-    setCartItems(cartItems.filter(item => item.id !== id));
+    setCartItems(cartItems.filter(item => item.product_id !== id));
   };
 
   const totalItems = cartItems.reduce((sum: number, item: CartItem) => sum + item.quantity, 0);
@@ -60,7 +60,7 @@ const CartPage = () => {
             <div className="divide-y">
               {cartItems.map((item: CartItem) => (
                 <motion.div 
-                  key={item.id}
+                  key={item.product_id}
                   className="p-4 md:p-6 flex flex-col sm:flex-row items-start sm:items-center gap-4"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -82,7 +82,7 @@ const CartPage = () => {
                     {/* Quantity Controls */}
                     <div className="flex items-center space-x-3 mt-2">
                       <button
-                        onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                        onClick={() => updateQuantity(item.product_id, item.quantity - 1)}
                         className="touch-target w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center hover:bg-gray-200 transition"
                       >
                         <FaMinus size={12} />
@@ -91,7 +91,7 @@ const CartPage = () => {
                       <span className="font-semibold w-8 text-center">{item.quantity}</span>
                       
                       <button
-                        onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                        onClick={() => updateQuantity(item.product_id, item.quantity + 1)}
                         className="touch-target w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center hover:bg-gray-200 transition"
                       >
                         <FaPlus size={12} />
@@ -105,7 +105,7 @@ const CartPage = () => {
                       Kshs {(item.price * item.quantity).toLocaleString()}
                     </p>
                     <button
-                      onClick={() => removeItem(item.id)}
+                      onClick={() => removeItem(item.product_id)}
                       className="text-red-500 hover:text-red-700 mt-2 flex items-center space-x-1 text-sm touch-target"
                     >
                       <FaTrash size={14} />

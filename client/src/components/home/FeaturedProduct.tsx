@@ -105,11 +105,7 @@ const FeaturedProduct = () => {
           }}
         >
           {featuredProducts.map((product, index) => (
-            <motion.div
-              key={product.id}
-              className="container bg-white"
-              variants={itemVariants}
-              custom={index}
+            <motion.div key={product.product_id} className="container bg-white" variants={itemVariants} custom={index}
               whileHover={{ 
                 y: -5, 
                 boxShadow: "0 10px 20px rgba(0,0,0,0.1)",
@@ -138,14 +134,8 @@ const FeaturedProduct = () => {
                 <h6 className="text-[var(--background)] text-xl font-semibold">
                   Kshs {product.price?.toLocaleString() || '0'}
                 </h6>
-                <Link 
-                  to={`/product/${product.id}`} 
-                  className="text-[var(--background)] hover:text-[var(--accent)] transition"
-                >
-                  <motion.span
-                    whileHover={{ scale: 1.2 }}
-                    whileTap={{ scale: 0.9 }}
-                  >
+                <Link to={`/product/${product.product_id}`} className="text-[var(--background)] hover:text-[var(--accent)] transition">
+                  <motion.span whileHover={{ scale: 1.2 }} whileTap={{ scale: 0.9 }}>
                     <FaCartPlus size={24}/>
                   </motion.span>
                 </Link>
@@ -154,17 +144,9 @@ const FeaturedProduct = () => {
           ))}
         </motion.div>
         
-        <motion.div 
-          className="mt-8 text-center"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.4, duration: 0.6 }}
-        >
+        <motion.div className="mt-8 text-center" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.4, duration: 0.6 }}>
           <Link to="/shop">
-            <motion.button 
-              className="bg-[var(--background)] text-[var(--primary)] py-3 px-6 rounded-lg font-semibold"
-              whileHover={{ 
+            <motion.button className="bg-[var(--background)] text-[var(--primary)] py-3 px-6 rounded-lg font-semibold" whileHover={{ 
                 scale: 1.05, 
                 boxShadow: "0 5px 15px rgba(0,0,0,0.2)" 
               }}

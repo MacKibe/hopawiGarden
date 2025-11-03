@@ -17,8 +17,8 @@
     "express": "^4.21.2",
     "jsonwebtoken": "^9.0.2",
     "morgan": "^1.10.1",
-    "nodemailer": "^7.0.9",
-    "postgres": "^3.4.7"
+    "postgres": "^3.4.7",
+    "resend": "^6.4.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.33.0",

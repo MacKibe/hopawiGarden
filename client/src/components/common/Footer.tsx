@@ -42,7 +42,7 @@
                                 <a href="https://www.instagram.com/hopawi_gardens/" target="_blank" aria-label="Instagram" className="hover:text-[var(--accent)] transition">
                                     <FaInstagram size={30}/>
                                 </a>
-                                <a href="https://www.tiktok.com/@www.hopawi_gardens" target="_blank" aria-label="TikTok" className="hover:text-[var(--accent)] transition">
+                                <a href="https://www.tiktok.com/@hopawi_gardens1" target="_blank" aria-label="TikTok" className="hover:text-[var(--accent)] transition">
                                     <FaTiktok size={30}/>
                                 </a>
                             </div>
@@ -64,9 +64,8 @@
                             <ul className="space-y-2">
                                 <li><button onClick={() => handleNav("service")} className="hover:text-[var(--accent)] transition">Indoor Potted Plants</button></li>
                                 <li><button onClick={() => handleNav("service")} className="hover:text-[var(--accent)] transition">Outdoor Potted Plants</button></li>
-                                <li><button onClick={() => handleNav("service")} className="hover:text-[var(--accent)] transition">Landscaping</button></li>
-                                <li><button onClick={() => handleNav("service")} className="hover:text-[var(--accent)] transition">Consultation</button></li>
-                                <li><button onClick={() => handleNav("service")} className="hover:text-[var(--accent)] transition">Soil Mixture</button></li>
+                                <li><button onClick={() => handleNav("service")} className="hover:text-[var(--accent)] transition">Landscaping services</button></li>
+                                <li><button onClick={() => handleNav("service")} className="hover:text-[var(--accent)] transition">HOPAWI Composite mixture</button></li>
                             </ul>
                         </div>
                   </div>

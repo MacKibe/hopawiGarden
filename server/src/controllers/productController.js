@@ -46,7 +46,7 @@ export const getProductById = async (req, res) => {
     const { data, error } = await supabase
       .from("product")
       .select("*")
-      .eq("id", id)
+      .eq("product_id", id)
       .single();
 
     if (error) {
@@ -70,7 +70,7 @@ export const getProductById = async (req, res) => {
  */
 export const updateProduct = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { product_id } = req.params;
     const { 
       name, 
       description, 
@@ -94,12 +94,12 @@ export const updateProduct = async (req, res) => {
       path: path?.trim() || ''
     };
 
-    console.log('Updating product:', { id, updateData });
+    console.log('Updating product:', { product_id, updateData });
 
     const { data, error } = await supabase
       .from('product')
       .update(updateData)
-      .eq('id', id)
+      .eq('product_id', product_id)
       .select()
       .single();
 
@@ -111,7 +111,6 @@ export const updateProduct = async (req, res) => {
     if (!data) {
       return res.status(404).json({ error: 'Product not found' });
     }
-
     console.log('Product updated successfully:', data);
     res.json(data);
   } catch (error) {
@@ -134,7 +133,7 @@ export const deleteProduct = async (req, res) => {
     const { error } = await supabase
       .from('product')
       .delete()
-      .eq('id', id);
+      .eq('product_id', id);
 
     if (error) {
       console.error('Delete product error:', error);

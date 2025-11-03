@@ -26,7 +26,7 @@ const HeroSection = () => {
           Discover our curated collection of beautiful potted plants. Transform your home into a natural sanctuary with nature delivered to your doorstep.
         </motion.p>
         
-        <motion.div className="flex gap-4 justify-center py-4" variants={itemVariants} transition={{ delay: 0.4 }}>
+        <motion.div className="flex flex-col md:flex-row gap-4 justify-center py-4" variants={itemVariants} transition={{ delay: 0.4 }}>
           <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} transition={{ type: "spring", stiffness: 300 }}>
             <Link to="/shop" className="bg-[var(--background)] text-[var(--text)] py-3 px-6 rounded-2xl block">
               Shop Now

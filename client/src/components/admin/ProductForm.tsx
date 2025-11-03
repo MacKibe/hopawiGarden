@@ -12,7 +12,7 @@ interface ProductFormProps {
 }
 
 // Interface for form data (exclude id for new products)
-type ProductFormData = Omit<Product, 'id'>;
+type ProductFormData = Omit<Product, 'product_id'>;
 
 const ProductForm: React.FC<ProductFormProps> = ({ product, onClose, onProductSaved }) => {
   const [loading, setLoading] = useState(false);
@@ -85,7 +85,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onClose, onProductSa
       let response;
       if (product) {
         // Update existing product
-        response = await api.put(`/products/${product.id}`, payload);
+        response = await api.put(`/products/${product.product_id}`, payload);
         toast.success('Product updated successfully!');
       } else {
         // Create new product

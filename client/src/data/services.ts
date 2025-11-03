@@ -21,13 +21,8 @@ export const services:ServicesTypes[] = [
         icon: React.createElement(PiPlantDuotone, {size: iconSize, className: "text-[var(--accent)]"})
     },
     {
-        title: " HOPAWI soil mix",
+        title: " HOPAWI Composite mixture",
         description: "Specialized soil blends tailored to different plant needs for optimal growth.",
-        icon: React.createElement(PiPlantDuotone, {size: iconSize, className: "text-[var(--accent)]"})
-    },
-    {
-        title: "Plant consultation",
-        description: "Expert advice on plant selection, care, and also plan workshops for training and information sharing to our client and customers..",
         icon: React.createElement(PiPlantDuotone, {size: iconSize, className: "text-[var(--accent)]"})
     },
     {
@@ -36,7 +31,7 @@ export const services:ServicesTypes[] = [
         icon: React.createElement(PiPlantDuotone, {size: iconSize, className: "text-[var(--accent)]"})
     },
     {
-        title: "Plant maintenance",
+        title: "Plant care maintenance",
         description: "Planned regular routine mainatianance service including watering pruning, leaf care, fertilizing, and pest control.",
         icon: React.createElement(PiPlantDuotone, {size: iconSize, className: "text-[var(--accent)]"})
     }

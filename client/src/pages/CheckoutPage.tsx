@@ -242,7 +242,7 @@ const CheckoutPage = () => {
             
             <div className="space-y-4 mb-6">
               {cartItems.map((item: CartItem) => (
-                <div key={item.id} className="flex justify-between items-center">
+                <div key={item.product_id} className="flex justify-between items-center">
                   <div className="flex items-center space-x-3 min-w-0">
                     <div 
                       className="w-12 h-12 bg-cover bg-center rounded flex-shrink-0"
