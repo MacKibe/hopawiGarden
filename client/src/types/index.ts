@@ -8,15 +8,12 @@ export interface Product {
   category?: string;
 }
 
-// For ProductDetails component props in future
-// export ProductDetails extends Product {
-// }
-
 export interface ProductListProps{
   products: Product[];
   loading: boolean;
   error: string | null;
 }
+
 export interface CartItem extends Product {
   quantity: number;
 }
@@ -37,6 +34,9 @@ export interface CartDrawerProps {
   setCartItems: React.Dispatch<React.SetStateAction<CartItem[]>>;
 }
 
+// Delivery method type
+export type DeliveryMethod = 'delivery' | 'pickup';
+
 export interface Order {
   id: string;
   userId: string;
@@ -47,6 +47,15 @@ export interface Order {
     lastName: string;
     email: string;
     phone: string;
+    address: string;
+    city: string;
+    postalCode: string;
+    country: string;
+    deliveryInstructions?: string;
+  };
+  // Delivery method and related fields
+  deliveryMethod: DeliveryMethod;
+  deliveryAddress?: {
     address: string;
     city: string;
     postalCode: string;
@@ -65,10 +74,13 @@ export interface CheckoutFormData {
   firstName: string;
   lastName: string;
   phone: string;
-  address: string;
-  city: string;
-  postalCode: string;
-  country: string;
+  // Delivery method field
+  deliveryMethod: DeliveryMethod;
+  // Address fields become optional based on delivery method
+  address?: string;
+  city?: string;
+  postalCode?: string;
+  country?: string;
   deliveryInstructions?: string;
 }
 
