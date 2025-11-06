@@ -142,3 +142,17 @@ export interface CreateOrderResponse {
   orderId: string;
   message: string;
 }
+
+// Add these filter interfaces
+export interface ProductFilters {
+  category?: string;
+  priceRange?: [number, number];
+  leafSize?: string;
+  isFlowering?: boolean;
+  sunlightExposure?: string;
+  searchQuery?: string;
+}
+
+export interface FilterState extends ProductFilters {
+  sortBy: 'featured' | 'price-low' | 'price-high' | 'name';
+}
