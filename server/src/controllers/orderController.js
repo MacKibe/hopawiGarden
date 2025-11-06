@@ -26,17 +26,17 @@ const generateCustomerEmailTemplate = (order, items) => {
     `
     : `
       <h3 style="color: #4CAF50; margin-top: 20px;">🏪 Pickup Information</h3>
-      <p><strong>Store Address:</strong> HOPAWI GARDENS, Garden City Mall, Nairobi</p>
+      <p><strong>Store Address:</strong> HOPAWI GARDENS, Greenfield Estate, Kamiti Rd, Nairobi.</p>
       <p><strong>Hours:</strong> Mon-Sun, 8:00 AM - 8:00 PM</p>
-      <p><strong>Contact:</strong> 0712 345 678</p>
+      <p><strong>Contact:</strong>(+254) 720 804523</p>
       <p><strong>Estimated Ready Time:</strong> 2 hours</p>
       <p>📞 We'll call you when your order is ready for pickup</p>
     `;
 
   return `
-    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #f9f9f9; padding: 20px;">
-      <div style="background: #4CAF50; color: white; padding: 20px; text-align: center; border-radius: 10px 10px 0 0;">
-        <h1 style="margin: 0;">🌿 HOPAWI GARDENS</h1>
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: ##f7e1c3; padding: 20px;">
+      <div style="background: #C8E6C9; color: white; padding: 20px; text-align: center; border-radius: 10px 10px 0 0;">
+        <img src=${process.env.LOGO_URL} alt="HOPAWI GARDENS logo" width="150">
         <p style="margin: 5px 0 0 0; opacity: 0.9;">Order Confirmation</p>
       </div>
       
@@ -68,14 +68,10 @@ const generateCustomerEmailTemplate = (order, items) => {
         ${deliveryInfo}
 
         <h3 style="color: #4CAF50; margin-top: 20px;">💳 Payment Information</h3>
-        <p><strong>Payment Method:</strong> M-Pesa ${order.delivery_method === 'delivery' ? 'on Delivery' : 'at Pickup'}</p>
-        <p>${order.delivery_method === 'delivery' 
-          ? 'You will pay via M-Pesa when your plants are delivered.' 
-          : 'You will pay via M-Pesa when you collect your order from our store.'
-        }</p>
+        <p><strong>Payment Method:</strong> M-Pesa Before Delivery Use this number for  payment <strong>(+254) 720 804523</strong></p>
 
         <div style="background: #e8f5e8; padding: 15px; border-radius: 5px; margin: 20px 0; border-left: 4px solid #4CAF50;">
-          <p style="margin: 0;"><strong>Need help?</strong> Reply to this email or call us at 0712 345 678</p>
+          <p style="margin: 0;"><strong>Need help?</strong> Reply to this email or call us at (+254) 720 804523</p>
         </div>
 
         <p style="text-align: center; color: #666; font-size: 0.9em; margin-top: 30px;">
@@ -102,29 +98,30 @@ const generateAdminEmailTemplate = (order, items) => {
     : `<p><strong>Pickup Method:</strong> Customer will collect from store</p>`;
 
   return `
-    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-      <div style="background: #ff6b35; color: white; padding: 20px; text-align: center;">
-        <h1 style="margin: 0;">🛎️ NEW ORDER - HOPAWI GARDENS</h1>
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: ##f7e1c3;">
+      <div style="background: #C8E6C9; color: white; padding: 20px; text-align: center;">
+        <img src=${process.env.LOGO_URL} alt="HOPAWI GARDENS logo" width="150">
+        <h1 style="margin: 0;">🛎️ NEW ORDER</h1>
         <p style="margin: 5px 0 0 0;">Order #${order.id.slice(0, 8)}</p>
       </div>
       
       <div style="background: white; padding: 20px; border: 1px solid #ddd;">
-        <h2 style="color: #ff6b35;">New Order Received</h2>
+        <h2 style="color: #4CAF50;">New Order Received</h2>
         
-        <h3 style="color: #ff6b35;">👤 Customer Information</h3>
+        <h3 style="color: #4CAF50;">👤 Customer Information</h3>
         <p><strong>Name:</strong> ${order.customer_name}</p>
         <p><strong>Email:</strong> ${order.customer_email}</p>
         <p><strong>Delivery Method:</strong> ${order.delivery_method === 'delivery' ? 'Home Delivery' : 'Store Pickup'}</p>
         
         ${deliveryDetails}
 
-        <h3 style="color: #ff6b35; margin-top: 20px;">📦 Order Details</h3>
+        <h3 style="color: #4CAF50; margin-top: 20px;">📦 Order Details</h3>
         <table style="width: 100%; border-collapse: collapse; margin: 15px 0;">
           <thead>
             <tr style="background: #f5f5f5;">
-              <th style="padding: 10px; text-align: left; border-bottom: 2px solid #ff6b35;">Product</th>
-              <th style="padding: 10px; text-align: center; border-bottom: 2px solid #ff6b35;">Qty</th>
-              <th style="padding: 10px; text-align: right; border-bottom: 2px solid #ff6b35;">Total</th>
+              <th style="padding: 10px; text-align: left; border-bottom: 2px solid #4CAF50;">Product</th>
+              <th style="padding: 10px; text-align: center; border-bottom: 2px solid #4CAF50;">Qty</th>
+              <th style="padding: 10px; text-align: right; border-bottom: 2px solid #4CAF50;">Total</th>
             </tr>
           </thead>
           <tbody>
@@ -272,10 +269,30 @@ export const createOrder = async (req, res) => {
       return res.status(500).json({ error: itemsError.message });
     }
 
+    // ✅ FIX: Get the actual order items from database for emails
+    const { data: savedOrderItems, error: fetchError } = await supabase
+      .from('order_items')
+      .select('*')
+      .eq('order_id', order.id);
+
+    let itemsForEmail;
+    if (fetchError) {
+      console.error('Error fetching order items:', fetchError);
+      // Fallback to original items
+      itemsForEmail = items;
+    } else {
+      // Use the actual saved order items
+      itemsForEmail = savedOrderItems;
+    }
+
+    // Debug: Check what's in the items
+    console.log('📧 Email items data:', itemsForEmail);
+    console.log('📧 First item product_name:', itemsForEmail[0]?.product_name);
+
     // Send emails (don't await - send in background)
     Promise.all([
-      sendCustomerConfirmationEmail(order, items),
-      sendAdminNotificationEmail(order, items)
+      sendCustomerConfirmationEmail(order, itemsForEmail),
+      sendAdminNotificationEmail(order, itemsForEmail)
     ]).then(([customerSuccess, adminSuccess]) => {
       if (!customerSuccess) {
         console.warn("⚠️ Customer email failed to send");
