@@ -1,37 +1,22 @@
 import { motion } from "framer-motion";
-import { FaCartPlus} from "react-icons/fa";
+import { FaCartPlus } from "react-icons/fa";
 import { useNavigate } from "react-router";
-import { useCart } from "../../context/CartContext";
+import { useCartStore } from "../../store/useCartStore"; // Change this import
 import { cardVariants } from "../../utils/variants";
-import type { ProductListProps } from "../../types";
+import type { ProductListProps, Product } from "../../types";
 
-const ProductList = ({products, loading, error}: ProductListProps) => {
+const ProductList = ({products}: ProductListProps) => {
   const navigate = useNavigate();
-  const { addToCart } = useCart();
+  const { addItem } = useCartStore(); // Use Zustand instead of Context
 
-  if (loading) {
-    return (
-      <div className="flex justify-center items-center py-12">
-        <div className="text-lg">Loading products...</div>
-      </div>
-    );
-  }
+  const handleAddToCart = (product: Product) => {
+    addItem({
+      ...product,
+      quantity: 1
+    });
+  };
 
-  if (error) {
-    return (
-      <div className="flex justify-center items-center py-12">
-        <div className="text-red-500 text-lg">Error: {error}</div>
-      </div>
-    );
-  }
-
-  if (!products || products.length === 0) {
-    return (
-      <div className="flex justify-center items-center py-12">
-        <div className="text-lg">No products available</div>
-      </div>
-    );
-  }
+  // ... rest of your component remains the same
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
@@ -63,10 +48,13 @@ const ProductList = ({products, loading, error}: ProductListProps) => {
                 transition: { duration: 0.2 },
               }}
             >
-              <motion.button className="bg-[var(--primary)] text-black px-4 py-2 rounded-full flex items-center gap-2" whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} 
+              <motion.button 
+                className="bg-[var(--primary)] text-black px-4 py-2 rounded-full flex items-center gap-2" 
+                whileHover={{ scale: 1.05 }} 
+                whileTap={{ scale: 0.95 }} 
                 onClick={(e) => {
                   e.stopPropagation();
-                  addToCart(product);
+                  handleAddToCart(product);
                 }}
               >
                 <FaCartPlus size={16} />
@@ -84,10 +72,15 @@ const ProductList = ({products, loading, error}: ProductListProps) => {
               <h6 className="font-bold text-[var(--background)] mt-4">
                 Kshs {product.price.toLocaleString()}
               </h6>
-              </div>
+            </div>
             <div>
-              <button onClick={(e) => {e.stopPropagation();addToCart(product);}} 
-              className="text-[var(--background)] hover:text-[var(--accent)] transition">
+              <button 
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleAddToCart(product);
+                }} 
+                className="text-[var(--background)] hover:text-[var(--accent)] transition"
+              >
                 <motion.span whileHover={{ scale: 1.2 }} whileTap={{ scale: 0.9 }}>
                   <FaCartPlus size={30}/>
                 </motion.span>

@@ -11,7 +11,6 @@ import RegisterPage from './pages/auth/RegisterPage';
 import ProductDetails from './components/shop/ProductDetails';
 import ProfilePage from './pages/ProfilePage';
 import PrivateRoute from './components/common/PrivateRoute';
-import { CartProvider } from './context/CartContext';
 import ScrollToTop from './components/common/ScrollToTop';
 import { Toaster } from 'react-hot-toast';
 import AdminRoute from './components/common/AdminRoute';
@@ -26,7 +25,6 @@ import PublicLayout from './layouts/PublicLayout';
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <BrowserRouter>
-      <CartProvider>
         <Toaster position="top-right" />
         <ScrollToTop/>
         <Routes>
@@ -79,7 +77,6 @@ createRoot(document.getElementById('root')!).render(
 
           </Route>
         </Routes>
-      </CartProvider>
     </BrowserRouter>
   </StrictMode>
 );

@@ -23,6 +23,7 @@ export interface CartState {
   addItem: (item: CartItem) => void;
   removeItem: (id: string) => void;
   updateQuantity: (id: string, quantity: number) => void;
+  clearCart: () => void;
   totalItems: () => number;
   totalPrice: () => number;
   getItem: (id: string) => CartItem | undefined;
@@ -116,4 +117,28 @@ export interface AuthState {
 export interface AuthResponse {
   token: string;
   user: User;
+}
+
+export interface CreateOrderRequest {
+  customerEmail: string;
+  customerName: string;
+  deliveryMethod: 'delivery' | 'pickup';
+  shippingAddress?: string;
+  shippingCity?: string;
+  shippingState?: string;
+  shippingZip?: string;
+  pickupLocation?: string;
+  items: Array<{
+    productId: string;
+    productName: string;
+    quantity: number;
+    price: number;
+  }>;
+  totalAmount: number;
+}
+
+export interface CreateOrderResponse {
+  success: boolean;
+  orderId: string;
+  message: string;
 }

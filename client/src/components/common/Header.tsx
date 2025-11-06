@@ -2,17 +2,18 @@ import { Link, useNavigate } from "react-router";
 import { FaShoppingCart, FaBars, FaTimes } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
 import useAuthStore from "../../store/useAuthStore";
-import { useCart } from "../../context/CartContext";
+import { useCartStore } from "../../store/useCartStore"; // Add this import
 import type { CartItem } from "../../types";
 import { useState } from "react";
+import logo from "/assets/HOPAWI_GARDENS_LOGO.png";
 
 const Header = () => {
   const { user, logout, isAuthenticated } = useAuthStore();
-  const { cartItems } = useCart();
+  const { items: cartItems } = useCartStore(); // Use Zustand instead of useCart()
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const totalItems = cartItems.reduce(
-    (sum, item: CartItem) => sum + item.quantity,
+    (sum: number, item: CartItem) => sum + item.quantity, // Add type annotation
     0
   );
 
@@ -35,7 +36,7 @@ const Header = () => {
 
   return (
     <>
-      <header className="sticky top-0 z-50 flex items-center justify-between p-4 bg-[var(--background)] text-[var(--primary)] shadow-md">
+      <header className="sticky top-0 z-50 flex items-center justify-between p-4 bg-[var(--secondary)] text-[var(--background)] text-bold shadow-md">
         {/* Logo */}
         <div>
           <Link
@@ -43,7 +44,7 @@ const Header = () => {
             className="text-xl md:text-2xl font-bold hover:text-[var(--accent)] transition touch-target"
             onClick={closeMobileMenu}
           >
-            HOPAWI GARDENS
+            <img src={logo} alt="Hopawi Gardens Logo" className="h-8 md:h-10"/>
           </Link>
         </div>
 

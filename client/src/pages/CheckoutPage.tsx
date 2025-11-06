@@ -3,13 +3,14 @@ import { useNavigate } from 'react-router';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { useCart } from '../context/CartContext';
 import useAuthStore from '../store/useAuthStore';
+import { useCartStore } from '../store/useCartStore'; // Import Zustand store directly
 import { toast } from 'react-hot-toast';
 import type { CartItem, DeliveryMethod } from '../types';
 import DeliveryMethodSelector from '../components/checkout/DeliveryMethodSelector';
+import { orderService } from '../services/orderService';
 
-// Updated schema with delivery method
+// Updated schema with pickup location
 const checkoutSchema = z.object({
   firstName: z.string().min(1, 'First name is required').max(50, 'First name too long'),
   lastName: z.string().min(1, 'Last name is required').max(50, 'Last name too long'),
@@ -20,25 +21,32 @@ const checkoutSchema = z.object({
   postalCode: z.string().optional(),
   country: z.string().optional(),
   deliveryInstructions: z.string().optional(),
+  pickupLocation: z.string().optional(),
 }).refine((data) => {
-  // If delivery method is 'delivery', address fields are required
   if (data.deliveryMethod === 'delivery') {
     return !!data.address && !!data.city && !!data.postalCode && !!data.country;
   }
   return true;
 }, {
   message: "Address, city, postal code, and country are required for delivery",
-  path: ["address"] // Path to show the error
+  path: ["address"]
+}).refine((data) => {
+  if (data.deliveryMethod === 'pickup') {
+    return !!data.pickupLocation;
+  }
+  return true;
+}, {
+  message: "Pickup location is required for store pickup",
+  path: ["pickupLocation"]
 });
 
 type CheckoutFormData = z.infer<typeof checkoutSchema>;
 
 const CheckoutPage = () => {
   const navigate = useNavigate();
-  const { cartItems, setCartItems } = useCart();
+  const { items: cartItems, clearCart } = useCartStore(); // Use Zustand store directly
   const { user } = useAuthStore();
   const [isProcessing, setIsProcessing] = useState(false);
-  const [deliveryMethod, setDeliveryMethod] = useState<DeliveryMethod>('delivery');
 
   const {
     register,
@@ -51,6 +59,7 @@ const CheckoutPage = () => {
     defaultValues: {
       deliveryMethod: 'delivery',
       country: 'Kenya',
+      pickupLocation: 'HOPAWI GARDENS, Garden City Mall, Nairobi',
     },
   });
 
@@ -62,7 +71,6 @@ const CheckoutPage = () => {
   const totalAmount = totalPrice + shippingCost;
 
   const handleDeliveryMethodChange = (method: DeliveryMethod) => {
-    setDeliveryMethod(method);
     setValue('deliveryMethod', method);
     
     // Reset address fields when switching to pickup
@@ -71,6 +79,9 @@ const CheckoutPage = () => {
       setValue('city', '');
       setValue('postalCode', '');
       setValue('deliveryInstructions', '');
+      setValue('pickupLocation', 'HOPAWI GARDENS, Garden City Mall, Nairobi');
+    } else {
+      setValue('pickupLocation', '');
     }
   };
 
@@ -81,51 +92,56 @@ const CheckoutPage = () => {
       return;
     }
 
+    if (cartItems.length === 0) {
+      toast.error('Your cart is empty');
+      return;
+    }
+
     setIsProcessing(true);
     
     try {
-      const order = {
-        id: `ORD-${Date.now()}`,
-        userId: user.id,
-        userEmail: user.email,
-        items: cartItems,
-        customerInfo: {
-          ...data,
-          email: user.email,
-        },
+      // Prepare order payload for backend
+      const orderPayload = {
+        customerEmail: user.email,
+        customerName: `${data.firstName} ${data.lastName}`,
         deliveryMethod: data.deliveryMethod,
-        deliveryAddress: data.deliveryMethod === 'delivery' ? {
-          address: data.address!,
-          city: data.city!,
-          postalCode: data.postalCode!,
-          country: data.country!,
-          deliveryInstructions: data.deliveryInstructions,
-        } : undefined,
-        total: totalAmount,
-        shippingCost,
-        status: 'pending',
-        paid: false,
-        createdAt: new Date().toISOString(),
+        shippingAddress: data.deliveryMethod === 'delivery' ? data.address : undefined,
+        shippingCity: data.deliveryMethod === 'delivery' ? data.city : undefined,
+        shippingState: data.deliveryMethod === 'delivery' ? 'Nairobi' : undefined,
+        shippingZip: data.deliveryMethod === 'delivery' ? data.postalCode : undefined,
+        pickupLocation: data.deliveryMethod === 'pickup' ? data.pickupLocation : undefined,
+        totalAmount: totalAmount,
+        items: cartItems.map(item => ({
+          productId: item.product_id,
+          productName: item.name,
+          quantity: item.quantity,
+          price: item.price
+        }))
       };
 
-      const existingOrders: any[] = JSON.parse(localStorage.getItem('userOrders') || '[]');
-      const userOrders = existingOrders.filter((orderObj) => orderObj.userEmail === user.email);
-      
-      userOrders.push(order);
-      localStorage.setItem('userOrders', JSON.stringify(userOrders));
+      // Send to backend API
+      const result = await orderService.createOrder(orderPayload);
 
-      setCartItems([]);
+      if (result.success) {
+        // Clear cart on success
+        clearCart();
+        
+        const successMessage = data.deliveryMethod === 'delivery' 
+          ? `Order placed successfully! You will pay via M-Pesa upon delivery. Order #${result.orderId.slice(0, 8)}` 
+          : `Order placed successfully! We will call you when your order is ready for pickup. Order #${result.orderId.slice(0, 8)}`;
+        
+        toast.success(successMessage);
+        navigate('/shop');
+      } else {
+        throw new Error(result.message || 'Failed to place order');
+      }
       
-      const successMessage = data.deliveryMethod === 'delivery' 
-        ? 'Order placed successfully! You will pay via M-Pesa upon delivery.' 
-        : 'Order placed successfully! We will call you when your order is ready for pickup.';
-      
-      toast.success(successMessage);
-      navigate('/shop');
-      
-    } catch (error) {
+    } catch (error: Error | unknown) {
       console.error('Order error:', error);
-      toast.error('Failed to process order. Please try again.');
+      const errorMessage = error instanceof Error 
+        ? error.message 
+        : 'Failed to process order. Please try again.';
+      toast.error(errorMessage);
     } finally {
       setIsProcessing(false);
     }
@@ -157,11 +173,8 @@ const CheckoutPage = () => {
               <section>
                 <h3 className="text-xl font-semibold mb-4">Your Information</h3>
                 <div className="bg-blue-50 p-4 rounded-lg mb-4">
-                  <p className="text-sm">
-                    <strong>Logged in as:</strong> {user?.name} ({user?.email})
-                  </p>
+                  <p className="text-sm"> {user?.name} ({user?.email})</p>
                 </div>
-                
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-medium mb-2">First Name *</label>
@@ -182,7 +195,6 @@ const CheckoutPage = () => {
                     {errors.lastName && <p className="text-red-500 text-sm mt-1">{errors.lastName.message}</p>}
                   </div>
                 </div>
-
                 <div className="mt-4">
                   <label className="block text-sm font-medium mb-2">Phone Number *</label>
                   <input
@@ -266,6 +278,43 @@ const CheckoutPage = () => {
                       className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--background)]"
                       placeholder="e.g., Leave at gate, Call before delivery, etc."
                     />
+                  </div>
+                </section>
+              )}
+
+              {/* Pickup Location - Conditionally Rendered */}
+              {currentDeliveryMethod === 'pickup' && (
+                <section>
+                  <h3 className="text-xl font-semibold mb-4">Pickup Location</h3>
+                  
+                  {errors.pickupLocation && (
+                    <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-4">
+                      <p className="text-red-700 text-sm">
+                        {errors.pickupLocation.message}
+                      </p>
+                    </div>
+                  )}
+                  
+                  <div className="mt-4">
+                    <label className="block text-sm font-medium mb-2">Pickup Location *</label>
+                    <input
+                      {...register('pickupLocation')}
+                      className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--background)]"
+                      placeholder="HOPAWI GARDENS, Garden City Mall, Nairobi"
+                    />
+                    {errors.pickupLocation && <p className="text-red-500 text-sm mt-1">{errors.pickupLocation.message}</p>}
+                  </div>
+
+                  <div className="mt-4 bg-green-50 p-4 rounded-lg">
+                    <h4 className="font-semibold text-green-800 mb-2">Store Information</h4>
+                    <p className="text-sm text-green-700">
+                      <strong>Address:</strong> HOPAWI GARDENS, Garden City Mall, Nairobi<br />
+                      <strong>Hours:</strong> Mon-Sun, 8:00 AM - 8:00 PM<br />
+                      <strong>Contact:</strong> 0712 345 678
+                    </p>
+                    <p className="text-xs text-green-600 mt-2">
+                      📞 We'll call you when your order is ready for pickup (usually within 2 hours)
+                    </p>
                   </div>
                 </section>
               )}

@@ -3,14 +3,22 @@ import { FaCartPlus, FaArrowLeft } from "react-icons/fa";
 import { motion } from "framer-motion";
 import { useProduct } from "../../hooks/useProduct";
 import { useProducts } from "../../hooks/useProducts";
-import { useCart } from "../../context/CartContext";
+import { useCartStore } from "../../store/useCartStore"; // Change this import
+import type { Product } from "../../types"; // Add this import
 
 const ProductDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { addToCart } = useCart();
+  const { addItem } = useCartStore(); // Use Zustand instead of useCart()
   const { product, loading, error } = useProduct(id);
   const { products } = useProducts();
+
+  const handleAddToCart = (product: Product) => {
+    addItem({
+      ...product,
+      quantity: 1
+    });
+  };
 
   if (loading) {
     return (
@@ -79,7 +87,7 @@ const ProductDetails = () => {
             className="bg-[var(--primary)] px-6 py-2 rounded-full flex items-center gap-2"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            onClick={() => addToCart(product)}
+            onClick={() => handleAddToCart(product)}
           >
             <FaCartPlus /> Add to Cart
           </motion.button>

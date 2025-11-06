@@ -1,24 +1,12 @@
 import { Link, useNavigate } from 'react-router';
 import { FaTrash, FaPlus, FaMinus } from 'react-icons/fa';
 import { motion } from 'framer-motion';
-import { useCart } from '../context/CartContext';
+import { useCartStore } from '../store/useCartStore'; // Change this import
 import type { CartItem } from '../types';
 
 const CartPage = () => {
   const navigate = useNavigate();
-  const { cartItems, setCartItems } = useCart();
-
-  const updateQuantity = (id: string, newQuantity: number) => {
-    if (newQuantity < 1) return;
-    
-    setCartItems(cartItems.map(item => 
-      item.product_id === id ? { ...item, quantity: newQuantity } : item
-    ));
-  };
-
-  const removeItem = (id: string) => {
-    setCartItems(cartItems.filter(item => item.product_id !== id));
-  };
+  const { items: cartItems, updateQuantity, removeItem } = useCartStore(); // Use Zustand
 
   const totalItems = cartItems.reduce((sum: number, item: CartItem) => sum + item.quantity, 0);
   const subtotal = cartItems.reduce((sum: number, item: CartItem) => sum + (item.price * item.quantity), 0);
