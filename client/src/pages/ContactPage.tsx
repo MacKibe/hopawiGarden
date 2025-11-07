@@ -62,7 +62,7 @@ const ContactPage = () => {
       {/* Hero Section */}
       <motion.section className="bg-[var(--background)] text-[var(--primary)] py-16" initial="hidden" animate="visible">
         <motion.div className="container" variants={sectionVariants}>
-          <motion.h2 variants={itemVariants}>Get in Touch</motion.h2>
+          <motion.h2 variants={itemVariants}>Get in touch</motion.h2>
           <motion.h4 className="max-w-3xl mx-auto mt-4" variants={itemVariants} transition={{ delay: 0.2 }}>
             Have questions about our plants or need help with plant care? 
             We're here to help you grow your green thumb!
@@ -92,7 +92,7 @@ const ContactPage = () => {
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {[
-                { label: "Name *", type: "text", name: "name", placeholder: "Your Full Name" },
+                { label: "Name *", type: "text", name: "name", placeholder: "Your full name" },
                 { label: "Email *", type: "email", name: "email", placeholder: "your@email.com" }
               ].map((field, index) => (
                 <motion.div key={index} className="form-group" variants={itemVariants} custom={index}>

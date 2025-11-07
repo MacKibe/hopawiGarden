@@ -1,5 +1,4 @@
-import { useState, useEffect } from 'react'
-import type { ProductFilters } from '../../types'
+import type { ProductFilters } from '../../types'; // Add this import
 
 interface ProductFilterProps {
   onFilterChange: (filters: ProductFilters) => void
@@ -7,40 +6,43 @@ interface ProductFilterProps {
 }
 
 const ProductFilter = ({ onFilterChange, currentFilters }: ProductFilterProps) => {
-    const [activeCategory, setActiveCategory] = useState<'all' | string>(currentFilters.category || 'all')
-    const [priceRange, setPriceRange] = useState<[number, number]>(currentFilters.priceRange || [0, 10000])
-    const [searchQuery, setSearchQuery] = useState(currentFilters.searchQuery || '')
-
     const categories = [
-        { id: 'all', label: 'All Plants' },
-        { id: 'indoor', label: 'Indoor Plants' },
-        { id: 'outdoor', label: 'Outdoor Plants' },
-        // { id: 'succulent', label: 'Succulents' },
-        // { id: 'flowering', label: 'Flowering Plants' },
-        // { id: 'foliage', label: 'Foliage Plants' },
+        { id: 'all', label: 'All plants' },
+        { id: 'indoor', label: 'Indoor plants' },
+        { id: 'outdoor', label: 'Outdoor plants' },
     ]
 
-    // Update parent when filters change
-    useEffect(() => {
-        const filters: ProductFilters = {
-            category: activeCategory !== 'all' ? activeCategory : undefined,
-            priceRange: priceRange[1] < 10000 ? priceRange : undefined,
-            searchQuery: searchQuery || undefined
-        }
-        onFilterChange(filters)
-    }, [activeCategory, priceRange, searchQuery, onFilterChange])
+    // Update filters directly without useEffect
+    const updateFilters = (updates: Partial<ProductFilters>) => {
+        const newFilters = { ...currentFilters, ...updates };
+        onFilterChange(newFilters);
+    };
 
-    const handlePriceRangeChange = (index: number, value: number) => {
-        const newRange = [...priceRange] as [number, number]
-        newRange[index] = value
-        setPriceRange(newRange)
-    }
+    const handleCategoryChange = (category: string) => {
+        updateFilters({ 
+            category: category !== 'all' ? category : undefined 
+        });
+    };
+
+    const handlePriceRangeChange = (maxPrice: number) => {
+        updateFilters({ 
+            priceRange: maxPrice < 10000 ? [0, maxPrice] : undefined 
+        });
+    };
+
+    const handleSearchChange = (query: string) => {
+        updateFilters({ 
+            searchQuery: query || undefined 
+        });
+    };
 
     const resetFilters = () => {
-        setActiveCategory('all')
-        setPriceRange([0, 10000])
-        setSearchQuery('')
-    }
+        onFilterChange({});
+    };
+
+    const activeCategory = currentFilters.category || 'all';
+    const priceRange = currentFilters.priceRange || [0, 10000];
+    const searchQuery = currentFilters.searchQuery || '';
 
     return (
         <aside className="sticky top-24 p-6 rounded-lg bg-[var(--primary)] shadow-sm">
@@ -61,14 +63,14 @@ const ProductFilter = ({ onFilterChange, currentFilters }: ProductFilterProps) =
                     type="text"
                     placeholder="Search products..."
                     value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
+                    onChange={(e) => handleSearchChange(e.target.value)}
                     className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--background)]"
                 />
             </div>
 
             {/* Price Range */}
             <div className="mb-8">
-                <h4 className="font-semibold mb-3">Price Range</h4>
+                <h4 className="font-semibold mb-3">Price range</h4>
                 <div className="space-y-2">
                     <input 
                         type="range" 
@@ -77,7 +79,7 @@ const ProductFilter = ({ onFilterChange, currentFilters }: ProductFilterProps) =
                         step="100" 
                         value={priceRange[1]} 
                         className="w-full accent-[var(--background)]"
-                        onChange={(e) => handlePriceRangeChange(1, parseInt(e.target.value))} 
+                        onChange={(e) => handlePriceRangeChange(parseInt(e.target.value))} 
                     />
                     <div className="flex justify-between text-sm">
                         <span>Kshs {priceRange[0].toLocaleString()}</span>
@@ -93,7 +95,7 @@ const ProductFilter = ({ onFilterChange, currentFilters }: ProductFilterProps) =
                     {categories.map(category => (
                         <button 
                             key={category.id} 
-                            onClick={() => setActiveCategory(category.id)}
+                            onClick={() => handleCategoryChange(category.id)}
                             className={`w-full text-left px-4 py-2 rounded-lg transition ${
                                 activeCategory === category.id
                                     ? 'bg-[var(--background)] text-[var(--primary)]'
@@ -133,4 +135,4 @@ const ProductFilter = ({ onFilterChange, currentFilters }: ProductFilterProps) =
     )
 }
 
-export default ProductFilter
+export default ProductFilter;

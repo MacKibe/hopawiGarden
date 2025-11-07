@@ -25,7 +25,7 @@
                         {/* Brand Info */}
                         <div className="space-y-4 col-span-2">
                             <h3 className="text-xl font-bold">HOPAWI GARDENS</h3>
-                            <p>Bringing life into your Homes and Offices.</p>
+                            <p>Bringing life into homes and offices.</p>
                         {/* Socials */}
                         <div>
                             <p>Catch us on our socials.</p>
@@ -50,10 +50,10 @@
                         </div>
                         {/* Quick Links */}
                         <div>
-                                <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
+                                <h3 className="text-lg font-semibold mb-4">Quick links</h3>
                                 <ul className="space-y-2">
                                     <li><Link to="/" className="hover:text-[var(--accent)] transition">Home</Link></li>
-                                    <li><Link to='/about' className="hover:text-[var(--accent)] transition">About Us</Link></li>
+                                    <li><Link to='/about' className="hover:text-[var(--accent)] transition">About us</Link></li>
                                     <li><Link to='/shop' className="hover:text-[var(--accent)] transition">Shop</Link></li>
                                     <li><Link to='/contact' className="hover:text-[var(--accent)] transition">Contact</Link></li>
                                 </ul>
@@ -62,10 +62,10 @@
                         <div>
                             <h3 className="text-lg font-semibold mb-4">Services</h3>
                             <ul className="space-y-2">
-                                <li><button onClick={() => handleNav("service")} className="hover:text-[var(--accent)] transition">Indoor Potted Plants</button></li>
-                                <li><button onClick={() => handleNav("service")} className="hover:text-[var(--accent)] transition">Outdoor Potted Plants</button></li>
+                                <li><button onClick={() => handleNav("service")} className="hover:text-[var(--accent)] transition">Indoor potted plants</button></li>
+                                <li><button onClick={() => handleNav("service")} className="hover:text-[var(--accent)] transition">Outdoor potted plants</button></li>
                                 <li><button onClick={() => handleNav("service")} className="hover:text-[var(--accent)] transition">Landscaping services</button></li>
-                                <li><button onClick={() => handleNav("service")} className="hover:text-[var(--accent)] transition">HOPAWI Composite mixture</button></li>
+                                <li><button onClick={() => handleNav("service")} className="hover:text-[var(--accent)] transition">HOPAWI compost mixture</button></li>
                             </ul>
                         </div>
                   </div>
@@ -75,8 +75,8 @@
                 <div className="flex flex-col md:flex-row justify-between items-center py-8">
                   <p>© {new Date().getFullYear()} HOPAWI GARDENS. All rights reserved.</p>
                   <div className="flex gap-6 mt-4 md:mt-0">
-                      <Link to="/privacy-policy" className="hover:text-[var(--accent)] transition">Privacy Policy</Link>
-                      <Link to="/terms" className="hover:text-[var(--accent)] transition">Terms of Service</Link>
+                      <Link to="/privacy-policy" className="hover:text-[var(--accent)] transition">Privacy policy</Link>
+                      <Link to="/terms" className="hover:text-[var(--accent)] transition">Terms of service</Link>
                   </div>
                 </div>
               </div>

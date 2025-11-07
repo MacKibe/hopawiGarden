@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
+import { useSearchParams } from "react-router"; // Add this import
 import ProductFilter from "../components/shop/ProductFilter";
 import ProductList from "../components/shop/ProductList";
 import { itemVariants, sectionVariants } from "../utils/variants";
@@ -10,6 +11,22 @@ const ShopPage = () => {
   const { products, loading, error } = useProducts();
   const [filters, setFilters] = useState<ProductFilters>({});
   const [sortBy, setSortBy] = useState<FilterState['sortBy']>('featured');
+  const [searchParams, setSearchParams] = useSearchParams(); // Add this
+
+  // Read category from URL parameters on component mount
+  useEffect(() => {
+    const categoryFromUrl = searchParams.get('category');
+    if (categoryFromUrl) {
+      setFilters(prevFilters => ({
+        ...prevFilters,
+        category: categoryFromUrl
+      }));
+      
+      // Optional: Clear the URL parameter after applying the filter
+      // searchParams.delete('category');
+      // setSearchParams(searchParams);
+    }
+  }, [searchParams, setSearchParams]);
 
   // Filter and sort products
   const filteredAndSortedProducts = useMemo(() => {
@@ -86,6 +103,12 @@ const ShopPage = () => {
           <motion.div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6" variants={itemVariants}>
             <h4 className="text-lg font-semibold">
               Showing {filteredAndSortedProducts.length} of {products.length} products
+              {/* Show category filter info if active */}
+              {filters.category && (
+                <span className="text-sm font-normal block mt-1">
+                  Filtered by: {filters.category.charAt(0).toUpperCase() + filters.category.slice(1)} plants
+                </span>
+              )}
             </h4>
             <motion.select 
               value={sortBy}

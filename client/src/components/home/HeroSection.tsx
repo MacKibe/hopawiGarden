@@ -20,10 +20,10 @@ const HeroSection = () => {
         className="flex flex-col justify-around gap-8 max-w-3xl mx-auto text-center z-10 px-4"
         variants={spanVariants}
       >
-        <motion.h1 variants={itemVariants}>Bringing life into your homes and offices</motion.h1>
+        <motion.h1 variants={itemVariants}>Bringing life into homes and offices</motion.h1>
         
         <motion.p className="max-w-2xl mx-auto text-[var(--primary)] text-xl font-extrabold" variants={itemVariants} transition={{ delay: 0.2 }}>
-          Discover our curated collection of beautiful potted plants. Transform your home into a natural sanctuary with nature delivered to your doorstep.
+          Discover our curated collection of beautiful potted plants. Transform your space into a natural sanctuary with nature delivered to your doorstep.
         </motion.p>
         
         <motion.div className="flex flex-col md:flex-row gap-4 justify-center py-4" variants={itemVariants} transition={{ delay: 0.4 }}>

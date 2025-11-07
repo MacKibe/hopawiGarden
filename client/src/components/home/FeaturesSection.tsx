@@ -1,23 +1,23 @@
 import { motion } from "framer-motion";
 import { PiFlowerTulip, PiSun } from "react-icons/pi";
-import Img from "/assets/Calla_Lily1.jpeg";
-import Flower from "/assets/potted.jpg";
 import { Link } from "react-router";
 import { cardVariants } from "../../utils/variants";
 
 const FeaturesSection = () => {
   const featuresDetails = [
     {
-      backgroundImg: Img,
+      backgroundImg: "https://media.licdn.com/dms/image/v2/D5622AQFOjR9WsLVbgA/feedshare-shrink_2048_1536/B56ZovBAZ_J8Aw-/0/1761725398547?e=1764201600&v=beta&t=yn7xNHY3fA5Gtjdzq1mFkPWU6dMHNgnQljEUWZ3_LKk",
       icon: <PiFlowerTulip size={32} />,
       featureName: "Indoor potted plants",
       featureDetails: "Perfect for your living space",
+      category: "indoor" // Add this
     },
     {
-      backgroundImg: Flower,
+      backgroundImg: "https://media.licdn.com/dms/image/v2/D5622AQGwBlXipenbrA/feedshare-shrink_2048_1536/B56Zi8l6HkG0As-/0/1755510731765?e=1764201600&v=beta&t=AjZsVimnzfnLQcesdjtekhmkqYzipIZyprVfafH9M0c",
       icon: <PiSun size={32} />,
       featureName: "Outdoor potted plants",
       featureDetails: "Garden favorites",
+      category: "outdoor" // Add this
     }
   ]
   
@@ -25,7 +25,7 @@ const FeaturesSection = () => {
     <section id="collection" className="py-16">
       <div className="container">
         <motion.h3 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}>
-          Plant Collections
+          Plant collections
         </motion.h3>
         
         <motion.h4 className="max-w-3xl mx-auto mt-2" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
@@ -43,7 +43,11 @@ const FeaturesSection = () => {
                 </motion.span>
                 <h4>{detail.featureName}</h4>
                 <p className="text-[var(--text)]">{detail.featureDetails}</p>
-                <Link to='/shop' className="py-3 px-6 rounded-2xl block btn-primary mt-2">
+                {/* Update Link to include category parameter */}
+                <Link 
+                  to={`/shop?category=${detail.category}`} 
+                  className="py-3 px-6 rounded-2xl block btn-primary mt-2"
+                >
                   <motion.span whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                     Explore
                   </motion.span>

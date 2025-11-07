@@ -13,7 +13,7 @@ export const contactInfo: ContactInfo[] = [
     title: "Visit our garden",
     content: {
       heading: "Greenfield",
-      subHeading: "Kamiti Rd, Opposite WoodCreek",
+      subHeading: "Kamiti rd, opposite WoodCreek",
       link: "https://maps.app.goo.gl/W7WAqbg1JhovujST8",
       linkText: "Get Directions"
     }
@@ -22,23 +22,23 @@ export const contactInfo: ContactInfo[] = [
     icon: React.createElement(FiPhoneCall, {size : iconSizeNumber}),
 
     iconSize: 25,
-    title: "Call Us Today",
+    title: "Call us today",
     content: {
       heading: "(+254) 720 804523",
       subHeading: "Mon - Fri, 9am - 5pm",
       link: "tel:+254720804523",
-      linkText: "Call Now"
+      linkText: "Call now"
     }
   },
   {
     icon: React.createElement(TbMessageDots, {size : iconSizeNumber}),
     iconSize: 25,
-    title: "Email Us",
+    title: "Email us",
     content: {
-      heading: "greenery@hopawigardens.com",
+      heading: "hopawigardens@gmail.com",
       subHeading: "We usually respond within 24 hrs",
       link: "mailto:greenery@hopawigardens.com",
-      linkText: "Send Email"
+      linkText: "Send email"
     }
   }
 ];

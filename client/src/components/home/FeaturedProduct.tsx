@@ -13,7 +13,7 @@ const FeaturedProduct = () => {
     return (
       <div className="container py-12">
         <div className="text-center">
-          <h3>Featured Products</h3>
+          <h3>Featured products</h3>
           <p className="text-lg max-w-2xl mx-auto my-4">
             Handpicked favorites from our collection, loved by plant enthusiasts
           </p>

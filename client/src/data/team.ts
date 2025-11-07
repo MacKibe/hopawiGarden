@@ -8,7 +8,7 @@ export const teamMembers = [
     role: "Digital Marketing Officer",
     bio: "Creative designer bringing floral visions to life",
     img: Glen,
-    Tiktok: "https://www.tiktok.com/@www.hopawi_gardens",
+    Tiktok: "https://www.tiktok.com/@hopawi_gardens1",
     Facebook: "https://www.facebook.com/profile.php?id=61578230820890",
     Instagram: "https://www.instagram.com/hopawi_gardens/"
   },

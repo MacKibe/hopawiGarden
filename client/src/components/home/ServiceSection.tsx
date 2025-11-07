@@ -9,7 +9,7 @@ const ServiceSection = () => {
             <motion.div className="container">
                 <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}
                 className="text-center mb-12">
-                <h3>Our Services</h3>
+                <h3>Our services</h3>
                 <h4 className="mt-2 max-w-3xl mx-auto">
                     Comprehensive plant solutions for every space and need
                 </h4>

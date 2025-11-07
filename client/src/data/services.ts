@@ -21,7 +21,7 @@ export const services:ServicesTypes[] = [
         icon: React.createElement(PiPlantDuotone, {size: iconSize, className: "text-[var(--accent)]"})
     },
     {
-        title: " HOPAWI Compost mixture",
+        title: " HOPAWI compost mixture",
         description: "Specialized soil blends tailored to different plant needs for optimal growth.",
         icon: React.createElement(PiPlantDuotone, {size: iconSize, className: "text-[var(--accent)]"})
     },
