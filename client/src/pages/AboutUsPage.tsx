@@ -1,11 +1,12 @@
 import { motion } from "framer-motion";
 import { teamMembers } from "../data/team";
-import img from "/assets/IMG_2331.jpg";
 import { FaInstagram, FaLinkedin, FaYoutube, FaFacebook, FaDove, FaTiktok } from "react-icons/fa";
 import { PiPlantDuotone, PiHeartFill } from "react-icons/pi";
 import { sectionVariants, itemVariants, cardVariants } from "../utils/variants"
+import ServiceSection from "../components/home/ServiceSection";
 
 const AboutUsPage = () => {
+  const img = "https://jujkvczxnzflaukmssqb.supabase.co/storage/v1/object/public/testing_bucket/assests/IMG_3204.jpg"
   return (
     <div className="text-[var(--background)]">
       {/* Bio */}
@@ -21,7 +22,7 @@ const AboutUsPage = () => {
       </motion.section>
 
       {/* Story */}
-      <motion.section className="py-16">
+      <motion.section className="bg-[#EFEBE7] py-16">
         <div className="container grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
           <motion.div initial={{ opacity: 0, x: -50 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true, margin: "-100px" }} transition={{ duration: 0.8 }}>
             <h3 className="text-4xl mb-6">Our story</h3>
@@ -71,15 +72,15 @@ const AboutUsPage = () => {
           </motion.div>
         </div>
       </motion.section>
-      
+      <ServiceSection/>
       <motion.section className="py-16">
         <div className="container">
           <motion.h3 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}>
             Meet our team
           </motion.h3>
-          <motion.h4 className="mt-2" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.2 }}>
+          <motion.p className="mt-2 text-black" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.2 }}>
             The passionate plant experts behind HOPAWI GARDENS.
-          </motion.h4>
+          </motion.p>
           <motion.div className="grid-responsive mt-8" initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-50px" }} 
           variants={{
               visible: {
@@ -88,8 +89,6 @@ const AboutUsPage = () => {
                 }
               }
             }}>
-
-
             {teamMembers.map((member, index) => (
               <motion.div key={member.id} className="" variants={cardVariants} custom={index} 
                 whileHover={{ 
@@ -100,9 +99,8 @@ const AboutUsPage = () => {
                 <div className="w-full h-64 bg-cover bg-top" style={{ backgroundImage: `url(${member.img})` }} aria-label={`Photo of ${member.name}`}
                 ></div>
                 <div className="p-6 text-left space-y-4 text-[var(--background)]">
-                  <h4 className="text-xl font-semibold">{member.name}</h4>
-                  <h5 className="text-sm opacity-80">{member.role}</h5>
-                  <p className="text-sm">{member.bio}</p>
+                  <p className="text-black text-xl font-semibold">{member.name}</p>
+                  <p className="text-sm opacity-80">{member.role}</p>
                   <div className="flex justify-end gap-4 text-xl mt-4">
                     {[
                       { icon: <FaTiktok/>, link: member.Tiktok, color: "hover:text-blue-400", title: "Tiktok" },

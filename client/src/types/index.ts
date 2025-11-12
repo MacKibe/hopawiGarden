@@ -6,6 +6,10 @@ export interface Product {
   path: string;
   active?: boolean;
   category?: string;
+  leaf_size: 'small' | 'medium' | 'large' | 'extra_large';
+  is_flowering: boolean;
+  sunlight_exposure: 'full_sun' | 'partial_sun' | 'partial_shade' | 'low_light' | 'full_shade';
+  long_description?: string;
 }
 
 export interface ProductListProps{

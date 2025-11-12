@@ -6,7 +6,6 @@ export const teamMembers = [
     id:"1",
     name: "Glen Mawira",
     role: "Digital Marketing Officer",
-    bio: "Creative designer bringing floral visions to life",
     img: Glen,
     Tiktok: "https://www.tiktok.com/@hopawi_gardens1",
     Facebook: "https://www.facebook.com/profile.php?id=61578230820890",
@@ -16,7 +15,6 @@ export const teamMembers = [
     id:"2",
     name: "James Ndichu",
     role: "IT Officer",
-    bio: "Passionate about merging tech and nature with digital solutions",
     img: Kibe,
     Youtube: "https://www.youtube.com/@HOPAWIGardens",
     LinkedIn: "https://www.linkedin.com/in/hopawi-gardens-229972371/"

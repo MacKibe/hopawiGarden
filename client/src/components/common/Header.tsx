@@ -2,28 +2,29 @@ import { Link, useNavigate } from "react-router";
 import { FaShoppingCart, FaBars, FaTimes } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
 import useAuthStore from "../../store/useAuthStore";
-import { useCartStore } from "../../store/useCartStore"; // Add this import
+import { useCartStore } from "../../store/useCartStore";
 import type { CartItem } from "../../types";
 import { useState } from "react";
 import logo from "/assets/HOPAWI_GARDENS_LOGO.png";
 
 const Header = () => {
   const { user, logout, isAuthenticated } = useAuthStore();
-  const { items: cartItems } = useCartStore(); // Use Zustand instead of useCart()
+  const { items: cartItems } = useCartStore();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const totalItems = cartItems.reduce(
-    (sum: number, item: CartItem) => sum + item.quantity, // Add type annotation
+    (sum: number, item: CartItem) => sum + item.quantity,
     0
   );
 
   const navigate = useNavigate();
 
   const navItems = [
-    { path: "/", label: "Home" },
+    { path: "/shop", label: "Shop all" },
+    { path: "/shop?category=indoor", label: "Indoor potted plants" },
+    { path: "/shop?category=outdoor", label: "Outdoor potted plants" },
     { path: "/about", label: "About us" },
-    { path: "/contact", label: "Contact" },
-    { path: "/shop", label: "Shop" },
+    { path: "/contact", label: "Contact us" },
   ];
 
   const toggleMobileMenu = () => {
@@ -36,7 +37,7 @@ const Header = () => {
 
   return (
     <>
-      <header className="sticky top-0 z-50 flex items-center justify-between p-4 bg-[var(--secondary)] text-[var(--background)] text-bold shadow-md">
+      <header className="sticky top-0 z-50 flex items-center justify-center gap-8 py-3 bg-[var(--secondary)] text-[var(--background)] text-bold shadow-md">
         {/* Logo */}
         <div>
           <Link
@@ -44,7 +45,7 @@ const Header = () => {
             className="text-xl md:text-2xl font-bold hover:text-[var(--accent)] transition touch-target"
             onClick={closeMobileMenu}
           >
-            <img src={logo} alt="Hopawi Gardens Logo" className="h-8 md:h-10"/>
+            <img src={logo} alt="HOPAWI GARDENS Logo" className="h-8 md:h-10" />
           </Link>
         </div>
 
@@ -59,7 +60,7 @@ const Header = () => {
               >
                 <Link
                   to={item.path}
-                  className="hover:text-[var(--accent)] transition touch-target"
+                  className="hover:underline hover:text-[var(--primary)] hover:decoration-[var(--primary)] underline-offset-8 transition touch-target"
                 >
                   {item.label}
                 </Link>
@@ -90,7 +91,7 @@ const Header = () => {
                 >
                   {user?.name?.charAt(0)?.toUpperCase() || "U"}
                 </Link>
-                
+
                 {/* Logout - Hidden on mobile, shown on desktop */}
                 <button
                   onClick={() => {
@@ -101,36 +102,12 @@ const Header = () => {
                 >
                   Logout
                 </button>
-                
-                {/* Cart Button */}
-                <motion.button
-                  className="p-2 rounded-full hover:bg-[var(--secondary)] hover:text-[var(--background)] transition relative touch-target"
-                  onClick={() => {
-                    navigate("/cart");
-                    closeMobileMenu();
-                  }}
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.9 }}
-                >
-                  <span className="sr-only">Cart</span>
-                  <FaShoppingCart size={20} />
-                  {totalItems > 0 && (
-                    <motion.span
-                      className="absolute -top-1 -right-1 bg-[var(--accent)] text-[var(--text)] rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold"
-                      initial={{ scale: 0 }}
-                      animate={{ scale: 1 }}
-                      key={totalItems}
-                    >
-                      {totalItems}
-                    </motion.span>
-                  )}
-                </motion.button>
               </>
             ) : (
               <>
                 {/* Login - Hidden on mobile, shown on desktop */}
-                <Link 
-                  to="/login" 
+                <Link
+                  to="/login"
                   className="hidden sm:flex btn-base btn-accent touch-target"
                   onClick={closeMobileMenu}
                 >
@@ -139,6 +116,30 @@ const Header = () => {
               </>
             )}
           </div>
+
+          {/* Cart Button */}
+          <motion.button
+            className="p-2 rounded-full hover:bg-[var(--secondary)] hover:text-[var(--background)] transition relative touch-target"
+            onClick={() => {
+              navigate("/cart");
+              closeMobileMenu();
+            }}
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+          >
+            <span className="sr-only">Cart</span>
+            <FaShoppingCart size={20} />
+            {totalItems > 0 && (
+              <motion.span
+                className="absolute -top-1 -right-1 bg-[var(--accent)] text-[var(--text)] rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold"
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                key={totalItems}
+              >
+                {totalItems}
+              </motion.span>
+            )}
+          </motion.button>
         </div>
       </header>
 
@@ -154,7 +155,7 @@ const Header = () => {
               className="fixed inset-0 bg-black bg-opacity-50 z-40 md:hidden"
               onClick={closeMobileMenu}
             />
-            
+
             {/* Mobile Menu Panel */}
             <motion.div
               initial={{ opacity: 0, x: "100%" }}
@@ -195,7 +196,7 @@ const Header = () => {
                     </motion.li>
                   ))}
                 </ul>
-                  
+
                 {/* Mobile User Section */}
                 <div className="mt-8 pt-8 border-t border-[var(--primary)] border-opacity-20">
                   {isAuthenticated ? (

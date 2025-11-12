@@ -2,7 +2,7 @@
 
 :root {
   --primary: #fff;
-  --secondary: #C8E6C9;
+  --secondary: #ECE3D9;
   --accent: #FFCDD2;
   --background: #4CAF50;
   --text: #212121;
@@ -43,10 +43,21 @@ p {
   font-weight: 400;
 }
 
+/* Select styling improvements */
+select {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+  background-position: right 0.5rem center;
+  background-repeat: no-repeat;
+  background-size: 1.5em 1.5em;
+  padding-right: 2.5rem;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
 /* Layout */
 section {
   text-align: center;
-  padding: 2rem 1rem;
+  padding: 1rem;
 }
 
 .container {
@@ -264,4 +275,42 @@ input:focus, textarea:focus, select:focus {
 
 .table-responsive {
   min-width: 100%;
+}
+
+/* Improved card image sizing */
+.h-80 {
+  height: 20rem; /* 320px - much larger than before */
+}
+
+/* Line clamp utility for description */
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Smooth transitions for pagination */
+.pagination-enter {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.pagination-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 300ms, transform 300ms;
+}
+
+/* Responsive image container */
+@media (max-width: 640px) {
+  .h-80 {
+    height: 16rem; /* Slightly smaller on mobile */
+  }
+}
+
+@media (min-width: 1024px) {
+  .h-80 {
+    height: 22rem; /* Even larger on desktop */
+  }
 }

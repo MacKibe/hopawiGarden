@@ -25,7 +25,7 @@ export const contactInfo: ContactInfo[] = [
     title: "Call us today",
     content: {
       heading: "(+254) 720 804523",
-      subHeading: "Mon - Fri, 9am - 5pm",
+      subHeading: "Mon - Fri, 9am - 4pm",
       link: "tel:+254720804523",
       linkText: "Call now"
     }

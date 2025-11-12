@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import useAuthStore from '../store/useAuthStore';
-import { useCartStore } from '../store/useCartStore'; // Import Zustand store directly
+import { useCartStore } from '../store/useCartStore';
 import { toast } from 'react-hot-toast';
 import type { CartItem, DeliveryMethod } from '../types';
 import DeliveryMethodSelector from '../components/checkout/DeliveryMethodSelector';
@@ -15,6 +15,7 @@ const checkoutSchema = z.object({
   firstName: z.string().min(1, 'First name is required').max(50, 'First name too long'),
   lastName: z.string().min(1, 'Last name is required').max(50, 'Last name too long'),
   phone: z.string().min(10, 'Phone number must be at least 10 digits').regex(/^\+?[\d\s-]+$/, 'Invalid phone number'),
+  email: z.email().regex(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, 'Invalid email address'),
   deliveryMethod: z.enum(['delivery', 'pickup']),
   address: z.string().optional(),
   city: z.string().optional(),
@@ -59,7 +60,7 @@ const CheckoutPage = () => {
     defaultValues: {
       deliveryMethod: 'delivery',
       country: 'Kenya',
-      pickupLocation: 'HOPAWI GARDENS, Garden City Mall, Nairobi',
+      pickupLocation: 'HOPAWI GARDENS, Greenfield, Kamiti Rd, Nairobi',
     },
   });
 
@@ -79,18 +80,13 @@ const CheckoutPage = () => {
       setValue('city', '');
       setValue('postalCode', '');
       setValue('deliveryInstructions', '');
-      setValue('pickupLocation', 'HOPAWI GARDENS, Garden City Mall, Nairobi');
+      setValue('pickupLocation', 'HOPAWI GARDENS, Greenfield, Kamiti Rd, Nairobi');
     } else {
       setValue('pickupLocation', '');
     }
   };
 
   const onSubmit = async (data: CheckoutFormData) => {
-    if (!user) {
-      toast.error('Please log in to complete your order');
-      navigate('/login');
-      return;
-    }
 
     if (cartItems.length === 0) {
       toast.error('Your cart is empty');
@@ -102,7 +98,7 @@ const CheckoutPage = () => {
     try {
       // Prepare order payload for backend
       const orderPayload = {
-        customerEmail: user.email,
+        customerEmail: data.email,
         customerName: `${data.firstName} ${data.lastName}`,
         deliveryMethod: data.deliveryMethod,
         shippingAddress: data.deliveryMethod === 'delivery' ? data.address : undefined,
@@ -127,8 +123,8 @@ const CheckoutPage = () => {
         clearCart();
         
         const successMessage = data.deliveryMethod === 'delivery' 
-          ? `Order placed successfully! You will pay via M-Pesa upon delivery. Order #${result.orderId.slice(0, 8)}` 
-          : `Order placed successfully! We will call you when your order is ready for pickup. Order #${result.orderId.slice(0, 8)}`;
+          ? `Order placed successfully! You will pay via M-Pesa. Order #${result.orderId.slice(0, 8)}` 
+          : `Order placed successfully!. Order #${result.orderId.slice(0, 8)}`;
         
         toast.success(successMessage);
         navigate('/shop');
@@ -175,7 +171,7 @@ const CheckoutPage = () => {
                 <div className="bg-blue-50 p-4 rounded-lg mb-4">
                   <p className="text-sm"> {user?.name} ({user?.email})</p>
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                   <div>
                     <label className="block text-sm font-medium mb-2">First Name *</label>
                     <input
@@ -195,15 +191,27 @@ const CheckoutPage = () => {
                     {errors.lastName && <p className="text-red-500 text-sm mt-1">{errors.lastName.message}</p>}
                   </div>
                 </div>
-                <div className="mt-4">
-                  <label className="block text-sm font-medium mb-2">Phone Number *</label>
-                  <input
-                    {...register('phone')}
-                    type="tel"
-                    className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--background)]"
-                    placeholder="0712 345 678"
-                  />
-                  {errors.phone && <p className="text-red-500 text-sm mt-1">{errors.phone.message}</p>}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium mb-2">Phone Number *</label>
+                    <input
+                      {...register('phone')}
+                      type="tel"
+                      className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--background)]"
+                      placeholder="0712 345 678"
+                    />
+                    {errors.phone && <p className="text-red-500 text-sm mt-1">{errors.phone.message}</p>}
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium mb-2">Email *</label>
+                    <input
+                      {...register('email')}
+                      type="email"
+                      className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--background)]"
+                      placeholder="you@gmail.com"
+                    />
+                    {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>}
+                  </div>
                 </div>
               </section>
 
@@ -284,9 +292,7 @@ const CheckoutPage = () => {
 
               {/* Pickup Location - Conditionally Rendered */}
               {currentDeliveryMethod === 'pickup' && (
-                <section>
-                  <h3 className="text-xl font-semibold mb-4">Pickup Location</h3>
-                  
+                <div>                  
                   {errors.pickupLocation && (
                     <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-4">
                       <p className="text-red-700 text-sm">
@@ -294,33 +300,20 @@ const CheckoutPage = () => {
                       </p>
                     </div>
                   )}
-                  
-                  <div className="mt-4">
-                    <label className="block text-sm font-medium mb-2">Pickup Location *</label>
-                    <input
-                      {...register('pickupLocation')}
-                      className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--background)]"
-                      placeholder="HOPAWI GARDENS, Garden City Mall, Nairobi"
-                    />
-                    {errors.pickupLocation && <p className="text-red-500 text-sm mt-1">{errors.pickupLocation.message}</p>}
-                  </div>
 
-                  <div className="mt-4 bg-green-50 p-4 rounded-lg">
-                    <h4 className="font-semibold text-green-800 mb-2">Store Information</h4>
+                  <div className="mx-20 mt-4 bg-green-50 p-4 rounded-lg">
+                    <h4 className="font-semibold text-green-800 mb-2">Garden information</h4>
                     <p className="text-sm text-green-700">
-                      <strong>Address:</strong> HOPAWI GARDENS, Garden City Mall, Nairobi<br />
-                      <strong>Hours:</strong> Mon-Sun, 8:00 AM - 8:00 PM<br />
-                      <strong>Contact:</strong> 0712 345 678
-                    </p>
-                    <p className="text-xs text-green-600 mt-2">
-                      📞 We'll call you when your order is ready for pickup (usually within 2 hours)
+                      <strong>Address:</strong> HOPAWI GARDENS, Greenfield, Kamiti Rd, Nairobi<br />
+                      <strong>Hours:</strong> Mon - Sat, 9:00 AM - 4:00 PM<br />
+                      <strong>Contact:</strong> 0720 804523
                     </p>
                   </div>
-                </section>
+                </div>
               )}
 
               {/* Payment Information */}
-              <section>
+              {/*<section>
                 <h3 className="text-xl font-semibold mb-4">Payment Method</h3>
                 <div className="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
                   <div className="flex items-center space-x-3">
@@ -336,7 +329,7 @@ const CheckoutPage = () => {
                     </div>
                   </div>
                 </div>
-              </section>
+              </section>*/}
 
               <button
                 type="submit"
@@ -399,13 +392,13 @@ const CheckoutPage = () => {
               <p className="text-sm text-blue-800">
                 <strong>
                   {currentDeliveryMethod === 'delivery' 
-                    ? 'M-Pesa on Delivery' 
-                    : 'M-Pesa at Pickup'
+                    ? 'M-Pesa before delivery' 
+                    : 'M-Pesa before pickup'
                   }:
                 </strong> 
                 {currentDeliveryMethod === 'delivery'
-                  ? ' Pay when you receive your plants'
-                  : ' Pay when you collect your order'
+                  ? ' Pay before you receive your plants'
+                  : ' Pay before you pick your order'
                 }
               </p>
             </div>

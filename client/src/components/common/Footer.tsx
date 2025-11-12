@@ -66,6 +66,7 @@
                                 <li><button onClick={() => handleNav("service")} className="hover:text-[var(--accent)] transition">Outdoor potted plants</button></li>
                                 <li><button onClick={() => handleNav("service")} className="hover:text-[var(--accent)] transition">Landscaping services</button></li>
                                 <li><button onClick={() => handleNav("service")} className="hover:text-[var(--accent)] transition">HOPAWI compost mixture</button></li>
+                                <li><button onClick={() => handleNav("service")} className="hover:text-[var(--accent)] transition">Plant care maintaince</button></li>
                             </ul>
                         </div>
                   </div>

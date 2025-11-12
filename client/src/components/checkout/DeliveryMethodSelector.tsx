@@ -15,7 +15,7 @@ const DeliveryMethodSelector = ({
     {
       id: 'delivery' as DeliveryMethod,
       title: 'Deliver to my address',
-      description: 'Get your plants delivered to your doorstep',
+      description: 'Get your plants delivered to your doorstep.',
       icon: FaTruck,
       color: 'bg-blue-50 border-blue-200 text-blue-700',
       activeColor: 'bg-blue-100 border-blue-500',
@@ -23,8 +23,8 @@ const DeliveryMethodSelector = ({
     },
     {
       id: 'pickup' as DeliveryMethod,
-      title: 'Pick up from store',
-      description: 'Collect your order from our garden center',
+      title: 'Pick up from garden',
+      description: 'Collect your order from our garden.',
       icon: FaStore,
       color: 'bg-green-50 border-green-200 text-green-700',
       activeColor: 'bg-green-100 border-green-500',
@@ -69,19 +69,6 @@ const DeliveryMethodSelector = ({
                   <p className="text-sm mt-1 opacity-75">
                     {method.description}
                   </p>
-                  
-                  {/* Additional info based on method */}
-                  {method.id === 'delivery' && (
-                    <p className="text-xs mt-2 text-blue-600">
-                      🚚 Free delivery within Nairobi
-                    </p>
-                  )}
-                  
-                  {method.id === 'pickup' && (
-                    <p className="text-xs mt-2 text-green-600">
-                      🏪 Ready in 2 hours • No delivery fee
-                    </p>
-                  )}
                 </div>
                 
                 {/* Radio indicator */}
@@ -103,28 +90,6 @@ const DeliveryMethodSelector = ({
           );
         })}
       </div>
-      
-      {/* Store pickup info */}
-      {selectedMethod === 'pickup' && (
-        <motion.div
-          initial={{ opacity: 0, height: 0 }}
-          animate={{ opacity: 1, height: 'auto' }}
-          className="bg-green-50 border border-green-200 rounded-lg p-4 mt-4"
-        >
-          <h5 className="font-semibold text-green-800 flex items-center space-x-2">
-            <FaStore className="text-green-600" />
-            <span>Pickup Information</span>
-          </h5>
-          <p className="text-sm text-green-700 mt-2">
-            <strong>Address:</strong> HOPAWI GARDENS, Garden City Mall, Nairobi<br />
-            <strong>Hours:</strong> Mon-Sun, 8:00 AM - 8:00 PM<br />
-            <strong>Contact:</strong> 0712 345 678
-          </p>
-          <p className="text-xs text-green-600 mt-2">
-            📞 We'll call you when your order is ready for pickup (usually within 2 hours)
-          </p>
-        </motion.div>
-      )}
     </div>
   );
 };

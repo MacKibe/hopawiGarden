@@ -58,7 +58,7 @@ const ContactPage = () => {
   };
 
   return (
-    <div>
+    <div className="bg-[var(--secondary)]">
       {/* Hero Section */}
       <motion.section className="bg-[var(--background)] text-[var(--primary)] py-16" initial="hidden" animate="visible">
         <motion.div className="container" variants={sectionVariants}>

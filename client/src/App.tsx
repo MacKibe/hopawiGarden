@@ -21,6 +21,7 @@ import CartPage from "./pages/CartPage";
 import CheckoutPage from "./pages/CheckoutPage";
 import PlainLayout from "./layouts/PlainLyout";
 import PublicLayout from "./layouts/PublicLayout";
+import Socialsection from "./components/common/Socialsection";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -82,6 +83,7 @@ createRoot(document.getElementById("root")!).render(
           <Route path="products" element={<AdminProductsPage />} />
         </Route>
       </Routes>
+      <Socialsection />
     </BrowserRouter>
   </StrictMode>
 );

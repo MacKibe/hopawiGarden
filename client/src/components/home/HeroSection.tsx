@@ -1,47 +1,142 @@
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router";
-import backgroundImage from "/assets/IMG_2335.jpg";
-import { itemVariants, spanVariants } from "../../utils/variants";
+import { useEffect, useState } from "react";
+import { IoIosArrowForward } from "react-icons/io";
 
 const HeroSection = () => {
+  const imgSlide = [
+    "https://jujkvczxnzflaukmssqb.supabase.co/storage/v1/object/public/testing_bucket/assests/IMG_3028.jpg",
+    "https://jujkvczxnzflaukmssqb.supabase.co/storage/v1/object/public/testing_bucket/assests/IMG_3204.jpg",
+    "https://jujkvczxnzflaukmssqb.supabase.co/storage/v1/object/public/testing_bucket/assests/IMG_3186.jpg",
+    "https://jujkvczxnzflaukmssqb.supabase.co/storage/v1/object/public/testing_bucket/assests/IMG_3174.jpg",
+    "https://jujkvczxnzflaukmssqb.supabase.co/storage/v1/object/public/testing_bucket/assests/IMG_3175.jpg",
+    "https://jujkvczxnzflaukmssqb.supabase.co/storage/v1/object/public/testing_bucket/assests/IMG_3187.jpg",
+  ];
+
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prevIndex) =>
+        prevIndex === imgSlide.length - 1 ? 0 : prevIndex + 1
+      );
+    }, 5000); // Change image every 5 seconds
+
+    return () => clearInterval(interval);
+  }, [imgSlide.length]);
+
   return (
-    <motion.section className="relative min-h-[80dvh] w-full flex items-center justify-center overflow-hidden"
-      initial="hidden" animate="visible" variants={spanVariants}>
-      {/* Background image */}
-      <motion.div className="absolute inset-0 w-full h-full bg-center bg-cover" style={{ backgroundImage: `url(${backgroundImage})` }}
-        initial={{ opacity: 0 }}animate={{ opacity: 1 }} transition={{ duration: 1.2, ease: "easeInOut" }}/>
-      
-      {/* Overlay */}
-      <motion.div className="absolute inset-0 w-full h-full bg-[var(--background)] z-0" initial={{ opacity: 0 }} animate={{ opacity: 0.3 }}
-        transition={{ duration: 1.5, ease: "easeInOut" }}/>
-      
+    <section className="relative min-h-[90dvh] flex items-center overflow-hidden bg-gray-900">
+      {/* Background Slideshow */}
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={currentImageIndex}
+          className="absolute inset-0 bg-cover bg-center"
+          style={{ backgroundImage: `url(${imgSlide[currentImageIndex]})` }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 1 }}
+        />
+      </AnimatePresence>
+
+      {/* Dark Overlay */}
+      <div className="absolute inset-0 bg-black/50" />
+
       {/* Content */}
-      <motion.div 
-        className="flex flex-col justify-around gap-8 max-w-3xl mx-auto text-center z-10 px-4"
-        variants={spanVariants}
-      >
-        <motion.h1 variants={itemVariants}>Bringing life into homes and offices</motion.h1>
-        
-        <motion.p className="max-w-2xl mx-auto text-[var(--primary)] text-xl font-extrabold" variants={itemVariants} transition={{ delay: 0.2 }}>
-          Discover our curated collection of beautiful potted plants. Transform your space into a natural sanctuary with nature delivered to your doorstep.
-        </motion.p>
-        
-        <motion.div className="flex flex-col md:flex-row gap-4 justify-center py-4" variants={itemVariants} transition={{ delay: 0.4 }}>
-          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} transition={{ type: "spring", stiffness: 300 }}>
-            <Link to="/shop" className="bg-[var(--background)] text-[var(--text)] py-3 px-6 rounded-2xl block">
-              Shop Now
-            </Link>
+      <div className="relative z-10 max-w-7xl mx-auto px-4 w-full">
+        <div className="grid md:grid-cols-2 gap-12 text-left">
+          <motion.div
+            initial={{ opacity: 0, x: -50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8 }}
+          >
+            <motion.p
+              className="text-[var(--background)] text-5xl md:text-6xl font-bold mb-4"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+            >HOPAWI GARDENS
+            </motion.p>
+            <motion.h2
+              className=" text-2xl md:text-6xl font-bold text-white mb-6"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+            >
+              Bringing life into <span className="text-green-400">homes</span>{" "}
+              and <span className="text-green-400">offices</span>
+            </motion.h2>
+
+            <motion.p
+              className="text-xl text-gray-300 mb-8 leading-relaxed"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.6 }}
+            >
+              Embracing greenery living.
+            </motion.p>
+
+            <motion.div
+              className="flex flex-col sm:flex-row gap-4 mb-8"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.9 }}
+            >
+              <Link
+                to="/shop"
+                className="flex  items-center gap-8 justify-center bg-green-500 hover:bg-green-600 text-white py-4 px-8 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105"
+              >
+                Shop now <IoIosArrowForward />
+              </Link>
+            </motion.div>
+
+            {/* Trust Indicators */}
+            <motion.div
+              className="flex items-center gap-12 text-white/80"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 1.2 }}
+            >
+              <div className="flex items-center gap-2">
+                <div className="w-2 h-2 bg-green-400 rounded-full" />
+                Greenery living
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-2 h-2 bg-green-400 rounded-full" />
+                Serenity
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-2 h-2 bg-green-400 rounded-full" />
+                Life
+              </div>
+            </motion.div>
           </motion.div>
-          
-          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} transition={{ type: "spring", stiffness: 300 }}>
-            <a  href="#collection" className="bg-[var(--accent)] text-[var(--background)] py-3 px-6 rounded-2xl block">
-              Browse Collection
-            </a>
+
+          {/* Interactive Plant Preview */}
+          <motion.div
+            className="relative h-96 rounded-2xl overflow-hidden shadow-2xl"
+            initial={{ opacity: 0, x: 50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.5 }}
+          >
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={currentImageIndex}
+                className="absolute inset-0 bg-cover bg-center"
+                initial={{ scale: 1.1 }}
+                animate={{ scale: 1 }}
+                transition={{ duration: 1.2 }}
+                style={{
+                  backgroundImage: `url(${imgSlide[currentImageIndex]})`,
+                }}
+              />
+            </AnimatePresence>
           </motion.div>
-        </motion.div>
-      </motion.div>
-    </motion.section>
-  )
-}
+        </div>
+      </div>
+    </section>
+  );
+};
 
 export default HeroSection;

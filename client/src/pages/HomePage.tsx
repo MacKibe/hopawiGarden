@@ -1,12 +1,9 @@
 import { motion } from "framer-motion";
-// import Testimonial from "../components/home/Testimonial";
 import HeroSection from "../components/home/HeroSection";
-import FeatureSection from "../components/home/FeaturesSection";
-import FeaturedProduct from "../components/home/FeaturedProduct";
-import ServiceSection from "../components/home/ServiceSection";
-import { sectionVariants } from "../utils/variants";
-  import { useLocation } from "react-router";
-  import { useEffect } from 'react';
+import { useLocation } from "react-router";
+import { useEffect } from "react";
+import CategorySection from "../components/home/CategorySection";
+import RecentProducts from "../components/home/RecentProducts";
 
 const HomePage = () => {
   const location = useLocation();
@@ -24,35 +21,21 @@ const HomePage = () => {
       }
     }
   }, [location.state]);
-  
+
   return (
-    <motion.main className="text-[var(--text)] text-center" initial="hidden" animate="visible" >
+    <motion.main
+      className="bg-[var(--secondary)] text-[var(--text)] text-center"
+      initial="hidden"
+      animate="visible"
+    >
       {/* Landing Section */}
       <HeroSection />
-      
-      {/* Features */}
-      <motion.section variants={sectionVariants}>
-        <ServiceSection />
-      </motion.section>
 
-      {/* Features */}
-      <motion.section>
-        <FeatureSection />
-      </motion.section>
-      
-      {/* Featured Products */}
-      <motion.section className="bg-[var(--background)] text-[var(--primary)]">
-        <FeaturedProduct />
-      </motion.section>
-      
-      {/* Testimonials 
-      <motion.section>
-        <h3>What Our Customers Say</h3>
-        <h4>Join thousands of happy plant clients</h4>
-        <Testimonial />
-      </motion.section>*/}
+      <RecentProducts />
+
+      <CategorySection />
     </motion.main>
-  )
-}
+  );
+};
 
 export default HomePage;

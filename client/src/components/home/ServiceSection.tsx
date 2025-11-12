@@ -4,7 +4,7 @@ import { cardVariants } from "../../utils/variants";
 
 const ServiceSection = () => {
     return(
-        <div  id="service">
+        <section className="bg-[var(--secondary)]" id="service">
             {/* Services Section */}
             <motion.div className="container">
                 <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}
@@ -34,7 +34,7 @@ const ServiceSection = () => {
                 ))}
                 </div>
             </motion.div>
-        </div>
+        </section>
     )
 }
 
