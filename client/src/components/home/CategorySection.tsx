@@ -17,8 +17,8 @@ const CategorySection = () => {
   const { products, loading, error } = useProducts();
   const { addItem } = useCartStore();
 
-  // Simple collection definitions
-  const collectionDefinitions: Omit<PlantCollection, 'plants'>[] = [
+  // Simple collection definitions - move outside component or use useMemo
+  const collectionDefinitions: Omit<PlantCollection, 'plants'>[] = useMemo(() => [
     {
       id: 'indoor',
       name: 'Indoor plants',
@@ -74,7 +74,7 @@ const CategorySection = () => {
     //   filterFn: (product: Product) => 
     //     product.leaf_size === 'large' || product.leaf_size === 'extra_large'
     // }
-  ];
+  ], []); // Empty dependency array since this is static data
 
   // Populate collections with products
   const collections = useMemo(() => {
@@ -86,7 +86,7 @@ const CategorySection = () => {
         plants: products.filter(collection.filterFn).slice(0, 4) // Show 4 plants per collection
       }))
       .filter(collection => collection.plants.length > 0); // Only show collections with plants
-  }, [products]);
+  }, [products, collectionDefinitions]); // Add collectionDefinitions to dependencies
 
   const handleAddToCart = (product: Product) => {
     addItem({
@@ -150,7 +150,7 @@ const CategorySection = () => {
                           {plant.description}
                         </p>
                         <div className="flex justify-between items-center">
-                          <span className="text-green-600 font-bold">
+                          <span className="font-bold">
                             Kshs {plant.price.toLocaleString()}
                           </span>
                           <button
@@ -168,10 +168,7 @@ const CategorySection = () => {
                 {/* View More Link */}
                 {collection.plants.length >= 4 && (
                   <div className="text-center mt-6">
-                    <Link 
-                      to={`/shop?category=${collection.id}`}
-                      className="text-green-600 hover:text-green-700 font-medium"
-                    >
+                    <Link to={`/shop?category=${collection.id}`} className="text-green-600 hover:text-green-700 font-medium">
                       View all {collection.name} →
                     </Link>
                   </div>
@@ -183,10 +180,7 @@ const CategorySection = () => {
 
         {/* Browse All Button */}
         <div className="text-center mt-12">
-          <Link 
-            to="/shop"
-            className="bg-green-600 text-white px-8 py-3 rounded-lg font-medium hover:bg-green-700 inline-block"
-          >
+          <Link to="/shop" className="bg-green-600 text-white px-8 py-3 rounded-lg font-medium hover:bg-green-700 inline-block">
             Browse All Plants
           </Link>
         </div>

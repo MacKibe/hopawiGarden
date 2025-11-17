@@ -8,7 +8,6 @@ export const useProduct = (id?: string) => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    // Add cache check to avoid refetching if we already have the product
     const fetchProduct = async () => {
       if (!id) {
         setError('Product ID is required');
@@ -16,12 +15,24 @@ export const useProduct = (id?: string) => {
         return;
       }
 
-      // Optional: Check if we already have this product in a cache
-      // This can be enhanced with React Query or similar later
-      
       try {
+        setLoading(true);
+        setError(null);
+        
         const response = await api.get(`/products/${id}`);
-        setProduct(response.data);
+        
+        // Ensure product has all required properties with fallbacks
+        const productWithDefaults = {
+          ...response.data,
+          sunlight_exposure: response.data.sunlight_exposure || '',
+          leaf_size: response.data.leaf_size || '',
+          long_description: response.data.long_description || response.data.description || '',
+          category: response.data.category || 'general',
+          is_flowering: response.data.is_flowering || false,
+          images: response.data.images || [] // Ensure images array exists
+        };
+        
+        setProduct(productWithDefaults);
       } catch (err) {
         console.error('Failed to fetch product:', err);
         setError('Failed to fetch product');

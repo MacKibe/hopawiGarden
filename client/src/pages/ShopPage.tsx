@@ -3,12 +3,12 @@ import { useState, useMemo, useEffect } from "react";
 import { useSearchParams } from "react-router";
 import ProductList from "../components/shop/ProductList";
 import { itemVariants, sectionVariants } from "../utils/variants";
-import { useProducts } from "../hooks/useProducts";
+import { useProductGroups } from "../hooks/useProductGroups";
 import type { ProductFilters, FilterState } from "../types";
 import { FaFilter, FaTimes } from "react-icons/fa";
 
 const ShopPage = () => {
-  const { products, loading, error } = useProducts();
+  const { productGroups, loading, error } = useProductGroups();
   const [filters, setFilters] = useState<ProductFilters>({});
   const [sortBy, setSortBy] = useState<FilterState["sortBy"]>("name");
   const [searchParams, setSearchParams] = useSearchParams();
@@ -25,51 +25,64 @@ const ShopPage = () => {
     }
   }, [searchParams, setSearchParams]);
 
-  // Filter and sort products
-  const filteredAndSortedProducts = useMemo(() => {
-    let filtered = products;
+  // Filter and sort product groups
+  const filteredAndSortedProductGroups = useMemo(() => {
+    let filtered = productGroups;
 
-    // Apply filters
+    // Apply filters to each group's products
     if (filters.category && filters.category !== "all") {
-      filtered = filtered.filter(
-        (product) =>
-          product.category?.toLowerCase() === filters.category?.toLowerCase()
-      );
+      filtered = filtered.map(group => ({
+        ...group,
+        products: group.products.filter(
+          (product) =>
+            product.category?.toLowerCase() === filters.category?.toLowerCase()
+        )
+      })).filter(group => group.products.length > 0); // Remove empty groups
     }
 
     if (filters.priceRange) {
-      filtered = filtered.filter(
-        (product) =>
-          product.price >= filters.priceRange![0] &&
-          product.price <= filters.priceRange![1]
-      );
+      filtered = filtered.map(group => ({
+        ...group,
+        products: group.products.filter(
+          (product) =>
+            product.price >= filters.priceRange![0] &&
+            product.price <= filters.priceRange![1]
+        )
+      })).filter(group => group.products.length > 0);
     }
 
     if (filters.searchQuery) {
       const query = filters.searchQuery.toLowerCase();
-      filtered = filtered.filter(
-        (product) =>
-          product.name.toLowerCase().includes(query) ||
-          product.description.toLowerCase().includes(query)
-      );
+      filtered = filtered.map(group => ({
+        ...group,
+        products: group.products.filter(
+          (product) =>
+            product.name.toLowerCase().includes(query) ||
+            product.description.toLowerCase().includes(query)
+        )
+      })).filter(group => group.products.length > 0);
     }
 
-    // Apply sorting
+    // Apply sorting to groups (you can customize this)
     switch (sortBy) {
       case "price-low":
-        filtered = [...filtered].sort((a, b) => a.price - b.price);
+        filtered = [...filtered].sort((a, b) => 
+          (a.products[0]?.price || 0) - (b.products[0]?.price || 0)
+        );
         break;
       case "price-high":
-        filtered = [...filtered].sort((a, b) => b.price - a.price);
+        filtered = [...filtered].sort((a, b) => 
+          (b.products[0]?.price || 0) - (a.products[0]?.price || 0)
+        );
         break;
       case "name":
       default:
-        filtered = [...filtered].sort((a, b) => a.name.localeCompare(b.name));
+        filtered = [...filtered].sort((a, b) => a.group_name.localeCompare(b.group_name));
         break;
     }
 
     return filtered;
-  }, [products, filters, sortBy]);
+  }, [productGroups, filters, sortBy]);
 
   const handleFilterChange = (newFilters: ProductFilters) => {
     setFilters(newFilters);
@@ -91,6 +104,7 @@ const ShopPage = () => {
     { id: "all", label: "All plants" },
     { id: "indoor", label: "Indoor plants" },
     { id: "outdoor", label: "Outdoor plants" },
+    { id: "planter", label: "Planters" },
   ];
 
   const activeCategory = filters.category || "all";
@@ -211,9 +225,9 @@ const ShopPage = () => {
             <div className="text-sm">
               <div className="font-semibold">
                 <span className="text-[var(--background)]">
-                  {filteredAndSortedProducts.length}
+                  {filteredAndSortedProductGroups.length}
                 </span>{" "}
-                products of {products.length} total
+                product groups
               </div>
             </div>
             <button
@@ -256,7 +270,7 @@ const ShopPage = () => {
           transition={{ delay: 0.3 }}
         >
           <ProductList
-            products={filteredAndSortedProducts}
+            productGroups={filteredAndSortedProductGroups}
             loading={loading}
             error={error}
           />

@@ -1,18 +1,32 @@
 import { useState } from 'react';
 import { FaTimes } from 'react-icons/fa';
 import { useForm } from 'react-hook-form';
-import api from '../../config/axios';import type { Product } from '../../types';
+import api from '../../config/axios';
+import type { Product } from '../../types';
 import { toast } from 'react-hot-toast';
 import { uploadProductImage, deleteProductImage } from '../../services/ImageUploadService';
 
 interface ProductFormProps {
   product?: Product | null;
   onClose: () => void;
-  onProductSaved?: () => void; // Callback to refresh product list
+  onProductSaved?: () => void;
 }
 
 // Interface for form data (exclude id for new products)
 type ProductFormData = Omit<Product, 'product_id'>;
+
+const planterTypes = [
+  { value: 'planter' as const, label: 'Planter' },
+  { value: 'clay_pot' as const, label: 'Clay Pot' },
+];
+
+const planterSizes = [
+  { value: 'extra_small' as const, label: 'Extra Small' },
+  { value: 'small' as const, label: 'Small' },
+  { value: 'medium' as const, label: 'Medium' },
+  { value: 'large' as const, label: 'Large' },
+  { value: 'extra_large' as const, label: 'Extra Large' },
+];
 
 const ProductForm: React.FC<ProductFormProps> = ({ product, onClose, onProductSaved }) => {
   const [loading, setLoading] = useState(false);
@@ -28,6 +42,11 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onClose, onProductSa
       category: product?.category || 'indoor',
       active: product?.active ?? true,
       path: product?.path || '',
+      planter_details: product?.planter_details || {
+        type: 'planter',
+        size: 'medium',
+        color: ''
+      }
     }
   });
 
@@ -53,13 +72,13 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onClose, onProductSa
       const previewUrl = URL.createObjectURL(file);
       setImagePreview(previewUrl);
       // Clear any previous file input errors
-      setValue('path', 'image-uploaded'); // Set a dummy value to clear validation errors
+      setValue('path', 'image-uploaded');
     }
   };
 
   const onSubmit = async (data: ProductFormData) => {
     setLoading(true);
-    let uploadedImageUrl = product?.path || ''; // Keep existing if editing
+    let uploadedImageUrl = product?.path || '';
     let newImageUploaded = false;
 
     try {
@@ -76,8 +95,10 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onClose, onProductSa
       // Prepare payload with image URL
       const payload = {
         ...data,
-        path: uploadedImageUrl, // Use the (possibly new) image URL
-        price: Number(data.price), // Ensure number type
+        path: uploadedImageUrl,
+        price: Number(data.price),
+        // Ensure planter_details is included
+        planter_details: data.planter_details
       };
 
       console.log('Final payload:', payload);
@@ -98,7 +119,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onClose, onProductSa
       // Close modal and refresh product list
       onClose();
       if (onProductSaved) {
-        onProductSaved(); // Callback to refresh parent component
+        onProductSaved();
       }
       
     } catch (err: unknown) {
@@ -127,13 +148,14 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onClose, onProductSa
   const categories = [
     { value: 'indoor', label: 'Indoor Plants' },
     { value: 'outdoor', label: 'Outdoor Plants' },
+    { value: 'planter', label: 'Planters' }, // Add planter as a category option
   ];
 
   const isSubmitting = loading || uploadingImage;
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+      <div className="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto">
         <div className="flex justify-between items-center p-6 border-b">
           <h2 className="text-xl font-semibold">
             {product ? 'Edit Product' : 'Add New Product'}
@@ -272,6 +294,78 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onClose, onProductSa
             </div>
           </div>
 
+          {/* Planter Details Section - Always Required */}
+          <div className="border-t pt-6">
+            <h3 className="text-lg font-medium text-gray-900 mb-4">Planter Details</h3>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-4 bg-gray-50 rounded-lg">
+              {/* Planter Type */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Planter Type *
+                </label>
+                <select
+                  {...register('planter_details.type', { 
+                    required: 'Planter type is required'
+                  })}
+                  className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed"
+                  disabled={isSubmitting}
+                >
+                  <option value="">Select type</option>
+                  {planterTypes.map(type => (
+                    <option key={type.value} value={type.value}>
+                      {type.label}
+                    </option>
+                  ))}
+                </select>
+                {errors.planter_details?.type && (
+                  <p className="text-red-500 text-sm mt-1">{errors.planter_details.type.message}</p>
+                )}
+              </div>
+
+              {/* Planter Size */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Planter Size *
+                </label>
+                <select
+                  {...register('planter_details.size', { 
+                    required: 'Planter size is required'
+                  })}
+                  className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed"
+                  disabled={isSubmitting}
+                >
+                  <option value="">Select size</option>
+                  {planterSizes.map(size => (
+                    <option key={size.value} value={size.value}>
+                      {size.label}
+                    </option>
+                  ))}
+                </select>
+                {errors.planter_details?.size && (
+                  <p className="text-red-500 text-sm mt-1">{errors.planter_details.size.message}</p>
+                )}
+              </div>
+
+              {/* Planter Color */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Color *
+                </label>
+                <input
+                  type="text"
+                  {...register('planter_details.color', { 
+                    required: 'Color is required'
+                  })}
+                  className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed"
+                  placeholder="e.g., Terracotta, White, Black..."
+                  disabled={isSubmitting}
+                />
+                {errors.planter_details?.color && (
+                  <p className="text-red-500 text-sm mt-1">{errors.planter_details.color.message}</p>
+                )}
+              </div>
+            </div>
+          </div>
 
           {/* Active Status */}
           <div className="flex items-center">

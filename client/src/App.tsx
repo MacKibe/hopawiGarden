@@ -5,6 +5,9 @@ import "./index.css";
 import HomePage from "./pages/HomePage";
 import AboutUsPage from "./pages/AboutUsPage";
 import ContactPage from "./pages/ContactPage";
+import PlantCarePage from "./pages/PlantCarePage";
+import SoilMixturePage from "./pages/SoilMixturePage";
+import LandscapingPage from "./pages/LandscapingPage";
 import ShopPage from "./pages/ShopPage";
 import LoginPage from "./pages/auth/LoginPage";
 import RegisterPage from "./pages/auth/RegisterPage";
@@ -40,6 +43,9 @@ createRoot(document.getElementById("root")!).render(
           <Route path="/" element={<HomePage />} />
           <Route path="/about" element={<AboutUsPage />} />
           <Route path="/contact" element={<ContactPage />} />
+          <Route path="/care_maintainance" element={<PlantCarePage />} />
+          <Route path="/soil_mixture" element={<SoilMixturePage />} />
+          <Route path="/landscaping" element={<LandscapingPage />} />
         </Route>
 
         {/* Plain Layout Routes (with Header only) */}

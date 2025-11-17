@@ -1,15 +1,49 @@
+// Add ProductImage interface
+export interface ProductImage {
+  image_id: string;
+  product_id: string;
+  image_url: string;
+  created_at: string;
+}
+
+export interface ProductGroup {
+  group_name: string;
+  products: Product[];
+}
+
+export interface ProductListProps {
+  productGroups: ProductGroup[];
+  loading: boolean;
+  error: string | null;
+}
+
+export interface SimpleProductListProps {
+  products: Product[];
+  loading: boolean;
+  error: string | null;
+}
+
+// Add planter-specific interface
+export interface PlanterDetails {
+  type: 'planter' | 'clay_pot';
+  size: 'extra_small' | 'small' | 'medium' | 'large' | 'extra_large';
+  color: string;
+}
+
 export interface Product {
   product_id: string;
   name: string;
   description: string;
   price: number;
-  path: string;
+  path?: string;
   active?: boolean;
   category?: string;
   leaf_size: 'small' | 'medium' | 'large' | 'extra_large';
   is_flowering: boolean;
   sunlight_exposure: 'full_sun' | 'partial_sun' | 'partial_shade' | 'low_light' | 'full_shade';
   long_description?: string;
+  planter_details: PlanterDetails;
+  images: ProductImage[];
 }
 
 export interface ProductListProps{

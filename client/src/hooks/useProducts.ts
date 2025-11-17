@@ -1,4 +1,3 @@
-// hooks/useProducts.ts
 import { useState, useEffect } from 'react';
 import api from '../config/axios';
 import type { Product } from '../types';
@@ -16,7 +15,13 @@ export const useProducts = () => {
         const response = await api.get('/products');
         console.log('API Response:', response.data);
         
-        setProducts(response.data);
+        // Ensure all products have images array
+        const productsWithImages = response.data.map((product: Product) => ({
+          ...product,
+          images: product.images || []
+        }));
+        
+        setProducts(productsWithImages);
       } catch (err: unknown) {
         console.error('Products fetch error:', err);
         if (typeof err === 'object' && err !== null && 'response' in err) {

@@ -20,11 +20,11 @@ const Header = () => {
   const navigate = useNavigate();
 
   const navItems = [
-    { path: "/shop", label: "Shop all" },
     { path: "/shop?category=indoor", label: "Indoor potted plants" },
     { path: "/shop?category=outdoor", label: "Outdoor potted plants" },
-    { path: "/about", label: "About us" },
-    { path: "/contact", label: "Contact us" },
+    { path: "/landscaping", label: "Landscaping" },
+    { path: "/soil_mixture", label: "HOPAWI soil mixture" },
+    { path: "/care_maintainance", label: "Plant care & maintainance" },
   ];
 
   const toggleMobileMenu = () => {
@@ -37,7 +37,7 @@ const Header = () => {
 
   return (
     <>
-      <header className="sticky top-0 z-50 flex items-center justify-center gap-8 py-3 bg-[var(--secondary)] text-[var(--background)] text-bold shadow-md">
+      <header className="sticky top-0 z-50 flex items-center justify-center gap-8 py-3 bg-[var(--secondary)] text-black text-bold shadow-md">
         {/* Logo */}
         <div>
           <Link
