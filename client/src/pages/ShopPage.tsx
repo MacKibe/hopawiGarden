@@ -104,7 +104,6 @@ const ShopPage = () => {
     { id: "all", label: "All plants" },
     { id: "indoor", label: "Indoor plants" },
     { id: "outdoor", label: "Outdoor plants" },
-    { id: "planter", label: "Planters" },
   ];
 
   const activeCategory = filters.category || "all";
@@ -114,7 +113,6 @@ const ShopPage = () => {
   return (
     <div className="container-responsive py-responsive">
       <motion.div initial="hidden" animate="visible" variants={sectionVariants}>
-        
         {/* Mobile Filter Button */}
         <motion.div className="lg:hidden mb-4" variants={itemVariants}>
           <button
@@ -129,13 +127,8 @@ const ShopPage = () => {
         </motion.div>
 
         {/* Top Filter Bar */}
-        <motion.div
-          variants={itemVariants}
-          className={`
-            bg-[var(--primary)] rounded-lg shadow-sm p-6
-            ${showFilters ? 'block' : 'hidden lg:block'}
-          `}
-        >
+        <motion.div variants={itemVariants} className={`rounded-lg shadow-sm p-6 mb-8
+        ${showFilters ? 'block' : 'hidden lg:block'}`}>
           {/* Filter Controls Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             {/* Search */}
@@ -227,7 +220,7 @@ const ShopPage = () => {
                 <span className="text-[var(--background)]">
                   {filteredAndSortedProductGroups.length}
                 </span>{" "}
-                product groups
+                products
               </div>
             </div>
             <button

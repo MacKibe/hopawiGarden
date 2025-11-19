@@ -16,7 +16,7 @@ const LandscapingPage = () => {
         "Disease and pest management",
         "Seasonal lawn cleanup",
       ],
-      image: "/api/placeholder/600/400",
+      image: "https://jujkvczxnzflaukmssqb.supabase.co/storage/v1/object/public/testing_bucket/assests/IMG_3960.jpg",
     },
     fenceMaintenance: {
       title: "Fence maintenance & repair",
@@ -29,7 +29,7 @@ const LandscapingPage = () => {
         "Gate installation and repair",
         "Vine and vegetation control",
       ],
-      image: "/api/placeholder/600/400",
+      image: "https://jujkvczxnzflaukmssqb.supabase.co/storage/v1/object/public/testing_bucket/assests/IMG_3964.jpg",
     },
     plantPositioning: {
       title: "Plant positioning and arrangement",
@@ -42,7 +42,7 @@ const LandscapingPage = () => {
         "Height and texture consideration",
         "Focal point creation",
       ],
-      image: "/api/placeholder/600/400",
+      image: "https://jujkvczxnzflaukmssqb.supabase.co/storage/v1/object/public/testing_bucket/assests/IMG_3939-min.JPG",
     },
     plantAdvisory: {
       title: "Plant selection advisory",
@@ -55,7 +55,7 @@ const LandscapingPage = () => {
         "Seasonal blooming planning",
         "Drought-resistant varieties",
       ],
-      image: "/api/placeholder/600/400",
+      image: "https://jujkvczxnzflaukmssqb.supabase.co/storage/v1/object/public/testing_bucket/assests/IMG_3926-min.JPG",
     },
     irrigation: {
       title: "Irrigation systems",
@@ -73,61 +73,55 @@ const LandscapingPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-#b89b51">
+    <div className="min-h-screen pb-8">
       {/* Hero Section */}
-      <section className="bg-#b89b51 text-black py-10">
-        <div className="container mx-auto px-4 text-center">
-          <p className="text-4xl md:text-5xl font-bold mb-2">
-            Landscaping services
+      <div className="py-8">
+        <div className="container mx-auto px-4">
+          <p className="text-[var(--background)] text-4xl md:text-5xl font-bold underline underline-offset-4 mb-2">
+            Landscaping services.
           </p>
-          <p className="text-xl md:text-2xl mb-8">
-            Transforming outdoor spaces with excellence
+          <p className="w-[80%] text-xl md:text-lg py-2">
+            Transforming outdoor spaces with excellence.
           </p>
         </div>
-      </section>
+      </div>
 
       {/* Main Content */}
-      <div className="container mx-auto px-4">
-        <div className="flex flex-col lg:flex-row gap-8 py-16">
+      <div className="container mx-auto p-4">
+        <div className="flex flex-col lg:flex-row gap-8">
           {/* Service Details */}
           <div ref={serviceDetailsRef}>
             <div className="">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
                 {Object.entries(services).map(([key, service]) => (
-                  <div key={key} className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition duration-300 cursor-pointer">
-                    <div className="h-48 bg-green-50 flex items-center justify-center">
-                      <span className="text-green-800 font-semibold">
-                        Service Image
-                      </span>
+                  <div key={key} className="rounded-lg shadow-md overflow-hidden hover:shadow-lg transition duration-300 cursor-pointer">
+                    <div className="h-48 bg-[var(--accent)] flex items-center justify-center">
+                      <img src={service.image} alt={service.title} />
                     </div>
-                    <div className="p-4">
-                      <h4 className="font-semibold text-black mb-2">
+                    <div className="px-8 py-16">
+                      <p className="text-xl font-extrabold mb-2">
                         {service.title}
-                      </h4>
-                      <p className="text-gray-600 text-sm line-clamp-2">
+                      </p>
+                      <p className="text-sm line-clamp-2">
                         {service.description}
                       </p>
                     </div>
                   </div>
                 ))}
               </div>
-              <div className="bg-green-50 text-center rounded-lg p-6 mt-8">
-                <h4 className="text-xl font-semibold text-green-800 mb-4">
-                  Ready to transform your space?
-                </h4>
-                <p className="text-gray-700 mb-4">
-                  Contact us for a free consultation and quote for your
-                  landscaping needs.
+              {/* CTA Section */}
+              <div className="w-[65%] mx-auto mt-12 border-3 border-[var(--primary)] rounded-lg p-10 text-center">
+                <p className="text-2xl font-bold mb-4">
+                        Ready to transform your space?
                 </p>
-                <div className="flex justify-center flex-wrap gap-4">
-                  <Link
-                    to="/contact"
-                    className="bg-green-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-green-700 transition duration-300"
-                  >
-                    Schedule consultation
-                  </Link>
-                  <button className="border border-green-600 text-green-600 px-6 py-3 rounded-lg font-semibold hover:bg-green-50 transition duration-300">
-                    Call Now: (+254) 720 804523
+                <p className="mb-6 text-lg">
+                        Contact us for a free consultation and quote for your
+                        landscaping needs.
+                </p>
+                <div className="flex flex-wrap justify-center gap-4">
+                  <Link to="/contact" className="border-1 border-[var(--primary)] text-[var(--background)] bg-[var(--primary)] px-8 py-3 rounded-lg font-semibold hover:bg-[var(--background)] hover:text-white transition duration-300">Schedule consultation</Link>
+                  <button className="border border-[var(--primary)] px-8 py-3 rounded-lg font-semibold hover:bg-[var(--primary)] hover:text-[var(--background)] transition duration-300">
+                    Call: (+254) 720 804523
                   </button>
                 </div>
               </div>

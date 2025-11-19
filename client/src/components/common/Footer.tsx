@@ -19,7 +19,7 @@
       };
       
       return (
-          <footer className="bg-[var(--background)] text-[var(--primary)]">
+          <footer className="bg-[var(--background)] text-white">
               <div className="container py-10 border-b border-[var(--primary)]">
                   <div className="grid grid-cols-1 md:grid-cols-4 gap-8 py-12">
                         {/* Brand Info */}

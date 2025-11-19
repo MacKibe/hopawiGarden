@@ -10,7 +10,7 @@ const PlainLayout: FC<PlainLayoutProps> = ({ children }) => {
   return (
     <div className="flex flex-col">
         <Header />
-        <main className="min-h-screen bg-[var(--primary)] text-[var(--text)]">
+        <main className="min-h-screen bg-[var(--secondary)] text-[var(--text)]">
         {children}
         </main>
     </div>

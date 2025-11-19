@@ -240,7 +240,7 @@ const ProductList = ({ productGroups, products }: ProductListComponentProps) => 
         {currentProducts.map((product, index) => (
           <motion.div
             key={product.product_id}
-            className="card overflow-hidden relative cursor-pointer bg-[var(--primary)] rounded-lg shadow-sm"
+            className="card overflow-hidden relative cursor-pointer bg-[var(--secondary)] rounded-lg shadow-sm"
             variants={cardVariants}
             initial="hidden"
             animate="visible"

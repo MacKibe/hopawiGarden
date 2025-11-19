@@ -22,9 +22,9 @@ const Header = () => {
   const navItems = [
     { path: "/shop?category=indoor", label: "Indoor potted plants" },
     { path: "/shop?category=outdoor", label: "Outdoor potted plants" },
+    { path: "/care_maintainance", label: "Plant care maintainance" },
+    { path: "/soil_mixture", label: "HOPAWI compost mixture" },
     { path: "/landscaping", label: "Landscaping" },
-    { path: "/soil_mixture", label: "HOPAWI soil mixture" },
-    { path: "/care_maintainance", label: "Plant care & maintainance" },
   ];
 
   const toggleMobileMenu = () => {
@@ -40,11 +40,7 @@ const Header = () => {
       <header className="sticky top-0 z-50 flex items-center justify-center gap-8 py-3 bg-[var(--secondary)] text-black text-bold shadow-md">
         {/* Logo */}
         <div>
-          <Link
-            to="/"
-            className="text-xl md:text-2xl font-bold hover:text-[var(--accent)] transition touch-target"
-            onClick={closeMobileMenu}
-          >
+          <Link to="/" className="text-xl md:text-2xl font-bold hover:text-[var(--accent)] transition touch-target" onClick={closeMobileMenu}>
             <img src={logo} alt="HOPAWI GARDENS Logo" className="h-8 md:h-10" />
           </Link>
         </div>

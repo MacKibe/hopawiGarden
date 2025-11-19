@@ -1,17 +1,16 @@
 @import "tailwindcss";
 
 :root {
-  --primary: #fff;
-  --secondary: #ECE3D9;
-  --accent: #FFCDD2;
+  --primary: #feeabde7;
+  --secondary: #fff9eae7;
+  --accent: #cfffd1;
   --background: #4CAF50;
-  --text: #212121;
+  --text: #000;
 }
 
 /* Typography */
 body {
   font-family: 'Raleway', sans-serif;
-  color: var(--text);
   line-height: 1.6;
 }
 
@@ -23,7 +22,6 @@ h1, h2, h3, h4, h5, h6 {
 
 h1 {
   font-size: 2.25rem;
-  color: var(--primary);
 }
 
 h2 {

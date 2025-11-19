@@ -10,7 +10,7 @@ const PublicLayout: FC<PublicLayoutProps> = ({ children }) => {
   return (
     <div className="flex flex-col min-h-screen">
       <Header />
-      <main className="flex-grow bg-[var(--primary)] text-[var(--text)]">
+      <main className="flex-grow bg-[var(--secondary)] text-[var(--text)]">
         {children}
       </main>
       <Footer />
