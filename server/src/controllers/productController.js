@@ -5,12 +5,18 @@ import supabase from "../supabaseClient.js";
  */
 export const getProducts = async (req, res) => {
   try {
-    const { category, active } = req.query;
+    const { category, active, limit = 50, offset = 0, minimal = false } = req.query;
     
+    // Base query - select only essential columns
     let query = supabase.from("product").select(`
-      *,
-      planter (*),
-      product_images (*)
+      product_id,
+      name,
+      description,
+      price,
+      category,
+      active,
+      created_at
+      ${!minimal ? ',path, leaf_size, is_flowering, sunlight_exposure, long_description' : ''}
     `);
     
     // Apply filters if provided
@@ -22,31 +28,61 @@ export const getProducts = async (req, res) => {
       query = query.eq('active', active === 'true');
     }
     
-    const { data, error } = await query.order('created_at', { ascending: false });
+    // Add pagination
+    query = query.range(offset, parseInt(offset) + parseInt(limit) - 1);
+    
+    const { data, error, count } = await query.order('created_at', { ascending: false });
 
     if (error) {
       console.error('Get products error:', error);
       return res.status(500).json({ error: error.message });
     }
     
-    // Format products with images and planter_details
-    const formattedProducts = data?.map(product => ({
-      ...product,
-      planter_details: product.planter ? {
-        type: product.planter.type,
-        size: product.planter.size,
-        color: product.planter.color
-      } : null,
-      images: product.product_images || []
-    })) || [];
+    // Only fetch related data if not minimal and we have products
+    if (!minimal && data && data.length > 0) {
+      const productIds = data.map(p => p.product_id);
+      
+      // Batch fetch planter details
+      const { data: planters } = await supabase
+        .from('planter')
+        .select('product_id, type, size, color')
+        .in('product_id', productIds);
+      
+      // Batch fetch images (limit to 1 per product for lists)
+      const { data: productImages } = await supabase
+        .from('product_images')
+        .select('product_id, image_url')
+        .in('product_id', productIds)
+        .order('created_at', { ascending: true });
 
-    // Remove nested objects
-    formattedProducts.forEach(product => {
-      delete product.planter;
-      delete product.product_images;
-    });
+      // Create lookup maps
+      const planterMap = {};
+      planters?.forEach(p => {
+        planterMap[p.product_id] = p;
+      });
+      
+      const imageMap = {};
+      productImages?.forEach(img => {
+        if (!imageMap[img.product_id]) {
+          imageMap[img.product_id] = img.image_url; // Only store first image for lists
+        }
+      });
+
+      // Merge data
+      data.forEach(product => {
+        product.planter_details = planterMap[product.product_id] || null;
+        product.images = imageMap[product.product_id] ? [{ image_url: imageMap[product.product_id] }] : [];
+      });
+    }
     
-    res.json(formattedProducts);
+    res.json({
+      products: data,
+      pagination: {
+        limit: parseInt(limit),
+        offset: parseInt(offset),
+        total: count
+      }
+    });
   } catch (error) {
     console.error('Get products exception:', error);
     res.status(500).json({ error: 'Internal server error' });
@@ -66,13 +102,22 @@ export const getProductById = async (req, res) => {
 
     console.log('Fetching product with ID:', id);
 
-    // Get product data
+    // Get only essential product data first
     const { data: product, error: productError } = await supabase
       .from("product")
       .select(`
-        *,
-        planter (*),
-        product_images (*)
+        product_id,
+        name,
+        description,
+        price,
+        path,
+        active,
+        category,
+        leaf_size,
+        is_flowering,
+        sunlight_exposure,
+        long_description,
+        created_at
       `)
       .eq("product_id", id)
       .single();
@@ -86,25 +131,28 @@ export const getProductById = async (req, res) => {
       return res.status(404).json({ error: "Product not found" });
     }
 
-    console.log('Raw product data from DB:', product);
-    console.log('Product images from DB:', product.product_images);
+    // Parallel fetch for related data
+    const [planterResult, imagesResult] = await Promise.all([
+      supabase
+        .from('planter')
+        .select('type, size, color')
+        .eq('product_id', id)
+        .single(),
+      supabase
+        .from('product_images')
+        .select('image_id, image_url, created_at')
+        .eq('product_id', id)
+        .order('created_at', { ascending: true })
+    ]);
 
-    // Format the response - use images from product_images table
+    // Format the response
     const response = {
       ...product,
-      planter_details: product.planter ? {
-        type: product.planter.type,
-        size: product.planter.size,
-        color: product.planter.color
-      } : null,
-      images: product.product_images || [] // Use images from product_images table
+      planter_details: planterResult.data || null,
+      images: imagesResult.data || []
     };
 
-    // Remove the nested objects
-    delete response.planter;
-    delete response.product_images;
-
-    console.log('Final response with images:', response.images);
+    console.log('Final response with images count:', response.images.length);
 
     res.json(response);
   } catch (error) {
@@ -112,6 +160,7 @@ export const getProductById = async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 };
+
 
 /**
  * Update an existing product
@@ -434,6 +483,7 @@ export const getProductsGroupedByName = async (req, res) => {
 export const getProductsByGroupName = async (req, res) => {
   try {
     const { groupName } = req.params;
+    const { minimal = 'false' } = req.query;
     
     if (!groupName) {
       return res.status(400).json({ error: "Group name is required" });
@@ -442,9 +492,14 @@ export const getProductsByGroupName = async (req, res) => {
     const { data, error } = await supabase
       .from("product")
       .select(`
-        *,
-        planter (*),
-        product_images (*)
+        product_id,
+        name,
+        description,
+        price,
+        category,
+        active,
+        created_at
+        ${minimal !== 'true' ? ',path, leaf_size, is_flowering, sunlight_exposure, long_description' : ''}
       `)
       .eq("name", groupName)
       .order('created_at', { ascending: false });
@@ -454,26 +509,44 @@ export const getProductsByGroupName = async (req, res) => {
       return res.status(500).json({ error: error.message });
     }
 
-    // Format products with planter_details and images
-    const formattedProducts = data?.map(product => ({
-      ...product,
-      planter_details: product.planter ? {
-        type: product.planter.type,
-        size: product.planter.size,
-        color: product.planter.color
-      } : null,
-      images: product.product_images || []
-    })) || [];
+    // Only fetch additional data if not minimal
+    if (minimal !== 'true' && data && data.length > 0) {
+      const productIds = data.map(p => p.product_id);
+      
+      // Batch fetch related data
+      const [plantersResult, imagesResult] = await Promise.all([
+        supabase
+          .from('planter')
+          .select('product_id, type, size, color')
+          .in('product_id', productIds),
+        supabase
+          .from('product_images')
+          .select('product_id, image_url')
+          .in('product_id', productIds)
+      ]);
 
-    // Remove nested planter objects
-    formattedProducts.forEach(product => {
-      delete product.planter;
-      delete product.product_images;
-    });
+      const planterMap = {};
+      plantersResult.data?.forEach(p => {
+        planterMap[p.product_id] = p;
+      });
+      
+      const imageMap = {};
+      imagesResult.data?.forEach(img => {
+        if (!imageMap[img.product_id]) {
+          imageMap[img.product_id] = [{ image_url: img.image_url }];
+        }
+      });
+
+      // Merge data
+      data.forEach(product => {
+        product.planter_details = planterMap[product.product_id] || null;
+        product.images = imageMap[product.product_id] || [];
+      });
+    }
 
     res.json({
       group_name: groupName,
-      products: formattedProducts
+      products: data || []
     });
     
   } catch (error) {
@@ -481,7 +554,6 @@ export const getProductsByGroupName = async (req, res) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 };
-
 /**
  * Get product images by product ID
  */

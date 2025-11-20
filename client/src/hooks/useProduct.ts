@@ -2,6 +2,9 @@ import { useEffect, useState } from "react";
 import api from "../config/axios";
 import type { Product } from "../types";
 
+// Simple cache implementation
+const productCache = new Map();
+
 export const useProduct = (id?: string) => {
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
@@ -11,6 +14,16 @@ export const useProduct = (id?: string) => {
     const fetchProduct = async () => {
       if (!id) {
         setError('Product ID is required');
+        setLoading(false);
+        return;
+      }
+
+      // Check cache first
+      const cacheKey = `product-${id}`;
+      const cached = productCache.get(cacheKey);
+      
+      if (cached) {
+        setProduct(cached);
         setLoading(false);
         return;
       }
@@ -29,9 +42,11 @@ export const useProduct = (id?: string) => {
           long_description: response.data.long_description || response.data.description || '',
           category: response.data.category || 'general',
           is_flowering: response.data.is_flowering || false,
-          images: response.data.images || [] // Ensure images array exists
+          images: response.data.images || []
         };
         
+        // Cache the product
+        productCache.set(cacheKey, productWithDefaults);
         setProduct(productWithDefaults);
       } catch (err) {
         console.error('Failed to fetch product:', err);
@@ -45,4 +60,13 @@ export const useProduct = (id?: string) => {
   }, [id]);
 
   return { product, loading, error };
+};
+
+// Clear cache function for when products are updated
+export const clearProductCache = (productId?: string) => {
+  if (productId) {
+    productCache.delete(`product-${productId}`);
+  } else {
+    productCache.clear();
+  }
 };

@@ -2,26 +2,86 @@ import { useState, useEffect } from 'react';
 import api from '../config/axios';
 import type { Product } from '../types';
 
-export const useProducts = () => {
+interface UseProductsOptions {
+  category?: string;
+  active?: boolean;
+  limit?: number;
+  offset?: number;
+  minimal?: boolean; // Only fetch essential data for lists
+  enabled?: boolean; // Control when to fetch
+}
+
+// Simple cache implementation
+const productsCache = new Map();
+
+export const useProducts = (options: UseProductsOptions = {}) => {
+  const { 
+    category, 
+    active, 
+    limit = 50, 
+    offset = 0, 
+    minimal = true,
+    enabled = true 
+  } = options;
+  
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchProducts = async () => {
+      // Don't fetch if disabled
+      if (!enabled) {
+        setLoading(false);
+        return;
+      }
+
+      // Generate cache key based on options
+      const cacheKey = JSON.stringify({ category, active, limit, offset, minimal });
+      const cached = productsCache.get(cacheKey);
+      
+      // Return cached data if available
+      if (cached) {
+        console.log('Using cached products');
+        setProducts(cached);
+        setLoading(false);
+        return;
+      }
+
       try {
-        console.log('Fetching products from:', api.defaults.baseURL + '/products');
+        console.log('Fetching products with options:', { category, active, limit, offset, minimal });
         
-        const response = await api.get('/products');
-        console.log('API Response:', response.data);
+        const params = new URLSearchParams();
         
-        // Ensure all products have images array
-        const productsWithImages = response.data.map((product: Product) => ({
+        // Only add parameters that are provided
+        if (category) params.append('category', category);
+        if (active !== undefined) params.append('active', active.toString());
+        params.append('limit', limit.toString());
+        params.append('offset', offset.toString());
+        params.append('minimal', minimal.toString());
+        
+        const response = await api.get(`/products?${params.toString()}`);
+        console.log('API Response received');
+        
+        // Handle both response formats (array or object with pagination)
+        const productsData = response.data.products || response.data;
+        
+        // Ensure all products have images array and required fields
+        const productsWithDefaults = Array.isArray(productsData) ? productsData.map((product: Product) => ({
           ...product,
-          images: product.images || []
-        }));
+          images: product.images || [],
+          sunlight_exposure: product.sunlight_exposure || '',
+          leaf_size: product.leaf_size || '',
+          long_description: product.long_description || product.description || '',
+          category: product.category || 'general',
+          is_flowering: product.is_flowering || false,
+          planter_details: product.planter_details || null
+        })) : [];
         
-        setProducts(productsWithImages);
+        // Cache the results
+        productsCache.set(cacheKey, productsWithDefaults);
+        setProducts(productsWithDefaults);
+        
       } catch (err: unknown) {
         console.error('Products fetch error:', err);
         if (typeof err === 'object' && err !== null && 'response' in err) {
@@ -38,7 +98,18 @@ export const useProducts = () => {
     };
 
     fetchProducts();
-  }, []);
+  }, [category, active, limit, offset, minimal, enabled]);
 
   return { products, loading, error };
+};
+
+// Clear cache function for when products are updated
+export const clearProductsCache = (options?: UseProductsOptions) => {
+  if (options) {
+    const cacheKey = JSON.stringify(options);
+    productsCache.delete(cacheKey);
+  } else {
+    productsCache.clear();
+  }
+  console.log('Products cache cleared');
 };
