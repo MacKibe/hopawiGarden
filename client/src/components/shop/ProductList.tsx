@@ -51,9 +51,8 @@ const ProductList = ({ productGroups, products }: ProductListComponentProps) => 
   }, [products, currentPage, productsPerPage]);
 
   // Calculate total pages based on what we're displaying
-  const totalPages = Math.ceil(
-    productGroups ? displayProductGroups.length : (products?.length || 0) / productsPerPage
-  );
+  const totalItems = productGroups ? displayProductGroups.length : (products?.length || 0);
+  const totalPages = Math.ceil(totalItems / productsPerPage);
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
