@@ -46,6 +46,18 @@ export const uploadProductImage = async (file: File): Promise<string> => {
   }
 };
 
+// New function to upload multiple images
+export const uploadMultipleProductImages = async (files: File[]): Promise<string[]> => {
+  try {
+    const uploadPromises = files.map(file => uploadProductImage(file));
+    const uploadedUrls = await Promise.all(uploadPromises);
+    return uploadedUrls;
+  } catch (error) {
+    console.error('Multiple image upload error:', error);
+    throw error;
+  }
+};
+
 export const deleteProductImage = async (imageUrl: string): Promise<void> => {
   try {
     // Extract file path from URL

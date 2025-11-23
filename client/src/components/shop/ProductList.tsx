@@ -236,7 +236,7 @@ const ProductList = ({ productGroups, products }: ProductListComponentProps) => 
   return (
     <div className="space-y-8">
       {/* Original Products Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
         {currentProducts.map((product, index) => (
           <motion.div
             key={product.product_id}

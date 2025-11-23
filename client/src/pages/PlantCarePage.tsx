@@ -10,9 +10,7 @@ const PlantCarePage = () => {
             Plant care maintenance
           </p>
           <p className="w-[80%] text-xl md:text-lg py-2">
-            Our plant care service goes beyond basic maintenance. We provide
-            holistic care that addresses the specific needs of each plant,
-            ensuring they not only survive but thrive in your space throughout.
+            Our plant care service goes beyond basic maintenance. We provide holistic care routine that addresses the specific needs of each plant,ensuring they not only survive but thrive in your space throughout.
           </p>
         </div>
       </div>
@@ -38,7 +36,7 @@ const PlantCarePage = () => {
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="text-xl">✓ </span>
-                  <span>Regular pruning and trimming.</span>
+                  <span>Pruning and trimming.</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="text-xl">✓ </span>
@@ -56,25 +54,24 @@ const PlantCarePage = () => {
           <div className="flex flex-col">
             <div className="w-full h-80 bg-[var(--primary)] rounded-lg flex items-center justify-center mb-6">
               <span className="text-[var(--background)] font-semibold text-xl">
-                Plant Care Image
+                Plant care image
               </span>
             </div>
             <div className="text-center">
               <p className="text-gray-600">
-                Regular plant care maintenance makes plants to stay healthy and
-                grow.
+                Routine plant care and maintenance makes plants stay healthy and grow.
               </p>
             </div>
           </div>
         </div>       
         {/* CTA Section */}
         <div className="w-[65%] mx-auto my-12 border-3 border-[var(--primary)] rounded-lg p-10 text-center">
-          <p className="text-2xl font-bold mb-4">Keep Your Plants Thriving</p>
+          <p className="text-2xl font-bold mb-4">Keep your plants thriving</p>
           <p className="mb-6 text-lg">Schedule a plant health assessment and get a care plan</p>
           <div className="flex flex-wrap justify-center gap-4">
-            <Link to="/contact" className="border-1 border-[var(--primary)] text-[var(--background)] bg-[var(--primary)] px-8 py-3 rounded-lg font-semibold hover:bg-[var(--background)] hover:text-white transition duration-300">Schedule Assessment</Link>
-            <button className="border border-[var(--primary)] px-8 py-3 rounded-lg font-semibold hover:bg-[var(--primary)] hover:text-[var(--background)] transition duration-300">
-              Call: (+254) 720 804523
+            <Link to="/contact" className="border-1 border-[var(--primary)] text-[var(--background)] bg-[var(--primary)] px-8 py-3 rounded-lg font-semibold hover:bg-[var(--background)] hover:text-white transition duration-300">Schedule assessment</Link>
+            <button className="border border-[var(--background)] px-8 py-3 rounded-lg text-[var(--background)] font-semibold hover:bg-[var(--primary)] hover:text-[var(--background)] transition duration-300">
+              Call / WhatsApp (+254) 720 804523
             </button>
           </div>
         </div>

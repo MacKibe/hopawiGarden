@@ -22,7 +22,7 @@ const Header = () => {
   const navItems = [
     { path: "/shop?category=indoor", label: "Indoor potted plants" },
     { path: "/shop?category=outdoor", label: "Outdoor potted plants" },
-    { path: "/care_maintainance", label: "Plant care maintainance" },
+    { path: "/care_maintainance", label: "Plant care and maintainance" },
     { path: "/soil_mixture", label: "HOPAWI compost mixture" },
     { path: "/landscaping", label: "Landscaping" },
   ];

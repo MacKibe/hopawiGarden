@@ -6,7 +6,7 @@ const LandscapingPage = () => {
 
   const services = {
     lawnCare: {
-      title: "Lawn care & grass cutting",
+      title: "Lawn mowing",
       description:
         "Keep your lawn lush, healthy, and perfectly manicured with our professional grass cutting and lawn maintenance services.",
       details: [
@@ -32,7 +32,7 @@ const LandscapingPage = () => {
       image: "https://jujkvczxnzflaukmssqb.supabase.co/storage/v1/object/public/testing_bucket/assests/IMG_3964.jpg",
     },
     plantPositioning: {
-      title: "Plant positioning and arrangement",
+      title: "Plant arrangement",
       description:
         "Create stunning visual appeal with our expert plant placement and garden design services.",
       details: [
@@ -56,19 +56,6 @@ const LandscapingPage = () => {
         "Drought-resistant varieties",
       ],
       image: "https://jujkvczxnzflaukmssqb.supabase.co/storage/v1/object/public/testing_bucket/assests/IMG_3926-min.JPG",
-    },
-    irrigation: {
-      title: "Irrigation systems",
-      description:
-        "Efficient watering solutions to keep your landscape healthy while conserving water.",
-      details: [
-        "Sprinkler system installation",
-        "Drip irrigation setup",
-        "Smart irrigation controllers",
-        "System maintenance and repair",
-        "Water conservation consulting",
-      ],
-      image: "/api/placeholder/600/400",
     },
   };
 
@@ -119,9 +106,9 @@ const LandscapingPage = () => {
                         landscaping needs.
                 </p>
                 <div className="flex flex-wrap justify-center gap-4">
-                  <Link to="/contact" className="border-1 border-[var(--primary)] text-[var(--background)] bg-[var(--primary)] px-8 py-3 rounded-lg font-semibold hover:bg-[var(--background)] hover:text-white transition duration-300">Schedule consultation</Link>
-                  <button className="border border-[var(--primary)] px-8 py-3 rounded-lg font-semibold hover:bg-[var(--primary)] hover:text-[var(--background)] transition duration-300">
-                    Call: (+254) 720 804523
+                  <Link to="/contact" className="border-1 border-[var(--primary)] bg-[var(--primary)] px-8 py-3 rounded-lg font-semibold hover:bg-[var(--background)] hover:text-white transition duration-300">Schedule consultation</Link>
+                  <button className="border border-[var(--background)] px-8 py-3 rounded-lg text-[var(--background)] font-semibold hover:bg-[var(--primary)] hover:text-[var(--background)] transition duration-300">
+                    Call / WhatsApp (+254) 720 804523
                   </button>
                 </div>
               </div>

@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import { FaTimes } from 'react-icons/fa';
+import { FaTimes, FaTrash } from 'react-icons/fa';
 import { useForm } from 'react-hook-form';
 import api from '../../config/axios';
-import type { Product } from '../../types';
+import type { Product, ProductImage } from '../../types';
 import { toast } from 'react-hot-toast';
 import { uploadProductImage, deleteProductImage } from '../../services/ImageUploadService';
 
@@ -12,8 +12,8 @@ interface ProductFormProps {
   onProductSaved?: () => void;
 }
 
-// Interface for form data (exclude id for new products)
 type ProductFormData = Omit<Product, 'product_id'>;
+
 
 const planterTypes = [
   { value: 'planter' as const, label: 'Planter' },
@@ -33,6 +33,8 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onClose, onProductSa
   const [uploadingImage, setUploadingImage] = useState(false);
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string>(product?.path || '');
+  const [additionalImages, setAdditionalImages] = useState<File[]>([]);
+  const [existingImages, setExistingImages] = useState<ProductImage[]>(product?.images || []);
 
   const { register, handleSubmit, formState: { errors }, setValue } = useForm<ProductFormData>({
     defaultValues: {
@@ -50,6 +52,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onClose, onProductSa
     }
   });
 
+  // Handle main image change (for thumbnail)
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -71,8 +74,75 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onClose, onProductSa
       // Create preview
       const previewUrl = URL.createObjectURL(file);
       setImagePreview(previewUrl);
-      // Clear any previous file input errors
       setValue('path', 'image-uploaded');
+    }
+  };
+
+  // Handle additional images
+  const handleAdditionalImagesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files || []);
+    
+    // Validate files
+    const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+    const maxSize = 5 * 1024 * 1024;
+    
+    const validFiles = files.filter(file => {
+      if (!validTypes.includes(file.type)) {
+        toast.error(`Invalid file type: ${file.name}. Please upload JPEG, PNG, or WebP images.`);
+        return false;
+      }
+      if (file.size > maxSize) {
+        toast.error(`File too large: ${file.name}. Maximum size is 5MB.`);
+        return false;
+      }
+      return true;
+    });
+
+    setAdditionalImages(prev => [...prev, ...validFiles]);
+  };
+
+  const removeAdditionalImage = (index: number) => {
+    setAdditionalImages(prev => prev.filter((_, i) => i !== index));
+  };
+
+  const removeExistingImage = async (imageId: string, imageUrl: string) => {
+    try {
+      // Delete from database
+      await api.delete(`/products/images/${imageId}`);
+      
+      // Delete from storage
+      await deleteProductImage(imageUrl);
+      
+      // Update local state
+      setExistingImages(prev => prev.filter(img => img.image_id !== imageId));
+      
+      toast.success('Image removed successfully');
+    } catch (error) {
+      console.error('Failed to remove image:', error);
+      toast.error('Failed to remove image');
+    }
+  };
+
+  const uploadAdditionalImages = async (productId: string): Promise<void> => {
+    if (additionalImages.length === 0) return;
+
+    setUploadingImage(true);
+    
+    try {
+      for (const image of additionalImages) {
+        // Upload to storage
+        const imageUrl = await uploadProductImage(image);
+        
+        // Save to product_images table
+        await api.post(`/products/${productId}/images`, { imageUrl });
+      }
+      
+      toast.success(`${additionalImages.length} additional image(s) uploaded successfully!`);
+    } catch (error) {
+      console.error('Failed to upload additional images:', error);
+      throw new Error('Failed to upload additional images');
+    } finally {
+      setUploadingImage(false);
     }
   };
 
@@ -82,12 +152,12 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onClose, onProductSa
     let newImageUploaded = false;
 
     try {
-      // Upload new image if selected
+      // Upload main image if selected
       if (selectedImage) {
         setUploadingImage(true);
         uploadedImageUrl = await uploadProductImage(selectedImage);
         newImageUploaded = true;
-        toast.success('Image uploaded successfully!');
+        toast.success('Main image uploaded successfully!');
       }
 
       console.log('Submitting product data:', data);
@@ -97,24 +167,32 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onClose, onProductSa
         ...data,
         path: uploadedImageUrl,
         price: Number(data.price),
-        // Ensure planter_details is included
         planter_details: data.planter_details
       };
 
       console.log('Final payload:', payload);
 
       let response;
+      let productId: string;
+
       if (product) {
         // Update existing product
         response = await api.put(`/products/${product.product_id}`, payload);
+        productId = product.product_id;
         toast.success('Product updated successfully!');
       } else {
         // Create new product
         response = await api.post('/products', payload);
+        productId = response.data.product_id;
         toast.success('Product created successfully!');
       }
       
       console.log('API response:', response.data);
+      
+      // Upload additional images
+      if (additionalImages.length > 0) {
+        await uploadAdditionalImages(productId);
+      }
       
       // Close modal and refresh product list
       onClose();
@@ -123,13 +201,13 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onClose, onProductSa
       }
       
     } catch (err: unknown) {
-      // Rollback: Delete uploaded image if form submission failed
+      // Rollback: Delete uploaded images if form submission failed
       if (newImageUploaded && uploadedImageUrl) {
         try {
           await deleteProductImage(uploadedImageUrl);
-          console.log('Rolled back image upload due to form submission failure');
+          console.log('Rolled back main image upload due to form submission failure');
         } catch (deleteError) {
-          console.error('Failed to rollback image upload:', deleteError);
+          console.error('Failed to rollback main image upload:', deleteError);
         }
       }
       
@@ -148,7 +226,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onClose, onProductSa
   const categories = [
     { value: 'indoor', label: 'Indoor Plants' },
     { value: 'outdoor', label: 'Outdoor Plants' },
-    { value: 'planter', label: 'Planters' }, // Add planter as a category option
+    { value: 'planter', label: 'Planters' },
   ];
 
   const isSubmitting = loading || uploadingImage;
@@ -170,10 +248,10 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onClose, onProductSa
         </div>
 
         <form onSubmit={handleSubmit(onSubmit)} className="p-6 space-y-6">
-          {/* Image Upload Section */}
+          {/* Main Image Upload Section */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Product Image {uploadingImage && '(Uploading...)'}
+              Main Product Image (Thumbnail) {uploadingImage && '(Uploading...)'}
             </label>
             
             {/* Image Preview */}
@@ -205,6 +283,79 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onClose, onProductSa
             )}
           </div>
 
+          {/* Additional Images Section */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Additional Product Images
+            </label>
+            
+            {/* Existing Images */}
+            {existingImages.length > 0 && (
+              <div className="mb-4">
+                <h4 className="text-sm font-medium text-gray-700 mb-2">Current Images:</h4>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                  {existingImages.map((image) => (
+                    <div key={image.image_id} className="relative group">
+                      <img 
+                        src={image.image_url} 
+                        alt="Product" 
+                        className="h-24 w-full object-cover rounded-lg border shadow-sm"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => removeExistingImage(image.image_id, image.image_url)}
+                        disabled={isSubmitting}
+                        className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity disabled:opacity-50"
+                      >
+                        <FaTrash size={12} />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+            
+            {/* New Additional Images Preview */}
+            {additionalImages.length > 0 && (
+              <div className="mb-4">
+                <h4 className="text-sm font-medium text-gray-700 mb-2">New Images to Upload:</h4>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                  {additionalImages.map((file, index) => (
+                    <div key={index} className="relative group">
+                      <img 
+                        src={URL.createObjectURL(file)} 
+                        alt={`Preview ${index + 1}`} 
+                        className="h-24 w-full object-cover rounded-lg border shadow-sm"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => removeAdditionalImage(index)}
+                        disabled={isSubmitting}
+                        className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity disabled:opacity-50"
+                      >
+                        <FaTrash size={12} />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+            
+            <input
+              type="file"
+              multiple
+              accept="image/jpeg,image/jpg,image/png,image/webp"
+              onChange={handleAdditionalImagesChange}
+              disabled={isSubmitting}
+              className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed"
+            />
+            <p className="text-xs text-gray-500 mt-1">
+              Select multiple images. Supported formats: JPEG, PNG, WebP. Max size: 5MB per image
+            </p>
+          </div>
+
+          {/* ... rest of the form remains the same (Basic Information, Description, Category, Planter Details, etc.) */}
+          
           {/* Basic Information */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* Name */}
@@ -398,7 +549,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onClose, onProductSa
               {isSubmitting ? (
                 <>
                   <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                  {uploadingImage ? 'Uploading Image...' : (product ? 'Updating...' : 'Creating...')}
+                  {uploadingImage ? 'Uploading Images...' : (product ? 'Updating...' : 'Creating...')}
                 </>
               ) : (
                 product ? 'Update Product' : 'Create Product'

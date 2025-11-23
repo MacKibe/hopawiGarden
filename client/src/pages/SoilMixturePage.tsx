@@ -9,8 +9,7 @@ const SoilMixturePage = () => {
           <p className="text-[var(--background)] text-4xl md:text-5xl font-bold underline underline-offset-4">HOPAWI compost mixture</p>
             <p className="w-[80%] text-xl md:text-lg py-2">
               Our proprietary HOPAWI compost mixture is organically formulated to provide the ideal environment 
-              for plant roots to thrive. Whether you're growing vegetables, flowers, or ornamental plants, 
-              our soil ensures optimal development and health.
+              for plant roots to thrive. Whether you're growing indoor or oudoor potted plant, either flowering or non-flowering our soil ensures optimal plant development and growth.
             </p>
         </div>
       </div>
@@ -53,13 +52,12 @@ const SoilMixturePage = () => {
                   <ul className="space-y-2">
                     <li className='flex items-center gap-2'><span className='text-4xl'>•</span> Indoor potted plants</li>
                     <li className='flex items-center gap-2'><span className='text-4xl'>•</span>Outdoor potted plants</li>
-                    <li className='flex items-center gap-2'><span className='text-4xl'>•</span>Flower beds</li>
                   </ul>
                 </div>
                 <div>
                   <ul className="space-y-2">
-                    <li className='flex items-center gap-2'><span className='text-4xl'>•</span>Tree planting</li>
-                    <li className='flex items-center gap-2'><span className='text-4xl'>•</span>Vegetable gardens</li>
+                    <li className='flex items-center gap-2'><span className='text-4xl'>•</span>Flower beds</li>
+                    <li className='flex items-center gap-2'><span className='text-4xl'>•</span>Fruit tree planting</li>
                   </ul>
                 </div>
               </div>
@@ -85,7 +83,7 @@ const SoilMixturePage = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="text-center bg-[var(--primary)] p-8 rounded-xl">
               <div className="bg-[var(--secondary)] w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-2xl">🌱</span>
+                <span className="text-2xl"><img src="/assets/root.svg" /></span>
               </div>
               <h4 className="font-semibold text-[var(--background)] mb-2">Faster growth</h4>
               <p>Promotes strong root development and faster plant growth</p>
@@ -115,11 +113,11 @@ const SoilMixturePage = () => {
           </p>
           <div className="flex flex-wrap justify-center gap-4">
             <Link to="/contact" className="border-1 border-[var(--primary)] text-[var(--background)] bg-[var(--primary)] px-8 py-3 rounded-lg font-semibold hover:bg-[var(--background)] hover:text-white transition duration-300">
-              Order Now
+              Order now
             </Link>
-            <button className="border border-[var(--primary)] px-8 py-3 rounded-lg font-semibold hover:bg-[var(--primary)] hover:text-[var(--background)] transition duration-300">
-              Call: (+254) 720 804523
-            </button>
+                  <button className="border border-[var(--background)] px-8 py-3 rounded-lg text-[var(--background)] font-semibold hover:bg-[var(--primary)] hover:text-[var(--background)] transition duration-300">
+                    Call / WhatsApp (+254) 720 804523
+                  </button>
           </div>
         </div>
       </div>
