@@ -27,32 +27,52 @@ const ProductList = ({ productGroups, products }: ProductListComponentProps) => 
     });
   };
 
+  // Filter active products and product groups
+  const activeProducts = useMemo(() => {
+    return products?.filter(product => product.active === true) || [];
+  }, [products]);
+
+  const activeProductGroups = useMemo(() => {
+    if (!productGroups) return [];
+    
+    return productGroups
+      .map(group => ({
+        ...group,
+        products: group.products.filter(product => product.active === true)
+      }))
+      .filter(group => group.products.length > 0); // Only keep groups that have active products
+  }, [productGroups]);
+
   // Wrap displayProductGroups in useMemo to prevent unnecessary recalculations
   const displayProductGroups = useMemo(() => {
-    return productGroups || (products ? [{ group_name: "All Products", products }] : []);
-  }, [productGroups, products]);
+    return activeProductGroups.length > 0 
+      ? activeProductGroups 
+      : (activeProducts.length > 0 ? [{ group_name: "All Products", products: activeProducts }] : []);
+  }, [activeProductGroups, activeProducts]);
 
   // For grouped display, show first product from each group
   const displayGroups = useMemo(() => {
-    if (productGroups) {
+    if (activeProductGroups.length > 0) {
       const startIndex = (currentPage - 1) * productsPerPage;
       const endIndex = startIndex + productsPerPage;
       return displayProductGroups.slice(startIndex, endIndex);
     }
     return [];
-  }, [productGroups, displayProductGroups, currentPage, productsPerPage]);
+  }, [activeProductGroups, displayProductGroups, currentPage, productsPerPage]);
 
   // For ungrouped display
   const currentProducts = useMemo(() => {
-    if (!products) return [];
+    if (activeProducts.length === 0) return [];
     const startIndex = (currentPage - 1) * productsPerPage;
     const endIndex = startIndex + productsPerPage;
-    return products.slice(startIndex, endIndex);
-  }, [products, currentPage, productsPerPage]);
+    return activeProducts.slice(startIndex, endIndex);
+  }, [activeProducts, currentPage, productsPerPage]);
 
   // Calculate total pages based on what we're displaying
   const totalPages = Math.ceil(
-    productGroups ? displayProductGroups.length : (products?.length || 0) / productsPerPage
+    activeProductGroups.length > 0 
+      ? displayProductGroups.length 
+      : activeProducts.length / productsPerPage
   );
 
   const handlePageChange = (page: number) => {
@@ -117,10 +137,31 @@ const ProductList = ({ productGroups, products }: ProductListComponentProps) => 
     return pages;
   };
 
-  // If using grouped products, display first product from each group
-  if (productGroups) {
+  // Show empty state if no active products
+  if ((!activeProductGroups || activeProductGroups.length === 0) && (!activeProducts || activeProducts.length === 0)) {
     return (
-      <div className="space-y-8">
+      <div className="flex flex-col items-center justify-center py-12">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="text-center"
+        >
+          <h3 className="text-xl font-semibold text-gray-600 mb-4">
+            No active products available
+          </h3>
+          <p className="text-gray-500">
+            Check back later for new products!
+          </p>
+        </motion.div>
+      </div>
+    );
+  }
+
+  // If using grouped products, display first product from each group
+  if (activeProductGroups.length > 0) {
+    return (
+      <div>
         {/* Grouped Products Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {displayGroups.map((group, index) => {
@@ -128,25 +169,22 @@ const ProductList = ({ productGroups, products }: ProductListComponentProps) => 
             const variantCount = group.products.length;
             
             return (
-              <motion.div
-                key={`${group.group_name}-${firstProduct.product_id}`}
-                className="card overflow-hidden relative cursor-pointer bg-[var(--primary)] rounded-lg shadow-sm"
-                variants={cardVariants}
-                initial="hidden"
-                animate="visible"
-                custom={index}
+              <motion.div 
+                key={`${group.group_name}-${firstProduct.product_id}`} 
+                className="card overflow-hidden relative cursor-pointer bg-[var(--primary)] rounded-lg shadow-sm" 
+                variants={cardVariants} 
+                initial="hidden" 
+                animate="visible" 
+                custom={index} 
+                onClick={() => navigate(`/product/${firstProduct.product_id}`)}
                 whileHover={{
                   y: -5,
                   boxShadow: "0 10px 25px rgba(0,0,0,0.1)",
                   transition: { duration: 0.3 },
                 }}
-                onClick={() => navigate(`/product/${firstProduct.product_id}`)}
               >
                 {/* Product Image */}
-                <div
-                  className="bg-cover bg-top relative h-80 w-full"
-                  style={{ backgroundImage: `url(${firstProduct.path})` }}
-                >
+                <div className="bg-contain bg-no-repeat bg-top relative h-50 w-full" style={{ backgroundImage: `url(${firstProduct.path})` }}>
                   {/* Group badge if multiple variants */}
                   {variantCount > 1 && (
                     <div className="absolute top-2 right-2 bg-[var(--background)] text-[var(--primary)] px-2 py-1 rounded-full text-xs font-semibold">
@@ -301,8 +339,8 @@ const ProductList = ({ productGroups, products }: ProductListComponentProps) => 
           {/* Page Info */}
           <div className="text-sm text-gray-600">
             Showing {(currentPage - 1) * productsPerPage + 1} -{" "}
-            {Math.min(currentPage * productsPerPage, products!.length)} of{" "}
-            {products!.length} products
+            {Math.min(currentPage * productsPerPage, activeProducts.length)} of{" "}
+            {activeProducts.length} products
           </div>
 
           {/* Pagination Controls */}

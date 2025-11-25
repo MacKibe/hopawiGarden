@@ -75,30 +75,25 @@ const ProductDetails = () => {
       try {
         const response = await api.get(`/products/group/${encodeURIComponent(productName)}`);
         if (response.data) {
-          // Filter to only include active products
-          const activeGroupProducts = response.data.products.filter((p: Product) => p.active === true);
-          setAllGroupProducts(activeGroupProducts);
+          const allGroupProducts = response.data.products;
+          setAllGroupProducts(allGroupProducts);
           
-          // Set the current product as the selected variant if it's active
-          const currentProductInGroup = activeGroupProducts.find((p: Product) => p.product_id === product?.product_id);
-          setSelectedVariant(currentProductInGroup || (product?.active === true ? product : null));
+          // Set the current product as the selected variant
+          const currentProductInGroup = allGroupProducts.find((p: Product) => p.product_id === product?.product_id);
+          setSelectedVariant(currentProductInGroup || product);
         }
       } catch (error) {
         console.error('Failed to fetch group products:', error);
         // If group endpoint fails, try to find products with same name from existing products
-        const sameNameProducts = products.filter(p => p.name === productName && p.active === true);
+        const sameNameProducts = products.filter(p => p.name === productName);
         setAllGroupProducts(sameNameProducts);
-        setSelectedVariant(product?.active === true ? product : null);
+        setSelectedVariant(product);
       }
     };
 
-    if (product && product.active === true) {
+    if (product) {
       fetchGroupProducts(product.name);
       setSelectedVariant(product);
-    } else if (product) {
-      // If main product is inactive, don't show any variants
-      setAllGroupProducts([]);
-      setSelectedVariant(null);
     }
   }, [product, products]);
 
@@ -164,10 +159,10 @@ const ProductDetails = () => {
     );
   }
 
-  if (!product || product.active === false) {
+  if (!product) {
     return (
       <div className="p-6">
-        <p className="text-blue-700">Product not found or is no longer available.</p>
+        <p className="text-blue-700">Product not found.</p>
         <button onClick={() => navigate(-1)} className="text-blue-500 underline">
           Go Back
         </button>
@@ -175,17 +170,10 @@ const ProductDetails = () => {
     );
   }
 
-  // Use selectedVariant for display, fallback to product (both should be active)
+  // Use selectedVariant for display, fallback to product
   const displayProduct = selectedVariant || product;
 
   const isTruncatable = displayProduct.long_description && displayProduct.long_description.length > 100;
-
-  // Filter related products to only show active ones
-  const activeRelatedProducts = products.filter((p) => 
-    p.product_id !== product.product_id && 
-    p.category === product.category &&
-    p.active === true
-  ).slice(0, 4);
 
   return (
     <div className="container-responsive py-responsive">
@@ -302,18 +290,31 @@ const ProductDetails = () => {
         <motion.div className="space-y-6" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5, delay: 0.1 }}>
           {/* Title and Description */}
           <div>
-            {/* Updated conditional rendering for name and description */}
-            {displayProduct.description === displayProduct.name ? (
-              <p className="text-5xl pb-4 font-bold text-black">{displayProduct.description}</p>
-            ) : (
-              <div>
-                <p className="text-5xl pb-4 font-bold text-black">{displayProduct.name}</p>
-                <p className="text-xl text-gray-700 mt-2">{displayProduct.description}</p>
+            <p className="text-5xl font-bold text-black">{displayProduct.name}</p>
+            {/* Variant Details */}
+            {displayProduct.planter_details && (
+              <div className="p-3 bg-gray-50 rounded-lg">
+                <div className="flex gap-4 mt-1">
+                  {displayProduct.planter_details.size && (
+                    <span className="text-sm font-medium capitalize">
+                      Size: {safeReplace(displayProduct.planter_details.size, '_', ' ')}
+                    </span>
+                  )}
+                  {displayProduct.planter_details.color && (
+                    <span className="text-sm font-medium capitalize">
+                      Color: {displayProduct.planter_details.color}
+                    </span>
+                  )}
+                  {displayProduct.planter_details.type && (
+                    <span className="text-sm font-medium capitalize">
+                      Type: {displayProduct.planter_details.type}
+                    </span>
+                  )}
+                </div>
               </div>
             )}
-            
-            {/* Long Description with Read More/Less */}
-            <div className="mt-4">
+            {/* Description with Read More/Less */}
+            <div>
               <p className="text-gray-700 leading-relaxed">
                 {isDescriptionExpanded 
                   ? displayProduct.long_description 
@@ -438,44 +439,50 @@ const ProductDetails = () => {
         </div>
       )}
       {/* Related Products - Show different products from same category */}
-      {activeRelatedProducts.length > 0 && (
+      {products.length > 0 && (
         <div className="mt-16 pt-8 border-t border-gray-200">
           <h3 className="text-2xl font-bold text-[var(--text)] mb-6">
             You may also like
           </h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {activeRelatedProducts.map((related) => (
-              <motion.div
-                key={related.product_id}
-                className="card-base group cursor-pointer"
-                onClick={() => navigate(`/product/${related.product_id}`)}
-                whileHover={{ y: -5 }}
-              >
-                <div className="overflow-hidden">
-                  {/* Use first image from images array or fallback to path */}
-                  <img
-                    src={related.images && related.images.length > 0 ? related.images[0].image_url : related.path || ''}
-                    alt={related.name}
-                    className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                </div>
-                <div className="p-4">
-                  <h4 className="font-semibold text-[var(--text)] group-hover:text-[var(--background)] transition-colors duration-200 line-clamp-2">
-                    {related.name}
-                  </h4>
-                  <p className="text-[var(--background)] font-bold mt-2">
-                    Kshs {related.price.toLocaleString()}
-                  </p>
-                  <div className="flex items-center gap-2 mt-2">
-                    <span className="text-xs text-gray-600 capitalize">{safeCapitalize(related.leaf_size)}</span>
-                    <span className="text-gray-300">•</span>
-                    <span className="text-xs text-gray-600 capitalize">
-                      {safeReplace(related.sunlight_exposure, '_', ' ')}
-                    </span>
+            {products
+              .filter((p) => 
+                p.product_id !== product.product_id && 
+                p.category === product.category
+              )
+              .slice(0, 4)
+              .map((related) => (
+                <motion.div
+                  key={related.product_id}
+                  className="card-base group cursor-pointer"
+                  onClick={() => navigate(`/product/${related.product_id}`)}
+                  whileHover={{ y: -5 }}
+                >
+                  <div className="overflow-hidden">
+                    {/* Use first image from images array or fallback to path */}
+                    <img
+                      src={related.images && related.images.length > 0 ? related.images[0].image_url : related.path || ''}
+                      alt={related.name}
+                      className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+                    />
                   </div>
-                </div>
-              </motion.div>
-            ))}
+                  <div className="p-4">
+                    <h4 className="font-semibold text-[var(--text)] group-hover:text-[var(--background)] transition-colors duration-200 line-clamp-2">
+                      {related.name}
+                    </h4>
+                    <p className="text-[var(--background)] font-bold mt-2">
+                      Kshs {related.price.toLocaleString()}
+                    </p>
+                    <div className="flex items-center gap-2 mt-2">
+                      <span className="text-xs text-gray-600 capitalize">{safeCapitalize(related.leaf_size)}</span>
+                      <span className="text-gray-300">•</span>
+                      <span className="text-xs text-gray-600 capitalize">
+                        {safeReplace(related.sunlight_exposure, '_', ' ')}
+                      </span>
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
           </div>
         </div>
       )}

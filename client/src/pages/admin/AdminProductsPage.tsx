@@ -4,6 +4,7 @@ import api from '../../config/axios';
 import type { Product } from '../../types';
 import ProductForm from '../../components/admin/ProductForm';
 import { toast } from 'react-hot-toast';
+import { useNavigate } from "react-router";
 
 const AdminProductsPage = () => {
   const [products, setProducts] = useState<Product[]>([]);
@@ -13,6 +14,7 @@ const AdminProductsPage = () => {
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [refreshing, setRefreshing] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchProducts();
@@ -196,7 +198,7 @@ const AdminProductsPage = () => {
                 <tr key={product.product_id} className="hover:bg-gray-50 transition-colors">
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-3">
-                      <img
+                      <img onClick={() => navigate(`/product/${product.product_id}`)}
                         src={product.path || '/assets/placeholder-plant.jpg'}
                         alt={product.name}
                         className="w-12 h-12 rounded-lg object-cover bg-gray-100"

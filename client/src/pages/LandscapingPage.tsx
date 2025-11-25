@@ -81,11 +81,11 @@ const LandscapingPage = () => {
             <div className="">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
                 {Object.entries(services).map(([key, service]) => (
-                  <div key={key} className="rounded-lg shadow-md overflow-hidden hover:shadow-lg transition duration-300 cursor-pointer">
-                    <div className="h-48 bg-[var(--accent)] flex items-center justify-center">
+                  <div key={key} className="grid grid-row-2 rounded-lg shadow-md overflow-hidden hover:shadow-lg transition duration-300 cursor-pointer">
+                    <div className="bg-[var(--accent)] flex items-center justify-center">
                       <img src={service.image} alt={service.title} />
                     </div>
-                    <div className="px-8 py-16">
+                    <div className="p-8">
                       <p className="text-xl font-extrabold mb-2">
                         {service.title}
                       </p>
