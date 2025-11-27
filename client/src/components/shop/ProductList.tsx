@@ -43,6 +43,11 @@ const ProductList = ({ productGroups, products }: ProductListComponentProps) => 
       .filter(group => group.products.length > 0); // Only keep groups that have active products
   }, [productGroups]);
 
+  // Determine if we should use grouped or ungrouped display
+  const shouldUseGroupedDisplay = useMemo(() => {
+    return activeProductGroups.length > 0;
+  }, [activeProductGroups.length]);
+
   // Wrap displayProductGroups in useMemo to prevent unnecessary recalculations
   const displayProductGroups = useMemo(() => {
     return activeProductGroups.length > 0 
@@ -52,28 +57,48 @@ const ProductList = ({ productGroups, products }: ProductListComponentProps) => 
 
   // For grouped display, show first product from each group
   const displayGroups = useMemo(() => {
-    if (activeProductGroups.length > 0) {
+    if (shouldUseGroupedDisplay) {
       const startIndex = (currentPage - 1) * productsPerPage;
       const endIndex = startIndex + productsPerPage;
       return displayProductGroups.slice(startIndex, endIndex);
     }
     return [];
-  }, [activeProductGroups, displayProductGroups, currentPage, productsPerPage]);
+  }, [shouldUseGroupedDisplay, displayProductGroups, currentPage, productsPerPage]);
 
   // For ungrouped display
   const currentProducts = useMemo(() => {
-    if (activeProducts.length === 0) return [];
-    const startIndex = (currentPage - 1) * productsPerPage;
-    const endIndex = startIndex + productsPerPage;
-    return activeProducts.slice(startIndex, endIndex);
-  }, [activeProducts, currentPage, productsPerPage]);
+    if (!shouldUseGroupedDisplay && activeProducts.length > 0) {
+      const startIndex = (currentPage - 1) * productsPerPage;
+      const endIndex = startIndex + productsPerPage;
+      return activeProducts.slice(startIndex, endIndex);
+    }
+    return [];
+  }, [shouldUseGroupedDisplay, activeProducts, currentPage, productsPerPage]);
 
-  // Calculate total pages based on what we're displaying
-  const totalPages = Math.ceil(
-    activeProductGroups.length > 0 
-      ? displayProductGroups.length 
-      : activeProducts.length / productsPerPage
-  );
+  // FIXED: Calculate total pages based on what we're displaying
+  const totalPages = useMemo(() => {
+    if (shouldUseGroupedDisplay) {
+      return Math.ceil(displayProductGroups.length / productsPerPage);
+    } else {
+      return Math.ceil(activeProducts.length / productsPerPage);
+    }
+  }, [shouldUseGroupedDisplay, displayProductGroups.length, activeProducts.length, productsPerPage]);
+
+  // FIXED: Calculate total items for display
+  const totalItems = useMemo(() => {
+    if (shouldUseGroupedDisplay) {
+      return displayProductGroups.length;
+    } else {
+      return activeProducts.length;
+    }
+  }, [shouldUseGroupedDisplay, displayProductGroups.length, activeProducts.length]);
+
+  // FIXED: Calculate current range for display
+  const currentRange = useMemo(() => {
+    const start = (currentPage - 1) * productsPerPage + 1;
+    const end = Math.min(currentPage * productsPerPage, totalItems);
+    return { start, end };
+  }, [currentPage, productsPerPage, totalItems]);
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
@@ -87,8 +112,9 @@ const ProductList = ({ productGroups, products }: ProductListComponentProps) => 
     const maxVisiblePages = 5;
 
     let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
-    const endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+    let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
 
+    // Adjust start page if we're near the end
     if (endPage - startPage + 1 < maxVisiblePages) {
       startPage = Math.max(1, endPage - maxVisiblePages + 1);
     }
@@ -105,6 +131,26 @@ const ProductList = ({ productGroups, products }: ProductListComponentProps) => 
       </button>
     );
 
+    // First page button if needed
+    if (startPage > 1) {
+      pages.push(
+        <button
+          key={1}
+          onClick={() => handlePageChange(1)}
+          className="px-3 py-2 border rounded-lg hover:bg-[var(--secondary)] transition"
+        >
+          1
+        </button>
+      );
+      if (startPage > 2) {
+        pages.push(
+          <span key="ellipsis1" className="px-2 py-2">
+            ...
+          </span>
+        );
+      }
+    }
+
     // Page numbers
     for (let i = startPage; i <= endPage; i++) {
       pages.push(
@@ -118,6 +164,26 @@ const ProductList = ({ productGroups, products }: ProductListComponentProps) => 
           }`}
         >
           {i}
+        </button>
+      );
+    }
+
+    // Last page button if needed
+    if (endPage < totalPages) {
+      if (endPage < totalPages - 1) {
+        pages.push(
+          <span key="ellipsis2" className="px-2 py-2">
+            ...
+          </span>
+        );
+      }
+      pages.push(
+        <button
+          key={totalPages}
+          onClick={() => handlePageChange(totalPages)}
+          className="px-3 py-2 border rounded-lg hover:bg-[var(--secondary)] transition"
+        >
+          {totalPages}
         </button>
       );
     }
@@ -138,7 +204,7 @@ const ProductList = ({ productGroups, products }: ProductListComponentProps) => 
   };
 
   // Show empty state if no active products
-  if ((!activeProductGroups || activeProductGroups.length === 0) && (!activeProducts || activeProducts.length === 0)) {
+  if (totalItems === 0) {
     return (
       <div className="flex flex-col items-center justify-center py-12">
         <motion.div
@@ -159,7 +225,7 @@ const ProductList = ({ productGroups, products }: ProductListComponentProps) => 
   }
 
   // If using grouped products, display first product from each group
-  if (activeProductGroups.length > 0) {
+  if (shouldUseGroupedDisplay) {
     return (
       <div>
         {/* Grouped Products Grid */}
@@ -228,19 +294,17 @@ const ProductList = ({ productGroups, products }: ProductListComponentProps) => 
           })}
         </div>
 
-        {/* Pagination */}
+        {/* Pagination - FIXED: Now it will show when there are multiple pages */}
         {totalPages > 1 && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="flex flex-col items-center space-y-4"
+            className="flex flex-col items-center space-y-4 mt-8"
           >
             {/* Page Info */}
             <div className="text-sm text-gray-600">
-              Showing {(currentPage - 1) * productsPerPage + 1} -{" "}
-              {Math.min(currentPage * productsPerPage, displayProductGroups.length)} of{" "}
-              {displayProductGroups.length} product groups
+              Showing {currentRange.start} - {currentRange.end} of {totalItems} product groups
             </div>
 
             {/* Pagination Controls */}
@@ -328,7 +392,7 @@ const ProductList = ({ productGroups, products }: ProductListComponentProps) => 
         ))}
       </div>
 
-      {/* Original Pagination */}
+      {/* Original Pagination - FIXED: Now it will show when there are multiple pages */}
       {totalPages > 1 && (
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -338,9 +402,7 @@ const ProductList = ({ productGroups, products }: ProductListComponentProps) => 
         >
           {/* Page Info */}
           <div className="text-sm text-gray-600">
-            Showing {(currentPage - 1) * productsPerPage + 1} -{" "}
-            {Math.min(currentPage * productsPerPage, activeProducts.length)} of{" "}
-            {activeProducts.length} products
+            Showing {currentRange.start} - {currentRange.end} of {totalItems} products
           </div>
 
           {/* Pagination Controls */}

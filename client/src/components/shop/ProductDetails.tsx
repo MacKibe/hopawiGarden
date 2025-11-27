@@ -1,17 +1,20 @@
 import { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router";
-import { FaCartPlus, FaShoppingBag, FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import { useParams, useNavigate, useSearchParams } from "react-router";
+import { FaCartPlus, FaShoppingBag, FaChevronLeft, FaChevronRight, FaEye, FaEyeSlash } from "react-icons/fa";
 import { motion } from "framer-motion";
 import { useProduct } from "../../hooks/useProduct";
 import { useProducts } from "../../hooks/useProducts";
 import { useCartStore } from "../../store/useCartStore";
+import useAuthStore from "../../store/useAuthStore";
 import type { Product } from "../../types";
 import api from "../../config/axios";
 
 const ProductDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const { addItem } = useCartStore();
+  const { user } = useAuthStore();
   const { product, loading, error } = useProduct(id);
   const { products } = useProducts();
   const [quantity, setQuantity] = useState(1);
@@ -22,6 +25,11 @@ const ProductDetails = () => {
   // Image gallery states
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [allImages, setAllImages] = useState<string[]>([]);
+
+  // Admin preview mode
+  const isAdminPreview = searchParams.get('admin') === 'true';
+  const isAdmin = user?.role === 'admin';
+  const canViewInactive = isAdmin && isAdminPreview;
 
   // Safe text replacement helper
   const safeReplace = (text: string | undefined, search: string, replacement: string): string => {
@@ -75,38 +83,43 @@ const ProductDetails = () => {
       try {
         const response = await api.get(`/products/group/${encodeURIComponent(productName)}`);
         if (response.data) {
-          // Filter to only include active products
-          const activeGroupProducts = response.data.products.filter((p: Product) => p.active === true);
-          setAllGroupProducts(activeGroupProducts);
+          // Filter to only include active products (unless in admin preview)
+          const filteredGroupProducts = canViewInactive 
+            ? response.data.products 
+            : response.data.products.filter((p: Product) => p.active === true);
           
-          // Set the current product as the selected variant if it's active
-          const currentProductInGroup = activeGroupProducts.find((p: Product) => p.product_id === product?.product_id);
-          setSelectedVariant(currentProductInGroup || (product?.active === true ? product : null));
+          setAllGroupProducts(filteredGroupProducts);
+          
+          // Set the current product as the selected variant
+          const currentProductInGroup = filteredGroupProducts.find((p: Product) => p.product_id === product?.product_id);
+          setSelectedVariant(currentProductInGroup || product);
         }
       } catch (error) {
         console.error('Failed to fetch group products:', error);
         // If group endpoint fails, try to find products with same name from existing products
-        const sameNameProducts = products.filter(p => p.name === productName && p.active === true);
+        const sameNameProducts = canViewInactive
+          ? products.filter(p => p.name === productName)
+          : products.filter(p => p.name === productName && p.active === true);
+        
         setAllGroupProducts(sameNameProducts);
-        setSelectedVariant(product?.active === true ? product : null);
+        setSelectedVariant(product);
       }
     };
 
-    if (product && product.active === true) {
+    if (product) {
       fetchGroupProducts(product.name);
       setSelectedVariant(product);
-    } else if (product) {
-      // If main product is inactive, don't show any variants
-      setAllGroupProducts([]);
-      setSelectedVariant(null);
     }
-  }, [product, products]);
+  }, [product, products, canViewInactive]);
 
   // Handle variant selection
   const handleVariantSelect = (variant: Product) => {
     setSelectedVariant(variant);
     // Update URL to reflect the selected variant
-    window.history.replaceState(null, '', `/product/${variant.product_id}`);
+    const newUrl = canViewInactive 
+      ? `/product/${variant.product_id}?admin=true`
+      : `/product/${variant.product_id}`;
+    window.history.replaceState(null, '', newUrl);
   };
 
   // Image gallery navigation
@@ -123,6 +136,12 @@ const ProductDetails = () => {
   };
 
   const handleAddToCart = (productToAdd: Product) => {
+    // Don't allow adding inactive products to cart
+    if (productToAdd.active === false && !canViewInactive) {
+      toast.error('This product is not available for purchase');
+      return;
+    }
+    
     addItem({
       ...productToAdd,
       quantity: quantity
@@ -130,6 +149,12 @@ const ProductDetails = () => {
   };
 
   const handleBuyNow = (productToBuy: Product) => {
+    // Don't allow buying inactive products
+    if (productToBuy.active === false && !canViewInactive) {
+      toast.error('This product is not available for purchase');
+      return;
+    }
+    
     addItem({
       ...productToBuy,
       quantity: quantity
@@ -164,7 +189,8 @@ const ProductDetails = () => {
     );
   }
 
-  if (!product || product.active === false) {
+  // Check if product should be shown
+  if (!product || (product.active === false && !canViewInactive)) {
     return (
       <div className="p-6">
         <p className="text-blue-700">Product not found or is no longer available.</p>
@@ -175,22 +201,42 @@ const ProductDetails = () => {
     );
   }
 
-  // Use selectedVariant for display, fallback to product (both should be active)
+  // Use selectedVariant for display, fallback to product
   const displayProduct = selectedVariant || product;
+  const isProductInactive = displayProduct.active === false;
 
   const isTruncatable = displayProduct.long_description && displayProduct.long_description.length > 100;
 
-  // Filter related products to only show active ones
-  const activeRelatedProducts = products.filter((p) => 
+  // Filter related products to only show active ones (unless in admin preview)
+  const relatedProducts = products.filter((p) => 
     p.product_id !== product.product_id && 
-    p.category === product.category &&
-    p.active === true
-  ).slice(0, 4);
+    p.category === product.category
+  );
+
+  const activeRelatedProducts = canViewInactive 
+    ? relatedProducts.slice(0, 4)
+    : relatedProducts.filter(p => p.active === true).slice(0, 4);
 
   return (
     <div className="container-responsive py-responsive">
+      {/* Admin Preview Banner */}
+      {canViewInactive && isProductInactive && (
+        <motion.div 
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="bg-yellow-100 border-l-4 border-yellow-500 p-4 mb-6 rounded"
+        >
+          <div className="flex items-center">
+            <FaEyeSlash className="text-yellow-600 mr-3" />
+            <div>
+              <p className="text-yellow-800 font-semibold">Admin Preview - Inactive Product</p>
+            </div>
+          </div>
+        </motion.div>
+      )}
+
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
-        {/* Image Section - Updated layout */}
+        {/* Image Section */}
         <motion.div 
           className="relative lg:flex lg:gap-4"
           initial={{ opacity: 0, x: -20 }} 
@@ -337,6 +383,11 @@ const ProductDetails = () => {
                 <p className="text-3xl font-bold text-[var(--background)]">
                   Kshs {displayProduct.price.toLocaleString()}
                 </p>
+                {isProductInactive && (
+                  <span className="px-2 py-1 bg-gray-200 text-gray-700 text-sm rounded-full">
+                    Inactive
+                  </span>
+                )}
               </div>
 
               {/* Quantity Selector */}
@@ -365,50 +416,32 @@ const ProductDetails = () => {
               {/* Action Buttons */}
               <div className="flex flex-col gap-4 pt-4">
                 <motion.button
-                  className="btn-base btn-primary touch-target flex items-center justify-center gap-3 font-semibold text-lg py-3 flex-1"
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
+                  className="btn-base btn-primary touch-target flex items-center justify-center gap-3 font-semibold text-lg py-3 flex-1 disabled:opacity-50 disabled:cursor-not-allowed"
+                  whileHover={!isProductInactive ? { scale: 1.02 } : {}}
+                  whileTap={!isProductInactive ? { scale: 0.98 } : {}}
                   onClick={() => handleBuyNow(displayProduct)}
+                  disabled={isProductInactive}
                 >
                   <FaShoppingBag className="text-lg" />
-                  Buy Now
+                  {isProductInactive ? 'Not Available' : 'Buy Now'}
                 </motion.button>
                 
                 <motion.button
-                  className="flex-1 border-2 border-[var(--background)] text-[var(--background)] px-8 py-3 rounded-full flex items-center justify-center gap-3 font-semibold hover:bg-[var(--background)] hover:text-[var(--primary)] transition-all duration-200 touch-target"
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
+                  className="flex-1 border-2 border-[var(--background)] text-[var(--background)] px-8 py-3 rounded-full flex items-center justify-center gap-3 font-semibold hover:bg-[var(--background)] hover:text-[var(--primary)] transition-all duration-200 touch-target disabled:opacity-50 disabled:cursor-not-allowed"
+                  whileHover={!isProductInactive ? { scale: 1.02 } : {}}
+                  whileTap={!isProductInactive ? { scale: 0.98 } : {}}
                   onClick={() => handleAddToCart(displayProduct)}
+                  disabled={isProductInactive}
                 >
                   <FaCartPlus className="text-lg" />
-                  Add to Cart
+                  {isProductInactive ? 'Not Available' : 'Add to Cart'}
                 </motion.button>
               </div>
             </div>
-            {/* Product Details Grid
-            <div className="grid grid-cols-1  gap-4 py-4 border-y border-gray-200 mt-6">
-              <div>
-                <span className="text-sm text-gray-600">Leaf Size</span>
-                <p className="font-medium capitalize">{safeCapitalize(displayProduct.leaf_size)}</p>
-              </div>
-              <div>
-                <span className="text-sm text-gray-600">Sunlight</span>
-                <p className="font-medium capitalize">
-                  {safeReplace(displayProduct.sunlight_exposure, '_', ' ')}
-                </p>
-              </div>
-              <div>
-                <span className="text-sm text-gray-600">Flowering</span>
-                <p className="font-medium">{displayProduct.is_flowering ? 'Yes' : 'No'}</p>
-              </div>
-              <div>
-                <span className="text-sm text-gray-600">Category</span>
-                <p className="font-medium capitalize">{displayProduct.category || 'General'}</p>
-              </div>
-            </div> */}
           </div>
         </motion.div>
       </div>   
+      
       {/* All Variant Images - Show below main image if available */}
       {allGroupProducts.length > 1 && (
         <div className="mt-6">
@@ -417,7 +450,7 @@ const ProductDetails = () => {
             {allGroupProducts.map((variant) => (
               <motion.div
                 key={variant.product_id}
-                className={`flex-shrink-0 cursor-pointer border-2 rounded-lg overflow-hidden ${
+                className={`flex-shrink-0 cursor-pointer border-2 rounded-lg overflow-hidden relative ${
                   selectedVariant?.product_id === variant.product_id 
                     ? 'border-[var(--background)] border-3' 
                     : 'border-gray-300'
@@ -432,11 +465,17 @@ const ProductDetails = () => {
                   alt={variant.name}
                   className="w-40 h-40 object-cover"
                 />
+                {variant.active === false && (
+                  <div className="absolute top-2 right-2 bg-gray-600 text-white px-2 py-1 rounded-full text-xs">
+                    Inactive
+                  </div>
+                )}
               </motion.div>
             ))}
           </div>
         </div>
       )}
+      
       {/* Related Products - Show different products from same category */}
       {activeRelatedProducts.length > 0 && (
         <div className="mt-16 pt-8 border-t border-gray-200">
@@ -447,10 +486,15 @@ const ProductDetails = () => {
             {activeRelatedProducts.map((related) => (
               <motion.div
                 key={related.product_id}
-                className="card-base group cursor-pointer"
-                onClick={() => navigate(`/product/${related.product_id}`)}
+                className="card-base group cursor-pointer relative"
+                onClick={() => navigate(`/product/${related.product_id}${canViewInactive ? '?admin=true' : ''}`)}
                 whileHover={{ y: -5 }}
               >
+                {related.active === false && (
+                  <div className="absolute top-2 right-2 bg-gray-600 text-white px-2 py-1 rounded-full text-xs z-10">
+                    Inactive
+                  </div>
+                )}
                 <div className="overflow-hidden">
                   {/* Use first image from images array or fallback to path */}
                   <img

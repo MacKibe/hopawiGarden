@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
-import { FaPlus, FaEdit, FaTrash, FaSearch, FaSync } from 'react-icons/fa';
+import { FaPlus, FaEdit, FaTrash, FaSearch, FaSync, FaEye } from 'react-icons/fa';
 import api from '../../config/axios';
 import type { Product } from '../../types';
 import ProductForm from '../../components/admin/ProductForm';
 import { toast } from 'react-hot-toast';
 import { useNavigate } from "react-router";
+import useAuthStore from '../../store/useAuthStore';
 
 const AdminProductsPage = () => {
   const [products, setProducts] = useState<Product[]>([]);
@@ -15,6 +16,7 @@ const AdminProductsPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [refreshing, setRefreshing] = useState(false);
   const navigate = useNavigate();
+  const { user } = useAuthStore();
 
   useEffect(() => {
     fetchProducts();
@@ -44,6 +46,11 @@ const AdminProductsPage = () => {
   const handleEdit = (product: Product) => {
     setEditingProduct(product);
     setShowForm(true);
+  };
+
+  const handleView = (product: Product) => {
+    // Navigate to product page with admin preview parameter
+    navigate(`/product/${product.product_id}?admin=true`);
   };
 
   const handleDelete = async (product_id: string) => {
@@ -198,13 +205,14 @@ const AdminProductsPage = () => {
                 <tr key={product.product_id} className="hover:bg-gray-50 transition-colors">
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-3">
-                      <img onClick={() => navigate(`/product/${product.product_id}`)}
+                      <img 
                         src={product.path || '/assets/placeholder-plant.jpg'}
                         alt={product.name}
-                        className="w-12 h-12 rounded-lg object-cover bg-gray-100"
+                        className="w-12 h-12 rounded-lg object-cover bg-gray-100 cursor-pointer"
                         onError={(e) => {
                           (e.target as HTMLImageElement).src = '/assets/placeholder-plant.jpg';
                         }}
+                        onClick={() => handleView(product)}
                       />
                       <div className="min-w-0">
                         <div className="font-semibold text-gray-900 truncate max-w-xs">
@@ -235,6 +243,13 @@ const AdminProductsPage = () => {
                   </td>
                   <td className="px-6 py-4">
                     <div className="flex gap-2">
+                      <button
+                        onClick={() => handleView(product)}
+                        className="text-green-600 hover:text-green-900 p-2 rounded-lg hover:bg-green-50 transition-colors"
+                        title="View product"
+                      >
+                        <FaEye />
+                      </button>
                       <button
                         onClick={() => handleEdit(product)}
                         className="text-blue-600 hover:text-blue-900 p-2 rounded-lg hover:bg-blue-50 transition-colors"

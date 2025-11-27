@@ -1,6 +1,7 @@
 import { Link } from "react-router";
 
 const PlantCarePage = () => {
+  const img = "https://jujkvczxnzflaukmssqb.supabase.co/storage/v1/object/public/testing_bucket/assests/IMG_4722.JPG"
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
@@ -53,9 +54,7 @@ const PlantCarePage = () => {
           {/* Image Section */}
           <div className="flex flex-col">
             <div className="w-full h-80 bg-[var(--primary)] rounded-lg flex items-center justify-center mb-6">
-              <span className="text-[var(--background)] font-semibold text-xl">
-                Plant care image
-              </span>
+              <img src={img}/>
             </div>
             <div className="text-center">
               <p className="text-gray-600">
