@@ -5,7 +5,6 @@ import { useCartStore } from "../../store/useCartStore";
 import { cardVariants } from "../../utils/variants";
 import type { Product, ProductGroup } from "../../types";
 import { useState, useMemo } from "react";
-
 // Update props to accept either productGroups or products for backward compatibility
 interface ProductListComponentProps {
   productGroups?: ProductGroup[];
@@ -112,15 +111,15 @@ const ProductList = ({ productGroups, products }: ProductListComponentProps) => 
     const maxVisiblePages = 5;
 
     let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
-    let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+    const endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
 
     // Adjust start page if we're near the end
     if (endPage - startPage + 1 < maxVisiblePages) {
       startPage = Math.max(1, endPage - maxVisiblePages + 1);
     }
 
-    // Previous button
-    pages.push(
+
+    pages.push(    // Previous button
       <button
         key="prev"
         onClick={() => handlePageChange(currentPage - 1)}

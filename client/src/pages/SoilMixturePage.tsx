@@ -67,11 +67,11 @@ const SoilMixturePage = () => {
           {/* Image Section */}
           <div className="flex flex-col items-center">
             <div className="w-full h-80 bg-[var(--primary)] rounded-lg flex items-center justify-center mb-6">
-              <span className="text-amber-800 font-semibold text-xl">Soil mixture image</span>
+              <img src="/assets/soil.jpg"/>
             </div>
             <div className="text-center">
               <p className="mb-4 text-[var(--background)]">
-                Available in various sizes from small bags to bulk delivery
+                Available in various sizes from 5KG bags to 50Kg bags
               </p>
             </div>
           </div>
@@ -115,9 +115,9 @@ const SoilMixturePage = () => {
             <Link to="/contact" className="border-1 border-[var(--primary)] text-[var(--background)] bg-[var(--primary)] px-8 py-3 rounded-lg font-semibold hover:bg-[var(--background)] hover:text-white transition duration-300">
               Order now
             </Link>
-                  <button className="border border-[var(--background)] px-8 py-3 rounded-lg text-[var(--background)] font-semibold hover:bg-[var(--primary)] hover:text-[var(--background)] transition duration-300">
+                  <a className="border border-[var(--background)] px-8 py-3 rounded-lg text-[var(--background)] font-semibold hover:bg-[var(--primary)] hover:text-[var(--background)] transition duration-300" href="https://wa.me/254720804523?text=Hello!%20I%E2%80%99d%20like%20to%20inquire%20about%20the%20current%20prices%20for%20your%20HOPAWI%20compost%20mixture.%20Kindly%20share%20the%20details.%20Thank%20you" >
                     Call / WhatsApp (+254) 720 804523
-                  </button>
+                  </a>
           </div>
         </div>
       </div>

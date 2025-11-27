@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate, useSearchParams } from "react-router";
-import { FaCartPlus, FaShoppingBag, FaChevronLeft, FaChevronRight, FaEye, FaEyeSlash } from "react-icons/fa";
+import { FaCartPlus, FaShoppingBag, FaChevronLeft, FaChevronRight, FaEyeSlash } from "react-icons/fa";
 import { motion } from "framer-motion";
 import { useProduct } from "../../hooks/useProduct";
 import { useProducts } from "../../hooks/useProducts";
@@ -8,6 +8,7 @@ import { useCartStore } from "../../store/useCartStore";
 import useAuthStore from "../../store/useAuthStore";
 import type { Product } from "../../types";
 import api from "../../config/axios";
+import { toast } from "react-hot-toast";
 
 const ProductDetails = () => {
   const { id } = useParams();

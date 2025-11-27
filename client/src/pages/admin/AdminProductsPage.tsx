@@ -5,7 +5,6 @@ import type { Product } from '../../types';
 import ProductForm from '../../components/admin/ProductForm';
 import { toast } from 'react-hot-toast';
 import { useNavigate } from "react-router";
-import useAuthStore from '../../store/useAuthStore';
 
 const AdminProductsPage = () => {
   const [products, setProducts] = useState<Product[]>([]);
@@ -16,7 +15,6 @@ const AdminProductsPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [refreshing, setRefreshing] = useState(false);
   const navigate = useNavigate();
-  const { user } = useAuthStore();
 
   useEffect(() => {
     fetchProducts();

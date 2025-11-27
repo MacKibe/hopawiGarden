@@ -107,9 +107,9 @@ const LandscapingPage = () => {
                 </p>
                 <div className="flex flex-wrap justify-center gap-4">
                   <Link to="/contact" className="border-1 border-[var(--primary)] bg-[var(--primary)] px-8 py-3 rounded-lg font-semibold hover:bg-[var(--background)] hover:text-white transition duration-300">Schedule consultation</Link>
-                  <button className="border border-[var(--background)] px-8 py-3 rounded-lg text-[var(--background)] font-semibold hover:bg-[var(--primary)] hover:text-[var(--background)] transition duration-300">
+                  <a href="https://wa.me/254720804523?text=Hello!%20I%E2%80%99d%20love%20to%20learn%20more%20about%20your%20landscaping%20services.%20Please%20share%20the%20available%20options%20and%20pricing.%20Thank%20you" className="border border-[var(--background)] px-8 py-3 rounded-lg text-[var(--background)] font-semibold hover:bg-[var(--primary)] hover:text-[var(--background)] transition duration-300">
                     Call / WhatsApp (+254) 720 804523
-                  </button>
+                  </a>
                 </div>
               </div>
             </div>

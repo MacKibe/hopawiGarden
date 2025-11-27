@@ -1,7 +1,6 @@
 import { Link } from "react-router";
 
 const PlantCarePage = () => {
-  const img = "https://jujkvczxnzflaukmssqb.supabase.co/storage/v1/object/public/testing_bucket/assests/IMG_4722.JPG"
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
@@ -50,11 +49,11 @@ const PlantCarePage = () => {
               </ul>
             </div>
           </div>
-
+          
           {/* Image Section */}
           <div className="flex flex-col">
             <div className="w-full h-80 bg-[var(--primary)] rounded-lg flex items-center justify-center mb-6">
-              <img src={img}/>
+              <img src="/assets/care.jpeg"/>
             </div>
             <div className="text-center">
               <p className="text-gray-600">
@@ -69,9 +68,9 @@ const PlantCarePage = () => {
           <p className="mb-6 text-lg">Schedule a plant health assessment and get a care plan</p>
           <div className="flex flex-wrap justify-center gap-4">
             <Link to="/contact" className="border-1 border-[var(--primary)] text-[var(--background)] bg-[var(--primary)] px-8 py-3 rounded-lg font-semibold hover:bg-[var(--background)] hover:text-white transition duration-300">Schedule assessment</Link>
-            <button className="border border-[var(--background)] px-8 py-3 rounded-lg text-[var(--background)] font-semibold hover:bg-[var(--primary)] hover:text-[var(--background)] transition duration-300">
+            <a href="https://wa.me/254720804523?text=Hello!%20I%E2%80%99m%20interested%20in%20your%20plant%20care%20and%20maintenance%20services.%20Could%20you%20please%20share%20your%20charges%20and%20what%E2%80%99s%20included?%20Thank%20you" className="border border-[var(--background)] px-8 py-3 rounded-lg text-[var(--background)] font-semibold hover:bg-[var(--primary)] hover:text-[var(--background)] transition duration-300">
               Call / WhatsApp (+254) 720 804523
-            </button>
+            </a>
           </div>
         </div>
       </div>
