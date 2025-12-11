@@ -145,7 +145,7 @@ const generateAdminEmailTemplate = (order, items) => {
 };
 
 // Email sending functions
-const sendCustomerConfirmationEmail = async (order, items) => {
+export const sendCustomerConfirmationEmail = async (order, items) => {
   try {
     const customerEmail = new SendSmtpEmail();
     customerEmail.subject = `HOPAWI GARDENS - Order Confirmation #${order.id.slice(0, 8)}`;
@@ -168,7 +168,7 @@ const sendCustomerConfirmationEmail = async (order, items) => {
   }
 };
 
-const sendAdminNotificationEmail = async (order, items) => {
+export const sendAdminNotificationEmail = async (order, items) => {
   try {
     const adminEmail = new SendSmtpEmail();
     adminEmail.subject = `🛎️ NEW ORDER #${order.id.slice(0, 8)} - ${order.customer_name}`;

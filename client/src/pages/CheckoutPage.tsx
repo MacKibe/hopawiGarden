@@ -1,45 +1,67 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
-import useAuthStore from '../store/useAuthStore';
-import { useCartStore } from '../store/useCartStore';
-import { toast } from 'react-hot-toast';
-import type { CartItem, DeliveryMethod } from '../types';
-import DeliveryMethodSelector from '../components/checkout/DeliveryMethodSelector';
-import { orderService } from '../services/orderService';
+import { useState } from "react";
+import { useNavigate } from "react-router";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import useAuthStore from "../store/useAuthStore";
+import { useCartStore } from "../store/useCartStore";
+import { toast } from "react-hot-toast";
+import type { CartItem, DeliveryMethod } from "../types";
+import DeliveryMethodSelector from "../components/checkout/DeliveryMethodSelector";
 
 // Updated schema with pickup location
-const checkoutSchema = z.object({
-  firstName: z.string().min(1, 'First name is required').max(50, 'First name too long'),
-  lastName: z.string().min(1, 'Last name is required').max(50, 'Last name too long'),
-  phone: z.string().min(10, 'Phone number must be at least 10 digits').regex(/^\+?[\d\s-]+$/, 'Invalid phone number'),
-  email: z.email().regex(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, 'Invalid email address'),
-  deliveryMethod: z.enum(['delivery', 'pickup']),
-  address: z.string().optional(),
-  city: z.string().optional(),
-  postalCode: z.string().optional(),
-  country: z.string().optional(),
-  deliveryInstructions: z.string().optional(),
-  pickupLocation: z.string().optional(),
-}).refine((data) => {
-  if (data.deliveryMethod === 'delivery') {
-    return !!data.address && !!data.city && !!data.postalCode && !!data.country;
-  }
-  return true;
-}, {
-  message: "Address, city, postal code, and country are required for delivery",
-  path: ["address"]
-}).refine((data) => {
-  if (data.deliveryMethod === 'pickup') {
-    return !!data.pickupLocation;
-  }
-  return true;
-}, {
-  message: "Pickup location is required for store pickup",
-  path: ["pickupLocation"]
-});
+const checkoutSchema = z
+  .object({
+    firstName: z
+      .string()
+      .min(1, "First name is required")
+      .max(50, "First name too long"),
+    lastName: z
+      .string()
+      .min(1, "Last name is required")
+      .max(50, "Last name too long"),
+    phone: z
+      .string()
+      .min(10, "Phone number must be at least 10 digits")
+      .regex(/^\+?[\d\s-]+$/, "Invalid phone number"),
+    email: z
+      .email()
+      .regex(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, "Invalid email address"),
+    deliveryMethod: z.enum(["delivery", "pickup"]),
+    address: z.string().optional(),
+    city: z.string().optional(),
+    postalCode: z.string().optional(),
+    country: z.string().optional(),
+    deliveryInstructions: z.string().optional(),
+    pickupLocation: z.string().optional(),
+  })
+  .refine(
+    (data) => {
+      if (data.deliveryMethod === "delivery") {
+        return (
+          !!data.address && !!data.city && !!data.postalCode && !!data.country
+        );
+      }
+      return true;
+    },
+    {
+      message:
+        "Address, city, postal code, and country are required for delivery",
+      path: ["address"],
+    }
+  )
+  .refine(
+    (data) => {
+      if (data.deliveryMethod === "pickup") {
+        return !!data.pickupLocation;
+      }
+      return true;
+    },
+    {
+      message: "Pickup location is required for store pickup",
+      path: ["pickupLocation"],
+    }
+  );
 
 type CheckoutFormData = z.infer<typeof checkoutSchema>;
 
@@ -58,86 +80,115 @@ const CheckoutPage = () => {
   } = useForm<CheckoutFormData>({
     resolver: zodResolver(checkoutSchema),
     defaultValues: {
-      deliveryMethod: 'delivery',
-      country: 'Kenya',
-      pickupLocation: 'HOPAWI GARDENS, Greenfield, Kamiti Rd, Nairobi',
+      deliveryMethod: "delivery",
+      country: "Kenya",
+      pickupLocation: "HOPAWI GARDENS, Greenfield, Kamiti Rd, Nairobi",
     },
   });
 
   // Watch delivery method to conditionally render address fields
-  const currentDeliveryMethod = watch('deliveryMethod');
+  const currentDeliveryMethod = watch("deliveryMethod");
 
-  const totalPrice = cartItems.reduce((sum: number, item: CartItem) => sum + (item.price * item.quantity), 0);
-  const shippingCost = currentDeliveryMethod === 'pickup' ? 0 : 300;
+  const totalPrice = cartItems.reduce(
+    (sum: number, item: CartItem) => sum + item.price * item.quantity,
+    0
+  );
+  const shippingCost = currentDeliveryMethod === "pickup" ? 0 : 300;
   const totalAmount = totalPrice + shippingCost;
 
   const handleDeliveryMethodChange = (method: DeliveryMethod) => {
-    setValue('deliveryMethod', method);
-    
+    setValue("deliveryMethod", method);
+
     // Reset address fields when switching to pickup
-    if (method === 'pickup') {
-      setValue('address', '');
-      setValue('city', '');
-      setValue('postalCode', '');
-      setValue('deliveryInstructions', '');
-      setValue('pickupLocation', 'HOPAWI GARDENS, Greenfield, Kamiti Rd, Nairobi');
+    if (method === "pickup") {
+      setValue("address", "");
+      setValue("city", "");
+      setValue("postalCode", "");
+      setValue("deliveryInstructions", "");
+      setValue(
+        "pickupLocation",
+        "HOPAWI GARDENS, Greenfield, Kamiti Rd, Nairobi"
+      );
     } else {
-      setValue('pickupLocation', '');
+      setValue("pickupLocation", "");
     }
   };
 
   const onSubmit = async (data: CheckoutFormData) => {
-
     if (cartItems.length === 0) {
-      toast.error('Your cart is empty');
+      toast.error("Your cart is empty");
       return;
     }
 
     setIsProcessing(true);
-    
-    try {
-      // Prepare order payload for backend
-      const orderPayload = {
-        customerEmail: data.email,
-        customerName: `${data.firstName} ${data.lastName}`,
-        deliveryMethod: data.deliveryMethod,
-        shippingAddress: data.deliveryMethod === 'delivery' ? data.address : undefined,
-        shippingCity: data.deliveryMethod === 'delivery' ? data.city : undefined,
-        shippingState: data.deliveryMethod === 'delivery' ? 'Nairobi' : undefined,
-        shippingZip: data.deliveryMethod === 'delivery' ? data.postalCode : undefined,
-        pickupLocation: data.deliveryMethod === 'pickup' ? data.pickupLocation : undefined,
-        totalAmount: totalAmount,
-        items: cartItems.map(item => ({
-          productId: item.product_id,
-          productName: item.name,
-          quantity: item.quantity,
-          price: item.price
-        }))
-      };
 
-      // Send to backend API
-      const result = await orderService.createOrder(orderPayload);
+    const phone = data.phone.replace(/\D/g, "");
+    if (!/^254\d{9}$/.test(phone)) {
+      toast.error(
+        "Please enter a valid Kenyan phone number (e.g. 0712345678 or 254712345678)"
+      );
+      setIsProcessing(false);
+      return;
+    }
+
+    const formattedPhone = phone.startsWith("254")
+      ? phone
+      : "254" + phone.slice(-9);
+
+    const orderPayload = {
+      customerEmail: data.email,
+      customerName: `${data.firstName} ${data.lastName}`,
+      deliveryMethod: data.deliveryMethod,
+      shippingAddress:
+        data.deliveryMethod === "delivery" ? data.address : undefined,
+      shippingCity: data.deliveryMethod === "delivery" ? data.city : undefined,
+      shippingState: data.deliveryMethod === "delivery" ? "Nairobi" : undefined,
+      shippingZip:
+        data.deliveryMethod === "delivery" ? data.postalCode : undefined,
+      pickupLocation:
+        data.deliveryMethod === "pickup" ? data.pickupLocation : undefined,
+      totalAmount: totalAmount,
+      items: cartItems.map((item) => ({
+        productId: item.product_id,
+        productName: item.name,
+        quantity: item.quantity,
+        price: item.price,
+      })),
+    };
+
+    try {
+      const response = await fetch(
+        "http://localhost:10000/api/mpesa-stk-push",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            phoneNumber: formattedPhone,
+            amount: totalAmount,
+            orderData: orderPayload,
+          }),
+        }
+      );
+
+      const result = await response.json();
 
       if (result.success) {
-        // Clear cart on success
-        clearCart();
-        
-        const successMessage = data.deliveryMethod === 'delivery' 
-          ? `Order placed successfully! You will pay via M-Pesa. Order #${result.orderId.slice(0, 8)}` 
-          : `Order placed successfully!. Order #${result.orderId.slice(0, 8)}`;
-        
-        toast.success(successMessage);
-        navigate('/shop');
-      } else {
-        throw new Error(result.message || 'Failed to place order');
+        toast.success("Payment request sent! Completing your order...", {
+          duration: 18000,
+        });
+
+        // Redirect after a moment to let user read the toast
+        setTimeout(() => {
+          clearCart();
+          navigate("/order-success", {
+            state: { orderId: result.orderId || "pending" },
+          });
+        }, 15000);
       }
-      
-    } catch (error: Error | unknown) {
-      console.error('Order error:', error);
-      const errorMessage = error instanceof Error 
-        ? error.message 
-        : 'Failed to process order. Please try again.';
-      toast.error(errorMessage);
+    } catch (error) {
+      // Fixed: renamed 'err' → 'error' and actually use it
+      console.error("M-Pesa STK Push failed:", error);
+      toast.error("Network error. Please check your connection and try again.");
     } finally {
       setIsProcessing(false);
     }
@@ -147,8 +198,8 @@ const CheckoutPage = () => {
     return (
       <div className="container-responsive py-responsive text-center">
         <h2 className="text-2xl font-bold mb-4">Your cart is empty</h2>
-        <button 
-          onClick={() => navigate('/shop')}
+        <button
+          onClick={() => navigate("/shop")}
           className="btn-base btn-primary touch-target"
         >
           Continue Shopping
@@ -169,48 +220,75 @@ const CheckoutPage = () => {
               <section>
                 <h3 className="text-xl font-semibold mb-4">Your Information</h3>
                 <div className="bg-blue-50 p-4 rounded-lg mb-4">
-                  <p className="text-sm"> {user?.name} ({user?.email})</p>
+                  <p className="text-sm">
+                    {" "}
+                    {user?.name} ({user?.email})
+                  </p>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                   <div>
-                    <label className="block text-sm font-medium mb-2">First Name *</label>
+                    <label className="block text-sm font-medium mb-2">
+                      First Name *
+                    </label>
                     <input
-                      {...register('firstName')}
+                      {...register("firstName")}
                       className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--background)]"
                       placeholder="John"
                     />
-                    {errors.firstName && <p className="text-red-500 text-sm mt-1">{errors.firstName.message}</p>}
+                    {errors.firstName && (
+                      <p className="text-red-500 text-sm mt-1">
+                        {errors.firstName.message}
+                      </p>
+                    )}
                   </div>
                   <div>
-                    <label className="block text-sm font-medium mb-2">Last Name *</label>
+                    <label className="block text-sm font-medium mb-2">
+                      Last Name *
+                    </label>
                     <input
-                      {...register('lastName')}
+                      {...register("lastName")}
                       className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--background)]"
                       placeholder="Doe"
                     />
-                    {errors.lastName && <p className="text-red-500 text-sm mt-1">{errors.lastName.message}</p>}
+                    {errors.lastName && (
+                      <p className="text-red-500 text-sm mt-1">
+                        {errors.lastName.message}
+                      </p>
+                    )}
                   </div>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium mb-2">Phone Number *</label>
+                    <label className="block text-sm font-medium mb-2">
+                      Phone Number *
+                    </label>
                     <input
-                      {...register('phone')}
+                      {...register("phone")}
                       type="tel"
                       className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--background)]"
                       placeholder="0712 345 678"
                     />
-                    {errors.phone && <p className="text-red-500 text-sm mt-1">{errors.phone.message}</p>}
+                    {errors.phone && (
+                      <p className="text-red-500 text-sm mt-1">
+                        {errors.phone.message}
+                      </p>
+                    )}
                   </div>
                   <div>
-                    <label className="block text-sm font-medium mb-2">Email *</label>
+                    <label className="block text-sm font-medium mb-2">
+                      Email *
+                    </label>
                     <input
-                      {...register('email')}
+                      {...register("email")}
                       type="email"
                       className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--background)]"
                       placeholder="you@gmail.com"
                     />
-                    {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>}
+                    {errors.email && (
+                      <p className="text-red-500 text-sm mt-1">
+                        {errors.email.message}
+                      </p>
+                    )}
                   </div>
                 </div>
               </section>
@@ -221,67 +299,96 @@ const CheckoutPage = () => {
                   selectedMethod={currentDeliveryMethod}
                   onMethodChange={handleDeliveryMethodChange}
                 />
-                <input type="hidden" {...register('deliveryMethod')} />
+                <input type="hidden" {...register("deliveryMethod")} />
               </section>
 
               {/* Shipping Address - Conditionally Rendered */}
-              {currentDeliveryMethod === 'delivery' && (
+              {currentDeliveryMethod === "delivery" && (
                 <section>
-                  <h3 className="text-xl font-semibold mb-4">Shipping Address</h3>
-                  
-                  {errors.address && typeof errors.address.message === 'string' && (
-                    <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-4">
-                      <p className="text-red-700 text-sm">
-                        {errors.address.message}
-                      </p>
-                    </div>
-                  )}
-                  
+                  <h3 className="text-xl font-semibold mb-4">
+                    Shipping Address
+                  </h3>
+
+                  {errors.address &&
+                    typeof errors.address.message === "string" && (
+                      <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-4">
+                        <p className="text-red-700 text-sm">
+                          {errors.address.message}
+                        </p>
+                      </div>
+                    )}
+
                   <div className="mt-4">
-                    <label className="block text-sm font-medium mb-2">Address *</label>
+                    <label className="block text-sm font-medium mb-2">
+                      Address *
+                    </label>
                     <input
-                      {...register('address')}
+                      {...register("address")}
                       className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--background)]"
                       placeholder="123 Main Street, Apartment 4B"
                     />
-                    {errors.address && <p className="text-red-500 text-sm mt-1">{errors.address.message}</p>}
+                    {errors.address && (
+                      <p className="text-red-500 text-sm mt-1">
+                        {errors.address.message}
+                      </p>
+                    )}
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
                     <div>
-                      <label className="block text-sm font-medium mb-2">City *</label>
+                      <label className="block text-sm font-medium mb-2">
+                        City *
+                      </label>
                       <input
-                        {...register('city')}
+                        {...register("city")}
                         className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--background)]"
                         placeholder="Nairobi"
                       />
-                      {errors.city && <p className="text-red-500 text-sm mt-1">{errors.city.message}</p>}
+                      {errors.city && (
+                        <p className="text-red-500 text-sm mt-1">
+                          {errors.city.message}
+                        </p>
+                      )}
                     </div>
                     <div>
-                      <label className="block text-sm font-medium mb-2">Postal Code *</label>
+                      <label className="block text-sm font-medium mb-2">
+                        Postal Code *
+                      </label>
                       <input
-                        {...register('postalCode')}
+                        {...register("postalCode")}
                         className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--background)]"
                         placeholder="00100"
                       />
-                      {errors.postalCode && <p className="text-red-500 text-sm mt-1">{errors.postalCode.message}</p>}
+                      {errors.postalCode && (
+                        <p className="text-red-500 text-sm mt-1">
+                          {errors.postalCode.message}
+                        </p>
+                      )}
                     </div>
                   </div>
 
                   <div className="mt-4">
-                    <label className="block text-sm font-medium mb-2">Country *</label>
+                    <label className="block text-sm font-medium mb-2">
+                      Country *
+                    </label>
                     <input
-                      {...register('country')}
+                      {...register("country")}
                       className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--background)]"
                       placeholder="Kenya"
                     />
-                    {errors.country && <p className="text-red-500 text-sm mt-1">{errors.country.message}</p>}
+                    {errors.country && (
+                      <p className="text-red-500 text-sm mt-1">
+                        {errors.country.message}
+                      </p>
+                    )}
                   </div>
 
                   <div className="mt-4">
-                    <label className="block text-sm font-medium mb-2">Delivery Instructions (Optional)</label>
+                    <label className="block text-sm font-medium mb-2">
+                      Delivery Instructions (Optional)
+                    </label>
                     <textarea
-                      {...register('deliveryInstructions')}
+                      {...register("deliveryInstructions")}
                       rows={3}
                       className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--background)]"
                       placeholder="e.g., Leave at gate, Call before delivery, etc."
@@ -291,8 +398,8 @@ const CheckoutPage = () => {
               )}
 
               {/* Pickup Location - Conditionally Rendered */}
-              {currentDeliveryMethod === 'pickup' && (
-                <div>                  
+              {currentDeliveryMethod === "pickup" && (
+                <div>
                   {errors.pickupLocation && (
                     <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-4">
                       <p className="text-red-700 text-sm">
@@ -302,10 +409,15 @@ const CheckoutPage = () => {
                   )}
 
                   <div className="mx-20 mt-4 bg-green-50 p-4 rounded-lg">
-                    <h4 className="font-semibold text-green-800 mb-2">Garden information</h4>
+                    <h4 className="font-semibold text-green-800 mb-2">
+                      Garden information
+                    </h4>
                     <p className="text-sm text-green-700">
-                      <strong>Address:</strong> HOPAWI GARDENS, Greenfield, Kamiti Rd, Nairobi<br />
-                      <strong>Hours:</strong> Mon - Sat, 9:00 AM - 4:00 PM<br />
+                      <strong>Address:</strong> HOPAWI GARDENS, Greenfield,
+                      Kamiti Rd, Nairobi
+                      <br />
+                      <strong>Hours:</strong> Mon - Sat, 9:00 AM - 4:00 PM
+                      <br />
                       <strong>Contact:</strong> 0720 804523
                     </p>
                   </div>
@@ -336,7 +448,9 @@ const CheckoutPage = () => {
                 disabled={isProcessing}
                 className="btn-base btn-primary touch-target w-full"
               >
-                {isProcessing ? 'Placing Order...' : `Place Order - Kshs ${totalAmount.toLocaleString()}`}
+                {isProcessing
+                  ? "Placing Order..."
+                  : `Place Order - Kshs ${totalAmount.toLocaleString()}`}
               </button>
             </form>
           </div>
@@ -346,21 +460,28 @@ const CheckoutPage = () => {
         <div className="sidebar-aside">
           <div className="bg-[var(--secondary)] p-4 md:p-6 rounded-lg sticky top-24">
             <h3 className="text-xl font-semibold mb-4">Order Summary</h3>
-            
+
             <div className="space-y-4 mb-6">
               {cartItems.map((item: CartItem) => (
-                <div key={item.product_id} className="flex justify-between items-center">
+                <div
+                  key={item.product_id}
+                  className="flex justify-between items-center"
+                >
                   <div className="flex items-center space-x-3 min-w-0">
-                    <div 
+                    <div
                       className="w-12 h-12 bg-cover bg-center rounded flex-shrink-0"
                       style={{ backgroundImage: `url(${item.path})` }}
                     />
                     <div className="min-w-0">
                       <p className="font-medium truncate">{item.name}</p>
-                      <p className="text-sm text-gray-600">Qty: {item.quantity}</p>
+                      <p className="text-sm text-gray-600">
+                        Qty: {item.quantity}
+                      </p>
                     </div>
                   </div>
-                  <p className="font-semibold flex-shrink-0 ml-2">Kshs {(item.price * item.quantity).toLocaleString()}</p>
+                  <p className="font-semibold flex-shrink-0 ml-2">
+                    Kshs {(item.price * item.quantity).toLocaleString()}
+                  </p>
                 </div>
               ))}
             </div>
@@ -370,17 +491,16 @@ const CheckoutPage = () => {
                 <span>Subtotal</span>
                 <span>Kshs {totalPrice.toLocaleString()}</span>
               </div>
-              
+
               <div className="flex justify-between">
                 <span>Shipping</span>
                 <span>
-                  {currentDeliveryMethod === 'pickup' 
-                    ? 'FREE' 
-                    : `Kshs ${shippingCost.toLocaleString()}`
-                  }
+                  {currentDeliveryMethod === "pickup"
+                    ? "FREE"
+                    : `Kshs ${shippingCost.toLocaleString()}`}
                 </span>
               </div>
-              
+
               <div className="flex justify-between font-bold text-lg mt-2">
                 <span>Total</span>
                 <span>Kshs {totalAmount.toLocaleString()}</span>
@@ -391,22 +511,24 @@ const CheckoutPage = () => {
             <div className="mt-4 p-3 bg-blue-50 rounded-lg">
               <p className="text-sm text-blue-800">
                 <strong>
-                  {currentDeliveryMethod === 'delivery' 
-                    ? 'M-Pesa before delivery' 
-                    : 'M-Pesa before pickup'
-                  }:
-                </strong> 
-                {currentDeliveryMethod === 'delivery'
-                  ? ' Pay before you receive your plants'
-                  : ' Pay before you pick your order'
-                }
+                  {currentDeliveryMethod === "delivery"
+                    ? "M-Pesa before delivery"
+                    : "M-Pesa before pickup"}
+                  :
+                </strong>
+                {currentDeliveryMethod === "delivery"
+                  ? " Pay before you receive your plants"
+                  : " Pay before you pick your order"}
               </p>
             </div>
 
             {/* Delivery Method Summary */}
             <div className="mt-3 p-3 bg-green-50 rounded-lg">
               <p className="text-sm text-green-800">
-                <strong>Delivery:</strong> {currentDeliveryMethod === 'delivery' ? 'Home Delivery' : 'Store Pickup'}
+                <strong>Delivery:</strong>{" "}
+                {currentDeliveryMethod === "delivery"
+                  ? "Home Delivery"
+                  : "Store Pickup"}
               </p>
             </div>
           </div>

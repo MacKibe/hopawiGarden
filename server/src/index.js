@@ -5,6 +5,8 @@ import productRoutes from "./routes/productRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
 import contactRoutes from "./routes/contactRoute.js";
 import orderRoutes from "./routes/orderRoutes.js";
+import mpesaStkPushRouter from "./routes/mpesaRoutes.js";
+import mpesaCallbackRouter from "./routes/mpesaCallbackRoute.js";
 
 const app = express();
 
@@ -33,6 +35,8 @@ app.use("/api/products", productRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api", contactRoutes);
 app.use("/api/orders", orderRoutes);
+app.use("/api/mpesa-stk-push", mpesaStkPushRouter);
+app.use("/api/mpesa-callback", mpesaCallbackRouter);
 
 app.get("/", (req, res) => {
   return res.send("HOPAWI Gardens Backend!");

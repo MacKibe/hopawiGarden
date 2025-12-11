@@ -25,6 +25,7 @@ import CheckoutPage from "./pages/CheckoutPage";
 import PlainLayout from "./layouts/PlainLyout";
 import PublicLayout from "./layouts/PublicLayout";
 import Socialsection from "./components/common/Socialsection";
+import OrderSuccessPage from "./pages/OrderSuccessPage";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -60,6 +61,7 @@ createRoot(document.getElementById("root")!).render(
           <Route path="/cart" element={<CartPage />} />
           <Route path="/checkout" element={<CheckoutPage />} />
           <Route path="/product/:id" element={<ProductDetails />} />
+          <Route path="/order-success" element={<OrderSuccessPage />} />
 
           {/* Auth Routes */}
           <Route path="/login" element={<LoginPage />} />
