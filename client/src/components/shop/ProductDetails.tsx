@@ -1,6 +1,11 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router";
-import { FaCartPlus, FaShoppingBag, FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import {
+  FaCartPlus,
+  FaShoppingBag,
+  FaChevronLeft,
+  FaChevronRight,
+} from "react-icons/fa";
 import { motion } from "framer-motion";
 import { useProduct } from "../../hooks/useProduct";
 import { useProducts } from "../../hooks/useProducts";
@@ -18,20 +23,24 @@ const ProductDetails = () => {
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
   const [allGroupProducts, setAllGroupProducts] = useState<Product[]>([]);
   const [selectedVariant, setSelectedVariant] = useState<Product | null>(null);
-  
+
   // Image gallery states
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [allImages, setAllImages] = useState<string[]>([]);
 
   // Safe text replacement helper
-  const safeReplace = (text: string | undefined, search: string, replacement: string): string => {
-    if (!text) return '';
+  const safeReplace = (
+    text: string | undefined,
+    search: string,
+    replacement: string
+  ): string => {
+    if (!text) return "";
     return text.replace(search, replacement);
   };
 
   // Safe capitalize helper
   const safeCapitalize = (text: string | undefined): string => {
-    if (!text) return '';
+    if (!text) return "";
     return text.charAt(0).toUpperCase() + text.slice(1);
   };
 
@@ -39,7 +48,7 @@ const ProductDetails = () => {
   const truncateDescription = (text: string, maxLength: number = 200) => {
     if (!text) return "";
     if (text.length <= maxLength) return text;
-    return text.slice(0, maxLength) + '...';
+    return text.slice(0, maxLength) + "...";
   };
 
   // Prepare all images for the gallery - ONLY from images array
@@ -48,7 +57,7 @@ const ProductDetails = () => {
       const displayProduct = selectedVariant || product;
       if (displayProduct) {
         const images: string[] = [];
-        
+
         // ONLY use images from the images array (product_images table)
         if (displayProduct.images && displayProduct.images.length > 0) {
           displayProduct.images.forEach((img) => {
@@ -57,12 +66,12 @@ const ProductDetails = () => {
             }
           });
         }
-        
+
         // Fallback: if no images in images array, use path (legacy support)
         if (images.length === 0 && displayProduct.path) {
           images.push(displayProduct.path);
         }
-        
+
         setAllImages(images);
         setSelectedImageIndex(0); // Reset to first image when product changes
       }
@@ -73,19 +82,23 @@ const ProductDetails = () => {
   useEffect(() => {
     const fetchGroupProducts = async (productName: string) => {
       try {
-        const response = await api.get(`/products/group/${encodeURIComponent(productName)}`);
+        const response = await api.get(
+          `/products/group/${encodeURIComponent(productName)}`
+        );
         if (response.data) {
           const allGroupProducts = response.data.products;
           setAllGroupProducts(allGroupProducts);
-          
+
           // Set the current product as the selected variant
-          const currentProductInGroup = allGroupProducts.find((p: Product) => p.product_id === product?.product_id);
+          const currentProductInGroup = allGroupProducts.find(
+            (p: Product) => p.product_id === product?.product_id
+          );
           setSelectedVariant(currentProductInGroup || product);
         }
       } catch (error) {
-        console.error('Failed to fetch group products:', error);
+        console.error("Failed to fetch group products:", error);
         // If group endpoint fails, try to find products with same name from existing products
-        const sameNameProducts = products.filter(p => p.name === productName);
+        const sameNameProducts = products.filter((p) => p.name === productName);
         setAllGroupProducts(sameNameProducts);
         setSelectedVariant(product);
       }
@@ -101,7 +114,7 @@ const ProductDetails = () => {
   const handleVariantSelect = (variant: Product) => {
     setSelectedVariant(variant);
     // Update URL to reflect the selected variant
-    window.history.replaceState(null, '', `/product/${variant.product_id}`);
+    window.history.replaceState(null, "", `/product/${variant.product_id}`);
   };
 
   // Image gallery navigation
@@ -110,7 +123,9 @@ const ProductDetails = () => {
   };
 
   const prevImage = () => {
-    setSelectedImageIndex((prev) => (prev - 1 + allImages.length) % allImages.length);
+    setSelectedImageIndex(
+      (prev) => (prev - 1 + allImages.length) % allImages.length
+    );
   };
 
   const selectImage = (index: number) => {
@@ -120,24 +135,24 @@ const ProductDetails = () => {
   const handleAddToCart = (productToAdd: Product) => {
     addItem({
       ...productToAdd,
-      quantity: quantity
+      quantity: quantity,
     });
   };
 
   const handleBuyNow = (productToBuy: Product) => {
     addItem({
       ...productToBuy,
-      quantity: quantity
+      quantity: quantity,
     });
     navigate("/checkout");
   };
 
   const incrementQuantity = () => {
-    setQuantity(prev => prev + 1);
+    setQuantity((prev) => prev + 1);
   };
 
   const decrementQuantity = () => {
-    setQuantity(prev => prev > 1 ? prev - 1 : 1);
+    setQuantity((prev) => (prev > 1 ? prev - 1 : 1));
   };
 
   if (loading) {
@@ -152,7 +167,10 @@ const ProductDetails = () => {
     return (
       <div className="p-6">
         <p className="text-red-500">Error: {error}</p>
-        <button onClick={() => navigate(-1)} className="text-blue-500 underline mt-2">
+        <button
+          onClick={() => navigate(-1)}
+          className="text-blue-500 underline mt-2"
+        >
           Go Back
         </button>
       </div>
@@ -163,7 +181,10 @@ const ProductDetails = () => {
     return (
       <div className="p-6">
         <p className="text-blue-700">Product not found.</p>
-        <button onClick={() => navigate(-1)} className="text-blue-500 underline">
+        <button
+          onClick={() => navigate(-1)}
+          className="text-blue-500 underline"
+        >
           Go Back
         </button>
       </div>
@@ -173,16 +194,18 @@ const ProductDetails = () => {
   // Use selectedVariant for display, fallback to product
   const displayProduct = selectedVariant || product;
 
-  const isTruncatable = displayProduct.long_description && displayProduct.long_description.length > 100;
+  const isTruncatable =
+    displayProduct.long_description &&
+    displayProduct.long_description.length > 100;
 
   return (
     <div className="container-responsive py-responsive">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
         {/* Image Section - Updated layout */}
-        <motion.div 
+        <motion.div
           className="relative lg:flex lg:gap-4"
-          initial={{ opacity: 0, x: -20 }} 
-          animate={{ opacity: 1, x: 0 }} 
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.5 }}
         >
           {/* Vertical Thumbnail Gallery - Hidden on mobile, shown on desktop */}
@@ -193,9 +216,9 @@ const ProductDetails = () => {
                   <motion.button
                     key={index}
                     className={`w-full mb-2 cursor-pointer border-2 rounded-lg overflow-hidden transition-all duration-200 ${
-                      selectedImageIndex === index 
-                        ? 'border-[var(--background)] border-3 shadow-md' 
-                        : 'border-gray-300 hover:border-gray-400'
+                      selectedImageIndex === index
+                        ? "border-[var(--background)] border-3 shadow-md"
+                        : "border-gray-300 hover:border-gray-400"
                     }`}
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
@@ -218,9 +241,11 @@ const ProductDetails = () => {
             <div className="relative rounded-lg overflow-hidden shadow-lg bg-gray-100">
               {/* Main Image */}
               {allImages.length > 0 ? (
-                <img 
-                  src={allImages[selectedImageIndex]} 
-                  alt={`${displayProduct.name} - Image ${selectedImageIndex + 1}`} 
+                <img
+                  src={allImages[selectedImageIndex]}
+                  alt={`${displayProduct.name} - Image ${
+                    selectedImageIndex + 1
+                  }`}
                   className="w-full h-150 lg:h-120 object-cover bg-top"
                 />
               ) : (
@@ -265,9 +290,9 @@ const ProductDetails = () => {
                     <motion.button
                       key={index}
                       className={`flex-shrink-0 cursor-pointer border-2 rounded-lg overflow-hidden transition-all duration-200 ${
-                        selectedImageIndex === index 
-                          ? 'border-[var(--background)] border-3 shadow-md' 
-                          : 'border-gray-300 hover:border-gray-400'
+                        selectedImageIndex === index
+                          ? "border-[var(--background)] border-3 shadow-md"
+                          : "border-gray-300 hover:border-gray-400"
                       }`}
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
@@ -287,17 +312,29 @@ const ProductDetails = () => {
         </motion.div>
 
         {/* Details Section */}
-        <motion.div className="space-y-6" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5, delay: 0.1 }}>
+        <motion.div
+          className="space-y-6"
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+        >
           {/* Title and Description */}
           <div>
-            <p className="text-5xl font-bold text-black">{displayProduct.name}</p>
+            <p className="text-5xl font-bold text-black">
+              {displayProduct.name}
+            </p>
             {/* Variant Details */}
             {displayProduct.planter_details && (
               <div className="p-3 bg-gray-50 rounded-lg">
                 <div className="flex gap-4 mt-1">
                   {displayProduct.planter_details.size && (
                     <span className="text-sm font-medium capitalize">
-                      Size: {safeReplace(displayProduct.planter_details.size, '_', ' ')}
+                      Size:{" "}
+                      {safeReplace(
+                        displayProduct.planter_details.size,
+                        "_",
+                        " "
+                      )}
                     </span>
                   )}
                   {displayProduct.planter_details.color && (
@@ -316,17 +353,18 @@ const ProductDetails = () => {
             {/* Description with Read More/Less */}
             <div>
               <p className="text-gray-700 leading-relaxed">
-                {isDescriptionExpanded 
-                  ? displayProduct.long_description 
-                  : truncateDescription(displayProduct.long_description || "")
-                }
+                {isDescriptionExpanded
+                  ? displayProduct.long_description
+                  : truncateDescription(displayProduct.long_description || "")}
               </p>
               {isTruncatable && (
                 <button
-                  onClick={() => setIsDescriptionExpanded(!isDescriptionExpanded)}
+                  onClick={() =>
+                    setIsDescriptionExpanded(!isDescriptionExpanded)
+                  }
                   className="text-[var(--background)] hover:text-[var(--text)] font-medium text-sm mt-2 transition-colors duration-200 touch-target"
                 >
-                  {isDescriptionExpanded ? 'Read less' : 'Read more'}
+                  {isDescriptionExpanded ? "Read less" : "Read more"}
                 </button>
               )}
             </div>
@@ -342,7 +380,9 @@ const ProductDetails = () => {
 
               {/* Quantity Selector */}
               <div className="flex items-center gap-4">
-                <span className="text-lg font-semibold text-gray-700">Quantity:</span>
+                <span className="text-lg font-semibold text-gray-700">
+                  Quantity:
+                </span>
                 <div className="flex items-center border border-gray-300 rounded-lg">
                   <button
                     onClick={decrementQuantity}
@@ -374,7 +414,7 @@ const ProductDetails = () => {
                   <FaShoppingBag className="text-lg" />
                   Buy Now
                 </motion.button>
-                
+
                 <motion.button
                   className="flex-1 border-2 border-[var(--background)] text-[var(--background)] px-8 py-3 rounded-full flex items-center justify-center gap-3 font-semibold hover:bg-[var(--background)] hover:text-[var(--primary)] transition-all duration-200 touch-target"
                   whileHover={{ scale: 1.02 }}
@@ -384,6 +424,30 @@ const ProductDetails = () => {
                   <FaCartPlus className="text-lg" />
                   Add to Cart
                 </motion.button>
+                <motion.a
+                  href={`https://wa.me/254701069382?text=${encodeURIComponent(
+                    `Hello! I'd like to order:\n\n*Product:* ${
+                      displayProduct.name
+                    }\n*Quantity:* ${quantity}\n*Price:* Kshs ${displayProduct.price.toLocaleString()}\n\n${
+                      allImages.length > 0 ? allImages[selectedImageIndex] : ""
+                    }\n\nThank you!`
+                  )}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex-1 bg-green-600 text-white px-8 py-3 rounded-full flex items-center justify-center gap-3 font-semibold hover:bg-green-700 transition-all duration-200 touch-target shadow-md"
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  <svg
+                    className="w-6 h-6"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                  >
+                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.001-.001L3.5 19.5l1.429-3.573c-.090-.153-.174-.316-.25-.485A9.864 9.864 0 012 12c0-5.523 4.477-10 10-10s10 4.477 10 10-4.477 10-10 10z" />
+                  </svg>
+                  Order on WhatsApp
+                </motion.a>
               </div>
             </div>
             {/* Product Details Grid
@@ -409,7 +473,7 @@ const ProductDetails = () => {
             </div> */}
           </div>
         </motion.div>
-      </div>   
+      </div>
       {/* All Variant Images - Show below main image if available */}
       {allGroupProducts.length > 1 && (
         <div className="mt-6">
@@ -419,9 +483,9 @@ const ProductDetails = () => {
               <motion.div
                 key={variant.product_id}
                 className={`flex-shrink-0 cursor-pointer border-2 rounded-lg overflow-hidden ${
-                  selectedVariant?.product_id === variant.product_id 
-                    ? 'border-[var(--background)] border-3' 
-                    : 'border-gray-300'
+                  selectedVariant?.product_id === variant.product_id
+                    ? "border-[var(--background)] border-3"
+                    : "border-gray-300"
                 }`}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
@@ -429,7 +493,11 @@ const ProductDetails = () => {
               >
                 {/* Use first image from images array or fallback to path */}
                 <img
-                  src={variant.images && variant.images.length > 0 ? variant.images[0].image_url : variant.path || ''}
+                  src={
+                    variant.images && variant.images.length > 0
+                      ? variant.images[0].image_url
+                      : variant.path || ""
+                  }
                   alt={variant.name}
                   className="w-40 h-40 object-cover"
                 />
@@ -446,9 +514,10 @@ const ProductDetails = () => {
           </h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {products
-              .filter((p) => 
-                p.product_id !== product.product_id && 
-                p.category === product.category
+              .filter(
+                (p) =>
+                  p.product_id !== product.product_id &&
+                  p.category === product.category
               )
               .slice(0, 4)
               .map((related) => (
@@ -461,7 +530,11 @@ const ProductDetails = () => {
                   <div className="overflow-hidden">
                     {/* Use first image from images array or fallback to path */}
                     <img
-                      src={related.images && related.images.length > 0 ? related.images[0].image_url : related.path || ''}
+                      src={
+                        related.images && related.images.length > 0
+                          ? related.images[0].image_url
+                          : related.path || ""
+                      }
                       alt={related.name}
                       className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
                     />
@@ -474,10 +547,12 @@ const ProductDetails = () => {
                       Kshs {related.price.toLocaleString()}
                     </p>
                     <div className="flex items-center gap-2 mt-2">
-                      <span className="text-xs text-gray-600 capitalize">{safeCapitalize(related.leaf_size)}</span>
+                      <span className="text-xs text-gray-600 capitalize">
+                        {safeCapitalize(related.leaf_size)}
+                      </span>
                       <span className="text-gray-300">•</span>
                       <span className="text-xs text-gray-600 capitalize">
-                        {safeReplace(related.sunlight_exposure, '_', ' ')}
+                        {safeReplace(related.sunlight_exposure, "_", " ")}
                       </span>
                     </div>
                   </div>
