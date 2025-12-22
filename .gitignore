@@ -1,0 +1,17 @@
+# Env files
+.env
+
+# Docker
+*.dockerignore
+Dockerfile
+docker-compose.yml
+
+# Nginx
+nginx/
+
+# Node.js server
+server/node_modules/
+client/node_modules/
+
+# Logs
+*.log

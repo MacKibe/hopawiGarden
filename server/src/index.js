@@ -10,24 +10,11 @@ const app = express();
 
 dotenv.config();
 
-app.use(
-  cors({
-    origin: [
-      "https://hopawigardens.com",
-      "https://hopawi-garden.vercel.app",
-      "http://localhost:5173",
-    ],
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-    credentials: true,
-  })
-);
-
-app.options("*", cors());
+app.use(cors());
 
 app.use(express.json());
 
-const PORT = process.env.PORT || 10000;
+const PORT = process.env.PORT || 5000;
 
 app.use("/api/products", productRoutes);
 app.use("/api/auth", authRoutes);
@@ -38,8 +25,9 @@ app.get("/", (req, res) => {
   return res.send("HOPAWI Gardens Backend!");
 });
 
-app.listen(PORT, () => {
+app.listen(PORT, "0.0.0.0", () => {
   console.log(`Server is running on ${PORT}`);
 });
+
 
 export default app;
