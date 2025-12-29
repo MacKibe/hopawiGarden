@@ -1,0 +1,6 @@
+.env
+client/.dockerignore
+client/Dockerfile
+server/.dockerignore
+server/Dockerfile
+docker-compose.yml
