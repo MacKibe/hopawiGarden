@@ -2,12 +2,7 @@ import axios from 'axios';
 import type { AxiosInstance } from 'axios';
 import useAuthStore from '../store/useAuthStore';
 
-const api: AxiosInstance = axios.create({
-  baseURL: import.meta.env.MODE === 'production'
-    ? 'https://hopawigarden-1.onrender.com/api'
-    : 'http://localhost:10000/api',
-  timeout: 30000,
-});
+const api: AxiosInstance = axios.create({baseURL: "/api", timeout: 30000,});
 
 api.interceptors.request.use(
   (config) => {
